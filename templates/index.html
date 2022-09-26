@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="KOGAS One-Stop Service" />
+    <meta name="author" content="Henry_ub" />
+    <title>KOGAS, One-stop service</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">|
+    <link rel="shortcut icon" href="/static/favicon.ico">
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NVSRNY03C8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-NVSRNY03C8');
+    </script>
+    {% block head %}
+    {% endblock %}
+</head>
+
+<body class="sb-nav-fixed">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <script>
+        alert("{{messages[0]}}")
+    </script>
+    {% endif %}
+    {% endwith %}
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        
+        <!-- Navbar Brand-->
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
+                class="fas fa-bars"></i></button>
+        <a class="navbar-brand ps-3" href="{{ url_for('index') }}"><img
+                src="{{ url_for('static', filename='img/icon.png') }}" width="20px" height="20px" alt="icon"> KOGAS,
+            간이공사 원스톱 서비스 </a>
+        <!-- Navbar Search-->
+        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+            <div class="input-group">
+                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+            </div>
+        </form>
+        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="#!">Settings</a></li>
+                    <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                    <li><hr class="dropdown-divider" /></li>
+                    {% if login == True %}
+                    <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
+                    {% else %}
+                    <li><a class="dropdown-item" href="{{ url_for('login') }}">Login</a></li>
+                    {% endif %}
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            {% if lightMode == True %}
+            <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
+            {% else %}
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+            {% endif %}
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">Home</div>
+                            <a class="nav-link" href="{{ url_for('index') }}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                공사 진행 리스트
+                            </a>
+                            <a class="nav-link" href="#">
+                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                공사 추가하기
+                            </a>
+                            <div class="sb-sidenav-menu-heading">Interface</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Layouts
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
+                                data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    {% if lightMode == True %}
+                                    <a class="nav-link" href="{{ url_for('light') }}">Dark Mode</a>
+                                    {% else %}
+                                    <a class="nav-link" href="{{ url_for('light') }}">Light Mode</a>
+                                    {% endif %}
+                                </nav>
+                            </div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                Pages
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
+                                data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                    <a class="nav-link" href="#">메뉴1</a>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sb-sidenav-footer">
+                        <div class="small">Logged in as:</div>
+                        <img src="{{ url_for('static', filename='img/google.png') }}" width="20px" height="20px"
+                            alt="icon">
+                        Google
+                    </div>
+                </nav>
+        </div>
+        <div id="layoutSidenav_content">
+
+            <main>
+                <div class="container-fluid px-4">
+                    {% block main %}
+                    <h1 class="mt-4" style="text-align:left;"><b>Admin page</b></h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">One-stop service for simplified construction</li>
+                        </ol>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            <b>간이공사 진행 리스트</b>
+                        </div>
+                        <div class="card-body">
+                            <table id="datatablesSimple">
+                                <thead>
+                                    <tr>
+                                        <th>관리번호</th>
+                                        <th>공사명(계약명)</th>
+                                        <th>업체명</th>
+                                        <th>업체 연락처</th>
+                                        <th>공사감독(명)</th>
+                                        <th>공사감독(직위)</th>
+                                        <th>공사 진행</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>관리번호</th>
+                                        <th>공사명(계약명)</th>
+                                        <th>업체명</th>
+                                        <th>업체 연락처</th>
+                                        <th>공사감독(명)</th>
+                                        <th>공사감독(직위)</th>
+                                        <th>공사 진행</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    {% for construction in constructionList %}
+                                    <tr>
+                                        <td>{{construction[1]}}</td>
+                                        <td>{{construction[2]}}</td>
+                                        <td>{{construction[3]}}</td>
+                                        <td>{{construction[4]}}</td>
+                                        <td>{{construction[5]}}</td>
+                                        <td>{{construction[6]}}</td>
+                                        <!-- # 부분에 해당 공사 페이지로 이동 -->
+                                        <td onClick="{{ url_for('index') }}" style="cursor:pointer;">{{construction[7]}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {% endblock %}
+                </div>
+            </main>
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; KOGAS, One-stop service for simplified construction
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+    {% block js %}
+    {% endblock %}
+</body>
+</html>
