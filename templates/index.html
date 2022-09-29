@@ -79,7 +79,7 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 공사 진행 리스트
                             </a>
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="{{ url_for('createConstruction') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                                 공사 추가하기
                             </a>
@@ -131,6 +131,7 @@
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">One-stop service for simplified construction</li>
                         </ol>
+                    <a href="{{ url_for('createConstruction') }}"><button> 신규생성 </button></a>
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
@@ -163,14 +164,14 @@
                                 <tbody>
                                     {% for construction in constructionList %}
                                     <tr>
-                                        <td>{{construction[1]}}</td>
-                                        <td>{{construction[2]}}</td>
-                                        <td>{{construction[3]}}</td>
-                                        <td>{{construction[4]}}</td>
-                                        <td>{{construction[5]}}</td>
-                                        <td>{{construction[6]}}</td>
+                                        <td onclick="location.href='/go_detail/{{construction[1]}}';" style="cursor:pointer;">{{construction[1]}}</td>
+                                        <td onclick="location.href='/go_detail/{{construction[1]}}';" style="cursor:pointer;">{{construction[2]}}</td>
+                                        <td onclick="location.href='/go_detail/{{construction[1]}}';" style="cursor:pointer;">{{construction[3]}}</td>
+                                        <td onclick="location.href='/go_detail/{{construction[1]}}';" style="cursor:pointer;">{{construction[4]}}</td>
+                                        <td onclick="location.href='/go_detail/{{construction[1]}}';" style="cursor:pointer;">{{construction[5]}}</td>
+                                        <td onclick="location.href='/go_detail/{{construction[1]}}';" style="cursor:pointer;">{{construction[6]}}</td>
                                         <!-- # 부분에 해당 공사 페이지로 이동 -->
-                                        <td onClick="{{ url_for('index') }}" style="cursor:pointer;">{{construction[7]}}</td>
+                                        <td onclick="location.href='/go_detail/{{construction[1]}}';" style="cursor:pointer;">{{construction[7]}}</td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>

@@ -1,0 +1,17 @@
+{% extends "index.html" %}
+{% block main %}
+<form method= "POST" id="createConstruction_proc" action="{{url_for('createConstruction_proc')}}" class="input-group">
+    <input type="text" id="C1" name="C1" class="input-field" placeholder="관리번호">
+    <input type="text" id="C2" name="C2" class="input-field" placeholder="공사명">
+    <input type="text" id="C3" name="C3" class="input-field" placeholder="업체명">
+    <input type="text" id="C4" name="C4" class="input-field" placeholder="업체연락처">
+    <input type="text" id="C5" name="C5" class="input-field" placeholder="관리자(명)">
+    <input type="text" id="C6" name="C6" class="input-field" placeholder="관리자(직위)">
+    <input type="text" id="C7" name="C7" class="input-field" placeholder="진행사항">
+    <input type="text" id="C8" name="C8" class="input-field" placeholder="보증금액">
+    <input type="text" id="C9" name="C9" class="input-field" placeholder="계약금액(VAT별도)">
+    <input type="text" id="C10" name="C10" class="input-field" placeholder="공사 시작">
+    <input type="text" id="C11" name="C11" class="input-field" placeholder="공사 끝">
+    <button type="submit" class="submit">생성하기</button>
+</form>
+{% endblock %}
