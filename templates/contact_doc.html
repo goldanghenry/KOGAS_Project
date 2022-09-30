@@ -1207,7 +1207,7 @@ rt
 </table>
 
 </div>
-<a href="#"><button> 저장하기 </button></a>
+<button type="button" onclick=""> 저장하기 </button>
 
 <!----------------------------->
 <!--Excel의 웹 페이지 마법사로 게시해서 나온 결과의 끝-->
@@ -1230,7 +1230,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		// @breif 마우스로 해당영역을 더블클릭 한경우
 		content.addEventListener("dblclick", function(event) {
-
+			console.log(document.getElementsByClassName("rowColumn"))
 			// @breif 전체 테이블 컬럼( td > p )에서 현재 사용중인 값의 존재여부를 확인한다.
 			Array.from(contents).forEach(function(defaultVal) {
 				
@@ -1294,7 +1294,6 @@ document.addEventListener("DOMContentLoaded", function() {
 					// @details 내용의 수정이 완료되었다면 data 태그의 기본값도 바꿔준다.
 					content.dataset.default = content.textContent;
 				}
-
 				// @breif 수정 불가 상태로 되돌린다.
 				content.contentEditable = false;
 				content.style.border = "0px";
@@ -1303,10 +1302,25 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 });
 
-$.get( "/getmethod/<javascript_data>" );
-	$.post( "/postmethod", {
-    javascript_data: contents = document.getElementsByClassName("rowColumn")
-});
+
+/* 
+$(function() {
+  $("#requestBtn").on("click", function() {
+    $.post("URL 주소"),
+      { species : "양하얀", grade :"A+"},
+       
+  })
+})
+
+
+$(function(){
+	
+	$.post( "/postmethod") {
+		
+		console.log('a')
+
+	};
+}  */
 /* 저장하기 버튼 */
 
 </script>

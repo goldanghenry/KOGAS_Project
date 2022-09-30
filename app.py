@@ -195,10 +195,17 @@ def light():
         session['light'] = True
     return redirect(url_for("index"))
 
-@app.route('/postmethod', methods = ['POST'])
-def get_post_javascript_data():
-    jsdata = request.form['javascript_data']
-    return json.loads(jsdata)[0]
+@app.route('/postmethod', methods = ['GET', 'POST'])
+def postmethod():
+    if request.method == 'POST':
+        jsdata = request.form['javascript_data']
+
+    elif request.method == 'GET':
+        jsdata = request.args.get('javascript_data')
+
+    dict = json.loads(jsdata)[0]
+    print(dict)
+    return redirect(url_for("index"))
 
 
 
