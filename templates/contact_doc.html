@@ -955,24 +955,24 @@ rt
  <tr height=52 style='mso-height-source:userset;height:39.0pt'>
   <td colspan=2 height=52 class=xl35021039 style='height:39.0pt'>계약건명</td>
   <td colspan=9 class=xl35221039>
-	<p class="rowColumn" contenteditable="false" data-default="{{data_[2]}}">{{data_[2]}}</p>
+	<p id="d2" class="rowColumn" contenteditable="false" data-default="{{data_[2]}}">{{data_[2]}}</p>
   </td>
  </tr>
  <tr height=52 style='mso-height-source:userset;height:39.0pt'>
   <td colspan=2 height=52 class=xl35021039 style='height:39.0pt'>보증금액</td>
   <td colspan=9 class=xl35821039 width=523 style='border-right:.5pt solid black;
-  border-left:none;width:394pt'><p class="rowColumn" contenteditable="false" data-default="{{data_[8]}}">{{data_[8]}}</p></td>
+  border-left:none;width:394pt'><p id="d8" class="rowColumn" contenteditable="false" data-default="{{data_[8]}}">{{data_[8]}}</p></td>
  </tr>
  <tr height=52 style='mso-height-source:userset;height:39.0pt'>
   <td colspan=2 height=52 class=xl35021039 style='height:39.0pt'>계약금액</td>
   <td colspan=9 class=xl35521039 style='border-right:.5pt solid black;
-  border-left:none'><p class="rowColumn" contenteditable="false" data-default="{{data_[9]}}">{{data_[9]}}</p></p> (VAT별도)</td>
+  border-left:none'><p id="d9" class="rowColumn" contenteditable="false" data-default="{{data_[9]}}">{{data_[9]}}</p></p> (VAT별도)</td>
  </tr>
  <tr height=52 style='mso-height-source:userset;height:39.0pt'>
   <td colspan=2 height=52 class=xl35021039 style='height:39.0pt'>공사기간</td>
-  <td colspan=2 class=xl33921039 width=122 style='border-left:none;width:92pt'><p class="rowColumn" contenteditable="false" data-default="{{data_[10]}}">{{data_[10]}}</p></td>
+  <td colspan=2 class=xl33921039 width=122 style='border-left:none;width:92pt'><p id="d10" class="rowColumn" contenteditable="false" data-default="{{data_[10]}}">{{data_[10]}}</p></td>
   <td class=xl32321039 width=24 style='border-top:none;width:18pt'>~</td>
-  <td colspan=3 class=xl34121039><p class="rowColumn" contenteditable="false" data-default="{{data_[11]}}">{{data_[11]}}</p></td>
+  <td colspan=3 class=xl34121039><p id="d11" class="rowColumn" contenteditable="false" data-default="{{data_[11]}}">{{data_[11]}}</p></td>
   <td class=xl32421039 style='border-top:none'>　</td>
   <td class=xl32421039 style='border-top:none'>　</td>
   <td class=xl32521039 style='border-top:none'>　</td>
@@ -1228,15 +1228,11 @@ document.addEventListener("DOMContentLoaded", function() {
 	// @breif rowColumn 클래스의 갯수 만큼 반복문을 실행한다.
 	Array.from(contents).forEach(function(content) {
 
-
 		// @breif 마우스로 해당영역을 더블클릭 한경우
 		content.addEventListener("dblclick", function(event) {
 
-
 			// @breif 전체 테이블 컬럼( td > p )에서 현재 사용중인 값의 존재여부를 확인한다.
 			Array.from(contents).forEach(function(defaultVal) {
-
-
 				
 				// @details 빈값( null )이 존재하는지 체크한다.
 				if(
@@ -1251,7 +1247,6 @@ document.addEventListener("DOMContentLoaded", function() {
 					// @details 내용이 존재하지 않다면 data 태그의 기본값으로 되돌린다.
 					defaultVal.textContent = defaultVal.dataset.default;
 				}
-				
 
 				// @details 저장하지 않은 내용이라고 판단하여 data 태그의 기본값으로 되돌린다.
 				defaultVal.textContent = defaultVal.dataset.default;
@@ -1261,21 +1256,16 @@ document.addEventListener("DOMContentLoaded", function() {
 				defaultVal.style.border = "0px";
 			});
 
-
 			if(content.isContentEditable == false) {
-
 
 				// @details 편집 가능 상태로 변경
 				content.contentEditable = true;
 
-
 				// @details 텍스트 문구 변경
 				// content.textContent = "";
 
-
 				// @details CSS 효과 추가
 				content.style.border = "1px solid #FFB6C1";
-
 
 				// @details 포커스 지정
 				content.focus();
@@ -1286,10 +1276,8 @@ document.addEventListener("DOMContentLoaded", function() {
 		// @breif 키보드 입력이 방생한 경우 실행
 		content.addEventListener("keypress", function(event) {
 
-
 			// @breif Enter키 입력시 실행
 			if(event.key === "Enter") {
-
 
 				// @details 입력된 값이 빈값( null )인지 체크한다.
 				if(
@@ -1300,17 +1288,12 @@ document.addEventListener("DOMContentLoaded", function() {
 					&& typeof content.textContent == "object"
 					&& !Object.keys(content.textContent).length == ""))
 				{
-
-
 					// @details 내용이 존재하지 않다면 data 태그의 기본값으로 되돌린다.
 					content.textContent = content.dataset.default;
 				} else {
-
-
 					// @details 내용의 수정이 완료되었다면 data 태그의 기본값도 바꿔준다.
 					content.dataset.default = content.textContent;
 				}
-
 
 				// @breif 수정 불가 상태로 되돌린다.
 				content.contentEditable = false;
@@ -1319,4 +1302,12 @@ document.addEventListener("DOMContentLoaded", function() {
 		});
 	});
 });
+
+$.get( "/getmethod/<javascript_data>" );
+	$.post( "/postmethod", {
+    javascript_data: contents = document.getElementsByClassName("rowColumn")
+});
+/* 저장하기 버튼 */
+
 </script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
