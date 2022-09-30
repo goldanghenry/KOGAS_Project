@@ -954,23 +954,25 @@ rt
  </tr>
  <tr height=52 style='mso-height-source:userset;height:39.0pt'>
   <td colspan=2 height=52 class=xl35021039 style='height:39.0pt'>계약건명</td>
-  <td colspan=9 class=xl35221039>{{data_[2]}}</td>
+  <td colspan=9 class=xl35221039>
+	<p class="rowColumn" contenteditable="false" data-default="{{data_[2]}}">{{data_[2]}}</p>
+  </td>
  </tr>
  <tr height=52 style='mso-height-source:userset;height:39.0pt'>
   <td colspan=2 height=52 class=xl35021039 style='height:39.0pt'>보증금액</td>
   <td colspan=9 class=xl35821039 width=523 style='border-right:.5pt solid black;
-  border-left:none;width:394pt'>{{data_[8]}}</td>
+  border-left:none;width:394pt'><p class="rowColumn" contenteditable="false" data-default="{{data_[8]}}">{{data_[8]}}</p></td>
  </tr>
  <tr height=52 style='mso-height-source:userset;height:39.0pt'>
   <td colspan=2 height=52 class=xl35021039 style='height:39.0pt'>계약금액</td>
   <td colspan=9 class=xl35521039 style='border-right:.5pt solid black;
-  border-left:none'>{{data_[9]}} (VAT별도)</td>
+  border-left:none'><p class="rowColumn" contenteditable="false" data-default="{{data_[9]}}">{{data_[9]}}</p></p> (VAT별도)</td>
  </tr>
  <tr height=52 style='mso-height-source:userset;height:39.0pt'>
   <td colspan=2 height=52 class=xl35021039 style='height:39.0pt'>공사기간</td>
-  <td colspan=2 class=xl33921039 width=122 style='border-left:none;width:92pt'>{{data_[10]}}</td>
+  <td colspan=2 class=xl33921039 width=122 style='border-left:none;width:92pt'><p class="rowColumn" contenteditable="false" data-default="{{data_[10]}}">{{data_[10]}}</p></td>
   <td class=xl32321039 width=24 style='border-top:none;width:18pt'>~</td>
-  <td colspan=3 class=xl34121039>{{data_[11]}}</td>
+  <td colspan=3 class=xl34121039><p class="rowColumn" contenteditable="false" data-default="{{data_[11]}}">{{data_[11]}}</p></td>
   <td class=xl32421039 style='border-top:none'>　</td>
   <td class=xl32421039 style='border-top:none'>　</td>
   <td class=xl32521039 style='border-top:none'>　</td>
@@ -1009,8 +1011,11 @@ rt
  </tr>
  <tr height=48 style='mso-height-source:userset;height:36.0pt'>
   <td height=48 class=xl32621039 style='height:36.0pt'>　</td>
-  <td colspan=10 class=xl34221039 style='border-right:.5pt solid black'>해당 공사
-  공사감독원의 지시에 따라 위 공사를 성실히 수행할 것이며, 지체일수</td>
+  <td colspan=10 class=xl34221039 style='border-right:.5pt solid black'>
+	<p class="rowColumn" contenteditable="false" data-default="해당 공사
+  공사감독원의 지시에 따라 위 공사를 성실히 수행할 것이며, 지체일수">해당 공사
+  공사감독원의 지시에 따라 위 공사를 성실히 수행할 것이며, 지체일수</p>
+	</td>
  </tr>
  <tr height=31 style='mso-height-source:userset;height:23.25pt'>
   <td height=31 class=xl32621039 style='height:23.25pt'>　</td>
@@ -1210,3 +1215,108 @@ rt
 </body>
 
 </html>
+<script type="text/javascript">
+
+
+// @breif contenteditable 속성을 가진경우
+contents = document.getElementsByClassName("rowColumn");
+
+
+document.addEventListener("DOMContentLoaded", function() {
+
+
+	// @breif rowColumn 클래스의 갯수 만큼 반복문을 실행한다.
+	Array.from(contents).forEach(function(content) {
+
+
+		// @breif 마우스로 해당영역을 더블클릭 한경우
+		content.addEventListener("dblclick", function(event) {
+
+
+			// @breif 전체 테이블 컬럼( td > p )에서 현재 사용중인 값의 존재여부를 확인한다.
+			Array.from(contents).forEach(function(defaultVal) {
+
+
+				
+				// @details 빈값( null )이 존재하는지 체크한다.
+				if(
+					   defaultVal.textContent == ""
+					|| defaultVal.textContent == null
+					|| defaultVal.textContent == undefined
+					|| (defaultVal.textContent != null
+					&& typeof defaultVal.textContent == "object"
+					&& !Object.keys(defaultVal.textContent).length == ""))
+				{
+
+					// @details 내용이 존재하지 않다면 data 태그의 기본값으로 되돌린다.
+					defaultVal.textContent = defaultVal.dataset.default;
+				}
+				
+
+				// @details 저장하지 않은 내용이라고 판단하여 data 태그의 기본값으로 되돌린다.
+				defaultVal.textContent = defaultVal.dataset.default;
+
+				// @breif 수정 불가 상태로 되돌린다.
+				defaultVal.contentEditable = false;
+				defaultVal.style.border = "0px";
+			});
+
+
+			if(content.isContentEditable == false) {
+
+
+				// @details 편집 가능 상태로 변경
+				content.contentEditable = true;
+
+
+				// @details 텍스트 문구 변경
+				// content.textContent = "";
+
+
+				// @details CSS 효과 추가
+				content.style.border = "1px solid #FFB6C1";
+
+
+				// @details 포커스 지정
+				content.focus();
+			}
+		});
+
+
+		// @breif 키보드 입력이 방생한 경우 실행
+		content.addEventListener("keypress", function(event) {
+
+
+			// @breif Enter키 입력시 실행
+			if(event.key === "Enter") {
+
+
+				// @details 입력된 값이 빈값( null )인지 체크한다.
+				if(
+					   content.textContent == ""
+					|| content.textContent == null
+					|| content.textContent == undefined
+					|| (content.textContent != null
+					&& typeof content.textContent == "object"
+					&& !Object.keys(content.textContent).length == ""))
+				{
+
+
+					// @details 내용이 존재하지 않다면 data 태그의 기본값으로 되돌린다.
+					content.textContent = content.dataset.default;
+				} else {
+
+
+					// @details 내용의 수정이 완료되었다면 data 태그의 기본값도 바꿔준다.
+					content.dataset.default = content.textContent;
+				}
+
+
+				// @breif 수정 불가 상태로 되돌린다.
+				content.contentEditable = false;
+				content.style.border = "0px";
+			}
+		});
+	});
+});
+</script>
