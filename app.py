@@ -1,6 +1,7 @@
 from flask import Flask, url_for, session, render_template, request, redirect, flash
 import sqlite3
 from os import path
+import json
 
 ROOT = path.dirname(path.realpath(__file__))
 
@@ -163,14 +164,6 @@ def createConstruction_proc():
         c9 = request.form['C9']
         c10 = request.form['C10']
         c11 = request.form['C11']
-
-    # elif request.method =='GET':
-    #     _id_ = request.args.get('registerId')
-    #     _username_ = request.args.get('registerUsername')
-    #     _password_ = request.args.get('registerPw')
-    #     _Cpassword_ = request.args.get('registerCPw')
-    #     _management_KEY_ = request.args.get('managementKEY')
-
     
     # DB에 회원가입 정보 삽입
     sql = """
@@ -202,62 +195,12 @@ def light():
         session['light'] = True
     return redirect(url_for("index"))
 
+@app.route('/postmethod', methods = ['POST'])
+def get_post_javascript_data():
+    jsdata = request.form['javascript_data']
+    return json.loads(jsdata)[0]
 
 
-# @app.route('/bookmarks')
-# def bookmarks():
-#     # 로그인 검사
-#     if 'userName' in session:
-#         # 기사 리스트 가져오기
-#         userid = session.get('userId')
-#         tableName = userid.replace('@','').replace('.','')
-
-#         con = sqlite3.connect(path.join(ROOT, 'Keyword_Statics.db'))
-#         cur = con.cursor()
-#         sql = f"SELECT * FROM {tableName}"
-#         cur.execute(sql)
-#         list = cur.fetchall()
-#         list = sorted(list, key=lambda x : (x[3], x[4]), reverse=True)
-#         return render_template('bookmarks.html', userName=session.get("userName"), login=session.get('logFlag'), articleList=list, lightMode = session.get('light'))
-#     # 로그인 하지 않으면 로그인 페이지로 이동
-#     else:
-#         flash("북마크 페이지는 로그인을 해야 이용할 수 있습니다.")
-#         return redirect(url_for("login"))
-
-# @app.route("/favorite1/<int:idx>")
-# def favorite1(idx):
-#     #클릭한 뉴스 객체 가져오기
-#     con = sqlite3.connect(path.join(ROOT, 'Keyword_Statics.db'))
-#     cur = con.cursor()
-#     sql = "SELECT * FROM ArticleList WHERE idx=?"
-#     cur.execute(sql, (idx,))
-#     selectedN = cur.fetchall()
-#     selectedN = selectedN[0]
-
-#     con = sqlite3.connect(path.join(ROOT, 'Keyword_Statics.db'))
-#     cur = con.cursor()
-#     userid = session.get('userId')
-#     tableName = userid.replace('@','').replace('.','')
-#     sql = f"DELETE FROM {tableName} WHERE idx= ?"
-#     cur.execute(sql, (selectedN[0],))
-#     con.commit()
-#     return redirect(url_for("index"))
-
-# @app.route('/charts')
-# def charts():
-#     # datelist
-#     con = sqlite3.connect(path.join(ROOT, 'Keyword_Statics.db'))
-#     cur = con.cursor()
-#     sql = "SELECT dates FROM Ranked_Tags"
-#     cur.execute(sql)
-#     dateList = cur.fetchall()
-#     dateList = set(dateList)
-#     dateList = sorted(dateList, key=lambda x : (x[0]), reverse=True)
-
-#     dList = []
-#     for d in dateList:
-#         dList.append(d[0][4:8])
-#     return render_template('charts.html', dateList=dList, lightMode = session.get('light'))
 
 if __name__ == '__main__':
     app.run(debug=True)
