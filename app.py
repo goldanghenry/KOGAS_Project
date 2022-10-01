@@ -1,7 +1,6 @@
 from flask import Flask, url_for, session, render_template, request, redirect, flash
 import sqlite3
 from os import path
-import json
 
 ROOT = path.dirname(path.realpath(__file__))
 
@@ -13,21 +12,14 @@ management_KEY = 'KOGAS_333K'   # 관리자 암호키
 # main page
 @app.route('/')
 def index():
-    # 로그인 검사
-    if 'userName' in session:
-        # 공사리스트 가져오기
-        con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
-        cur = con.cursor()
-        sql = f"SELECT * FROM constructionList"
-        cur.execute(sql)
-        list = cur.fetchall()
-        list = sorted(list, key=lambda x : x[0], reverse=True)
-        return render_template('index.html', login=session.get('logFlag'), constructionList=list, lightMode = session.get('light'))
-
-    # 로그인 하지 않으면 로그인 페이지로 이동
-    else:
-        flash("해당 페이지는 관리자 로그인이 필요합니다.")
-        return redirect(url_for("login"))
+    # 공사리스트 가져오기
+    con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
+    cur = con.cursor()
+    sql = f"SELECT * FROM constructionList"
+    cur.execute(sql)
+    list = cur.fetchall()
+    list = sorted(list, key=lambda x : x[0], reverse=True)
+    return render_template('index.html', login=session.get('logFlag'), constructionList=list, lightMode = session.get('light'))
 
 # log-in page
 @app.route('/login')
@@ -37,7 +29,27 @@ def login():
 # 공사 생성하기 페이지
 @app.route('/createConstruction')
 def createConstruction():
-    return render_template('createConstruction.html', login=session.get('logFlag'), lightMode = session.get('light'))
+    # 로그인체크
+    if 'userName' in session:
+        return render_template('createConstruction.html', login=session.get('logFlag'), lightMode = session.get('light'))
+    # 로그인 하지 않으면 로그인 페이지로 이동
+    else:
+        flash("해당 페이지는 관리자 로그인이 필요합니다.")
+        return redirect(url_for("login"))
+
+# 업체 비밀번호 입력 page
+@app.route("/pre/<id>")
+def createConstruction():
+    # 관리자 로그인이 되어 있으면 myPage
+    if 'userName' in session:
+        return render_template('myPage.html', login=session.get('logFlag'), lightMode = session.get('light'))
+    # 로그인 하지 않으면 로그인 페이지로 이동
+    else:
+        
+        return redirect(url_for("login"))
+
+
+
 
 # 공사 상세 페이지
 @app.route("/go_detail/<id>")
@@ -202,12 +214,24 @@ def postmethod():
 
     elif request.method == 'GET':
         jsdata = request.args.get('javascript_data')
-
-    dict = json.loads(jsdata)[0]
-    print(dict)
+    print(jsdata)
     return redirect(url_for("index"))
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+# 메인에서 로그인 체크하는 부분
+# if 'userName' in session:
+#         # 공사리스트 가져오기
+#         con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
+#         cur = con.cursor()
+#         sql = f"SELECT * FROM constructionList"
+#         cur.execute(sql)
+#         list = cur.fetchall()
+#         list = sorted(list, key=lambda x : x[0], reverse=True)
+#         return render_template('index.html', login=session.get('logFlag'), constructionList=list, lightMode = session.get('light'))
+
+#     # 로그인 하지 않으면 로그인 페이지로 이동
+#     else:
+#         flash("해당 페이지는 관리자 로그인이 필요합니다.")
+#         return redirect(url_for("login"))

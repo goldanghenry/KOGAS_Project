@@ -1207,7 +1207,7 @@ rt
 </table>
 
 </div>
-<button type="button" onclick=""> 저장하기 </button>
+<button type="button" onclick="save()"> 저장하기 </button>
 
 <!----------------------------->
 <!--Excel의 웹 페이지 마법사로 게시해서 나온 결과의 끝-->
@@ -1222,6 +1222,7 @@ rt
 contents = document.getElementsByClassName("rowColumn");
 
 
+
 document.addEventListener("DOMContentLoaded", function() {
 
 
@@ -1230,7 +1231,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		// @breif 마우스로 해당영역을 더블클릭 한경우
 		content.addEventListener("dblclick", function(event) {
-			console.log(document.getElementsByClassName("rowColumn"))
+
 			// @breif 전체 테이블 컬럼( td > p )에서 현재 사용중인 값의 존재여부를 확인한다.
 			Array.from(contents).forEach(function(defaultVal) {
 				
@@ -1302,26 +1303,13 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 });
 
-
-/* 
-$(function() {
-  $("#requestBtn").on("click", function() {
-    $.post("URL 주소"),
-      { species : "양하얀", grade :"A+"},
-       
-  })
-})
-
-
-$(function(){
-	
-	$.post( "/postmethod") {
-		
-		console.log('a')
-
-	};
-}  */
+function save(){
+	$.post( "/postmethod", {
+	javascript_data: document.getElementById("d2").textContent
+	});
+} 
 /* 저장하기 버튼 */
-
+/* 보낼 수 있는 형식 확인하기. 리턴받는 타입 확인 */
+/* document.getElementsByClassName("rowColumn").style.size() */
 </script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.5.1.min.js"></script>

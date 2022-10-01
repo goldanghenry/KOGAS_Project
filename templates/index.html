@@ -141,37 +141,30 @@
                             <table id="datatablesSimple">
                                 <thead>
                                     <tr>
-                                        <th>관리번호</th>
-                                        <th>공사명(계약명)</th>
+                                        <th>계약번호</th>
+                                        <th>계약건명</th>
+                                        <th>사업장</th>
+                                        <th>계약구분</th>
                                         <th>업체명</th>
-                                        <th>업체 연락처</th>
-                                        <th>공사감독(명)</th>
-                                        <th>공사감독(직위)</th>
-                                        <th>공사 진행</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                     <tr>
-                                        <th>관리번호</th>
-                                        <th>공사명(계약명)</th>
+                                        <th>계약번호</th>
+                                        <th>계약건명</th>
+                                        <th>사업장</th>
+                                        <th>계약구분</th>
                                         <th>업체명</th>
-                                        <th>업체 연락처</th>
-                                        <th>공사감독(명)</th>
-                                        <th>공사감독(직위)</th>
-                                        <th>공사 진행</th>
                                     </tr>
                                 </tfoot>
                                 <tbody>
                                     {% for construction in constructionList %}
-                                    <tr>
-                                        <td onclick="location.href='/go_detail/{{construction[1]}}';" style="cursor:pointer;">{{construction[1]}}</td>
-                                        <td onclick="location.href='/go_detail/{{construction[1]}}';" style="cursor:pointer;">{{construction[2]}}</td>
-                                        <td onclick="location.href='/go_detail/{{construction[1]}}';" style="cursor:pointer;">{{construction[3]}}</td>
-                                        <td onclick="location.href='/go_detail/{{construction[1]}}';" style="cursor:pointer;">{{construction[4]}}</td>
-                                        <td onclick="location.href='/go_detail/{{construction[1]}}';" style="cursor:pointer;">{{construction[5]}}</td>
-                                        <td onclick="location.href='/go_detail/{{construction[1]}}';" style="cursor:pointer;">{{construction[6]}}</td>
-                                        <!-- # 부분에 해당 공사 페이지로 이동 -->
-                                        <td onclick="location.href='/go_detail/{{construction[1]}}';" style="cursor:pointer;">{{construction[7]}}</td>
+                                    <tr onclick="location.href='/go_detail/{{construction[1]}}';" style="cursor:pointer;">
+                                        <td>{{construction[1]}}</td>
+                                        <td>{{construction[2]}}</td>
+                                        <td>{{construction[6]}}</td>
+                                        <td>{{construction[7]}}</td>
+                                        <td>{{construction[3]}}</td>                                   
                                     </tr>
                                     {% endfor %}
                                 </tbody>
