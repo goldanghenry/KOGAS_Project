@@ -8,8 +8,8 @@ app = Flask(__name__)
 app.secret_key = 'tjdgus12'
 management_KEY = 'KOGAS_333K'   # 관리자 암호키
 
-# --------------------- Page route ---------------------
-# main page
+# ------------------------------------------ Page route ------------------------------------------
+# 1. 메인페이지
 @app.route('/')
 def index():
     # 공사리스트 가져오기
@@ -19,14 +19,24 @@ def index():
     cur.execute(sql)
     list = cur.fetchall()
     list = sorted(list, key=lambda x : x[0], reverse=True)
-    return render_template('index.html', login=session.get('logFlag'), constructionList=list, lightMode = session.get('light'))
+    return render_template('index.html', login=session.get('logFlag'), constructionList=list)
 
-# log-in page
-@app.route('/login')
-def login():
-    return render_template('login.html')
+# 2. 개요
+@app.route('/summary')
+def summary():
+    return render_template('summary.html')
 
-# 공사 생성하기 페이지
+# 3. 공지사항
+@app.route('/notice')
+def notice():
+    return render_template('notice.html')
+
+# 4. 용역현황
+@app.route('/serviceStatus')
+def serviceStatus():
+    return render_template('serviceStatus.html')
+
+# 5. 공사생성
 @app.route('/createConstruction')
 def createConstruction():
     # 로그인체크
@@ -37,70 +47,83 @@ def createConstruction():
         flash("해당 페이지는 관리자 로그인이 필요합니다.")
         return redirect(url_for("login"))
 
-# 업체 비밀번호 입력 page
+# 6. 관리자 회원가입 & 로그인
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+# 7. 업체 로그인
 @app.route("/pre/<id>")
-def createConstruction():
+def pre(id):
     # 관리자 로그인이 되어 있으면 myPage
     if 'userName' in session:
         return render_template('myPage.html', login=session.get('logFlag'), lightMode = session.get('light'))
     # 로그인 하지 않으면 로그인 페이지로 이동
     else:
-        
-        return redirect(url_for("login"))
+        return render_template('pre.html')
 
+# 8. 업체 메인 페이지
+@app.route('/myPage')
+def myPage():
+    return render_template('myPage.html')
 
-
-
-# 공사 상세 페이지
-@app.route("/go_detail/<id>")
-def construction_detail(id):
+# 9. 계약 단계
+# 개요
+@app.route('/contractPhase')
+def contractPhase():
+    return render_template('contractPhase.html')
+# 기본 정보 입력
+@app.route('/contractInput')
+def contractInput():
+    return render_template('contractInput.html')
+# 필요 서류 다운 및 업로드
+@app.route('/contractTable')
+def contractTable():
+    return render_template('contractTable.html')
+# 계약서
+# 1 : 계약 이행 각서
+@app.route("/contract1/<id>")
+def contract1(id):
     con1 = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
     cur1 = con1.cursor()
     sql1 = f"SELECT * FROM constructionList WHERE managementNum=?"
     cur1.execute(sql1, (id,))
     data_ = cur1.fetchone()
-    return render_template('contact_doc.html', login=session.get('logFlag'), data_=data_, lightMode = session.get('light'))
+    return render_template('contract1.html', login=session.get('logFlag'), data_=data_, lightMode = session.get('light'))
 
-# --------------------- function ---------------------
-# 로그인
-@app.route('/login_proc', methods=['GET', 'POST'])
-def login_proc():
-    global loginId
-    if request.method == 'POST':
-        loginId = request.form['loginId']
-        loginPw = request.form['loginPw']
 
-    elif request.method == 'GET':
-        loginId = request.args.get('loginId')
-        loginPw = request.args.get('loginPw')
+# 10. 착공 단계
+# 개요
+@app.route('/startPhase')
+def startPhase():
+    return render_template('startPhase.html')
+# 기본 정보 입력
+@app.route('/startPhaseInput')
+def startPhaseInput():
+    return render_template('startPhaseInput.html')
+# 필요 서류 다운 및 업로드
+@app.route('/startPhaseTable')
+def startPhaseTable():
+    return render_template('startPhaseTable.html')
+# 계약서
 
-    if len(loginId) == 0:
-        flash("Please Enter id")
-        return redirect(url_for("login"))
-    elif len(loginPw) == 0:
-        flash("Please Enter Password")
-        return redirect(url_for("login"))
-    else:
-        con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
-        cur = con.cursor()
-        sql = "SELECT * FROM userList where userId =?"
-        cur.execute(sql, (loginId,))
-        rows = cur.fetchall()
+# 11. 준공 단계
+# 개요
+@app.route('/completionPhase')
+def completionPhase():
+    return render_template('completionPhase.html')
+# 기본 정보 입력
+@app.route('/completionInput')
+def completionInput():
+    return render_template('completionInput.html')
+# 필요 서류 다운 및 업로드
+@app.route('/completionTable')
+def completionTable():
+    return render_template('completionTable.html')
+# 계약서
 
-        for rs in rows:
-            # 아이디 비밀번호 동일
-            if loginId == rs[1] and loginPw == rs[3]:
-                session['userName'] = rs[2]
-                session['logFlag'] = True
-                return redirect(url_for("index"))
-            else:
-                flash("Please check your ID or password")
-                return redirect(url_for("login"))   # 팝업 추가!
-
-        flash("Please check your ID or password")
-        return redirect(url_for("login"))
-
-# 관리자 회원가입
+# ------------------------------------------ function ------------------------------------------
+# 관리자 회원가입 처리
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     # 폼에서 가져오기 
@@ -132,15 +155,13 @@ def register():
         flash("Please confirm your password")
         return redirect(url_for("login"))
 
-    # 닉네임 중복 확인
+    # ID 중복 확인
     con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
     cur = con.cursor()
     sql = "SELECT userId FROM userList where userId =?"
     cur.execute(sql, (_id_,))
     result = cur.fetchall()
-
-    # 닉네임 중복인 경우
-    if result:
+    if result:  # ID 중복인 경우
         flash("User id already in use.\nPlease enter another name.")
         return redirect(url_for("login"))
 
@@ -149,6 +170,7 @@ def register():
         flash("관리자 키를 확인해주세요.")
         return redirect(url_for("login"))
 
+    # 가입 성공
     else:
         # DB에 회원가입 정보 삽입
         sql = """
@@ -160,7 +182,51 @@ def register():
         flash("Membership successful! Please login")
         return redirect(url_for("login"))
 
-# 공사 생성하기
+# 2. 관리자 로그인 처리
+@app.route('/login_proc', methods=['GET', 'POST'])
+def login_proc():
+    global loginId
+    if request.method == 'POST':
+        loginId = request.form['loginId']
+        loginPw = request.form['loginPw']
+
+    elif request.method == 'GET':
+        loginId = request.args.get('loginId')
+        loginPw = request.args.get('loginPw')
+
+    if len(loginId) == 0:
+        flash("Please Enter id")
+        return redirect(url_for("login"))
+    elif len(loginPw) == 0:
+        flash("Please Enter Password")
+        return redirect(url_for("login"))
+    else:
+        con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
+        cur = con.cursor()
+        sql = "SELECT * FROM userList where userId =?"
+        cur.execute(sql, (loginId,))
+        rows = cur.fetchall()
+
+        for rs in rows:
+            # 로그인 성공
+            if loginId == rs[1] and loginPw == rs[3]:
+                session['userName'] = rs[2]
+                session['logFlag'] = True
+                return redirect(url_for("index"))
+            else:
+                flash("Please check your ID or password")
+                return redirect(url_for("login"))   # 팝업 추가!
+
+        flash("Please check your ID or password")
+        return redirect(url_for("login"))
+
+# 4. 로그아웃 처리
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
+
+# 5. 공사 생성 처리
 @app.route('/createConstruction_proc', methods=['GET', 'POST'])
 def createConstruction_proc():
     # 폼에서 가져오기 
@@ -189,24 +255,7 @@ def createConstruction_proc():
     flash("공사 생성 완료")
     return redirect(url_for("index"))
 
-# 로그아웃 버튼
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('index'))
-
-# 사이드바 테마
-@app.route('/layout-sidenav-light')
-def light():
-    if 'light' in session:
-        if session['light'] == True:
-            session['light'] = False
-        else:
-            session['light'] = True
-    else:
-        session['light'] = True
-    return redirect(url_for("index"))
-
+# 계약서 수정시 DB에 입력 처리
 @app.route('/postmethod', methods = ['GET', 'POST'])
 def postmethod():
     if request.method == 'POST':
@@ -235,3 +284,16 @@ if __name__ == '__main__':
 #     else:
 #         flash("해당 페이지는 관리자 로그인이 필요합니다.")
 #         return redirect(url_for("login"))
+
+
+# # 사이드바 테마 변경 처리
+# @app.route('/layout-sidenav-light')
+# def light():
+#     if 'light' in session:
+#         if session['light'] == True:
+#             session['light'] = False
+#         else:
+#             session['light'] = True
+#     else:
+#         session['light'] = True
+#     return redirect(url_for("index"))

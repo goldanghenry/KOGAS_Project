@@ -13,17 +13,19 @@
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NVSRNY03C8"></script>
-    <script>
+    <!-- <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
         gtag('config', 'G-NVSRNY03C8');
-    </script>
+    </script> -->
     {% block head %}
     {% endblock %}
 </head>
 
 <body class="sb-nav-fixed">
+
+    <!-- flash 메시지 출력 -->
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     <script>
@@ -31,8 +33,9 @@
     </script>
     {% endif %}
     {% endwith %}
+
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        
+        <!-- 상단바 -->        
         <!-- Navbar Brand-->
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
@@ -47,6 +50,7 @@
                 <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
             </div>
         </form>
+        <!-- 토글 버튼 -->
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
@@ -54,83 +58,160 @@
                     <li><a class="dropdown-item" href="#!">Settings</a></li>
                     <li><a class="dropdown-item" href="#!">Activity Log</a></li>
                     <li><hr class="dropdown-divider" /></li>
+
                     {% if login == True %}
                     <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
                     {% else %}
                     <li><a class="dropdown-item" href="{{ url_for('login') }}">Login</a></li>
                     {% endif %}
+
                 </ul>
             </li>
         </ul>
     </nav>
 
-
+    <!-- 사이드 메뉴 -->
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
-            {% if lightMode == True %}
-            <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
-            {% else %}
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-            {% endif %}
                     <div class="sb-sidenav-menu">
                         <div class="nav">
+
+                            <!-- HOME -->
                             <div class="sb-sidenav-menu-heading">Home</div>
-                            <a class="nav-link" href="{{ url_for('index') }}">
+                            <a class="nav-link" href="{{ url_for('index') }}">- 공사 진행 현황</a>
+                            <a class="nav-link" href="{{ url_for('summary') }}">- 개요</a>
+                            <a class="nav-link" href="{{ url_for('serviceStatus') }}">- 용역 현황</a>
+                            <a class="nav-link" href="{{ url_for('createConstruction') }}">- 공사 추가하기</a>
+
+                            <!-- MY MENU -->
+                            <div class="sb-sidenav-menu-heading">MY MENU</div>
+                            <a class="nav-link" href="{{ url_for('myPage') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                공사 진행 리스트
+                                현황 한 눈에 보기
                             </a>
-                            <a class="nav-link" href="{{ url_for('createConstruction') }}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                                공사 추가하기
-                            </a>
-                            <div class="sb-sidenav-menu-heading">Interface</div>
+                            <!-- 계약 단계 -->
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Layouts
+                                data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapseLayouts">
+                                1. 계약 단계
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
+                            <div class="collapse" id="collapse1" aria-labelledby="heading1"
                                 data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    {% if lightMode == True %}
-                                    <a class="nav-link" href="{{ url_for('light') }}">Dark Mode</a>
-                                    {% else %}
-                                    <a class="nav-link" href="{{ url_for('light') }}">Light Mode</a>
-                                    {% endif %}
+                                    <a class="nav-link" href="{{ url_for('contractPhase') }}"> - 계약 개요</a>
+                                </nav>
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{{ url_for('contractInput') }}"> - 기본정보 입력하기</a>
+                                </nav>
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{{ url_for('contractTable') }}"> - 필요 서류</a>
                                 </nav>
                             </div>
+
+                            <!-- 착공 단계 -->
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                Pages
+                                data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapseLayouts">
+                                2. 착공 단계
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
-                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
+                            <div class="collapse" id="collapse2" aria-labelledby="heading2"
                                 data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link" href="#">메뉴1</a>
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{{ url_for('startPhase') }}"> - 착공 개요</a>
+                                </nav>
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{{ url_for('startPhaseInput') }}"> - 기본정보 입력하기</a>
+                                </nav>
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{{ url_for('startPhaseTable') }}"> - 필요 서류</a>
                                 </nav>
                             </div>
+
+                            <!-- 준공 단계 -->
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapseLayouts">
+                                3. 준공 단계
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapse3" aria-labelledby="heading3"
+                                data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{{ url_for('completionPhase') }}"> - 준공 개요</a>
+                                </nav>
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{{ url_for('completionInput') }}"> - 기본정보 입력하기</a>
+                                </nav>
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{{ url_for('completionTable') }}"> - 필요 서류</a>
+                                </nav>
+                            </div>
+
                         </div>
-                    </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>
-                        <img src="{{ url_for('static', filename='img/google.png') }}" width="20px" height="20px"
-                            alt="icon">
-                        Google
                     </div>
                 </nav>
         </div>
-        <div id="layoutSidenav_content">
 
+        <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
+
                     {% block main %}
+                    
+                    <!-- 제목 -->
                     <h1 class="mt-4" style="text-align:left;"><b>Admin page</b></h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">One-stop service for simplified construction</li>
-                        </ol>
+                    <ol class="breadcrumb mb-4"><li class="breadcrumb-item active">One-stop service for simplified construction</li></ol>
+                    
+                    
+                    <!-- 공지사항 -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            <b>공지사항</b>
+                        </div>
+                        <div class="card-body">
+                            
+                            <table id="datatablesSimple2">
+                                <thead>
+                                    <tr>
+                                        <th>번호</th>
+                                        <th>제목</th>
+                                        <th>작성자</th>
+                                        <th>등록일</th>
+                                        <th>조회수</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>번호</th>
+                                        <th>제목</th>
+                                        <th>작성자</th>
+                                        <th>등록일</th>
+                                        <th>조회수</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    <tr onclick="location.href='#';" style="cursor:pointer;">
+                                        <td>1</td>
+                                        <td>KOGAS One-Stop 서비스 사용법</td>
+                                        <td>관리자</td>
+                                        <td>2022-10-02</td>
+                                        <td>67</td>                                   
+                                    </tr>
+                                    <tr onclick="location.href='#';" style="cursor:pointer;">
+                                        <td>2</td>
+                                        <td>첨부파일 업로드시 주의사항</td>
+                                        <td>관리자</td>
+                                        <td>2022-10-03</td>
+                                        <td>45</td>                                   
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                
+
+
                     <a href="{{ url_for('createConstruction') }}"><button> 신규생성 </button></a>
                     <div class="card mb-4">
                         <div class="card-header">
@@ -138,6 +219,7 @@
                             <b>간이공사 진행 리스트</b>
                         </div>
                         <div class="card-body">
+                            
                             <table id="datatablesSimple">
                                 <thead>
                                     <tr>
@@ -158,7 +240,9 @@
                                     </tr>
                                 </tfoot>
                                 <tbody>
+
                                     {% for construction in constructionList %}
+
                                     <tr onclick="location.href='/go_detail/{{construction[1]}}';" style="cursor:pointer;">
                                         <td>{{construction[1]}}</td>
                                         <td>{{construction[2]}}</td>
@@ -166,12 +250,16 @@
                                         <td>{{construction[7]}}</td>
                                         <td>{{construction[3]}}</td>                                   
                                     </tr>
+
                                     {% endfor %}
+
                                 </tbody>
                             </table>
                         </div>
                     </div>
+
                     {% endblock %}
+
                 </div>
             </main>
             <footer class="py-4 bg-light mt-auto">

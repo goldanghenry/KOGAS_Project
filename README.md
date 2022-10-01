@@ -12,7 +12,8 @@
 
 ### < 현재 진행중인 작업 >
 1. 페이지 생성 및 링크 작업
-2. 업체 비밀번호 확인 로직
+2. 메뉴 구성
+3. 업체 비밀번호 확인 로직
 
 ### < 해야할 작업 >
 1. 계약 단계 입력 창 양식 및 DB쿼리 수정
@@ -35,23 +36,23 @@
 6. 관리자용 로그인&회원가입 페이지 : login.html
 
 * 업체
-1. 업체 비밀번호 확인 : pre.html
+7. 업체 비밀번호 확인 : pre.html
   : index.html -> pre/<계약번호> -> myPage.html
-2. 업체 홈(현황 한 눈에 보기) : myPage.html
+8. 업체 메인페이지(현황 한 눈에 보기) : myPage.html
 
-3. 계약 단계 개요 : contractPhase.html
+9. 계약 단계 개요 : contractPhase.html
 1) 기본 정보 입력 : contractInput.html
-2) 필요 서류 다운로드 및 업로드 : contractDownload.html
+2) 필요 서류 다운로드 및 업로드 : contractTable.html
 	: 해당 서류 페이지는 contract1 부터 시작
 
-4. 착공 단계 개요 : startPhase.html
+10. 착공 단계 개요 : startPhase.html
 1) 기본 정보 입력 : startPhaseInput.html
-2) 필요 서류 다운로드 및 업로드 : startPhaseDownload.html
+2) 필요 서류 다운로드 및 업로드 : startPhaseTable.html
 	: 해당 서류 페이지는 start1 부터 시작
 
-5. 준공 단계 개요 : completionPhase.html
+11. 준공 단계 개요 : completionPhase.html
 1) 기본 정보 입력 : completionInput.html
-2) 필요 서류 다운로드 및 업로드 : completionDownload.html
+2) 필요 서류 다운로드 및 업로드 : completionTable.html
 	: 해당 서류 페이지는 completion1 부터 시작
 
 ### < 계약 단계 입력 데이터 >
@@ -70,3 +71,12 @@
 업체 연락처 , 팩스번호
 계약업체 주소
 은행명 , 예금주명 , 계좌번호
+
+### DB table
+1. 관리자 유저 리스트
+2. 공사 리스트
+3. 계약 단계
+4. 착공 단계
+5. 준공 단계
+
+### 메모
