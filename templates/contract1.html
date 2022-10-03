@@ -909,6 +909,9 @@ rt
 	mso-font-charset:129;
 	mso-char-type:none;}
 -->
+td.textContent {
+  vertical-align: bottom;
+}
 </style>
 </head>
 
@@ -955,24 +958,24 @@ rt
  <tr height=52 style='mso-height-source:userset;height:39.0pt'>
   <td colspan=2 height=52 class=xl35021039 style='height:39.0pt'>계약건명</td>
   <td colspan=9 class=xl35221039>
-	<p id="d2" class="rowColumn" contenteditable="false" data-default="{{data_[2]}}">{{data_[2]}}</p>
+	<p contenteditable="false">{{k_data[1]}}</p>
   </td>
  </tr>
  <tr height=52 style='mso-height-source:userset;height:39.0pt'>
   <td colspan=2 height=52 class=xl35021039 style='height:39.0pt'>보증금액</td>
   <td colspan=9 class=xl35821039 width=523 style='border-right:.5pt solid black;
-  border-left:none;width:394pt'><p id="d8" class="rowColumn" contenteditable="false" data-default="{{data_[8]}}">{{data_[8]}}</p></td>
+  border-left:none;width:394pt'><p id="d8" class="rowColumn" contenteditable="false" data-default="보증금액(수정필요)">보증금액(수정필요)</p></td>
  </tr>
  <tr height=52 style='mso-height-source:userset;height:39.0pt'>
   <td colspan=2 height=52 class=xl35021039 style='height:39.0pt'>계약금액</td>
   <td colspan=9 class=xl35521039 style='border-right:.5pt solid black;
-  border-left:none'><p id="d9" class="rowColumn" contenteditable="false" data-default="{{data_[9]}}">{{data_[9]}}</p></p> (VAT별도)</td>
+  border-left:none'><p contenteditable="false" >{{k_data[6]}}</p>(VAT별도)</td>
  </tr>
  <tr height=52 style='mso-height-source:userset;height:39.0pt'>
   <td colspan=2 height=52 class=xl35021039 style='height:39.0pt'>공사기간</td>
-  <td colspan=2 class=xl33921039 width=122 style='border-left:none;width:92pt'><p id="d10" class="rowColumn" contenteditable="false" data-default="{{data_[10]}}">{{data_[10]}}</p></td>
+  <td colspan=2 class=xl33921039 width=122 style='border-left:none;width:92pt'><p id="c2" class="rowColumn" contenteditable="false" data-default="{{c_data[2]}}">{{c_data[2]}}</p></td>
   <td class=xl32321039 width=24 style='border-top:none;width:18pt'>~</td>
-  <td colspan=3 class=xl34121039><p id="d11" class="rowColumn" contenteditable="false" data-default="{{data_[11]}}">{{data_[11]}}</p></td>
+  <td colspan=3 class=xl34121039><p id="c3" class="rowColumn" contenteditable="false" data-default="{{c_data[3]}}">{{c_data[3]}}</p></td>
   <td class=xl32421039 style='border-top:none'>　</td>
   <td class=xl32421039 style='border-top:none'>　</td>
   <td class=xl32521039 style='border-top:none'>　</td>
@@ -1105,28 +1108,28 @@ rt
   <td colspan=3 class=xl33221039><span style='mso-spacerun:yes'> </span>상호 또는
   법인명칭</td>
   <td class=xl33221039>:</td>
-  <td colspan=5 class=xl34721039>공사명</td>
+  <td colspan=5 class=xl34721039>{{k_data[3]}}</td>
   <td class=xl33321039>　</td>
  </tr>
  <tr height=50 style='mso-height-source:userset;height:37.5pt'>
   <td height=50 class=xl32621039 style='height:37.5pt'>　</td>
   <td colspan=3 class=xl33221039>전화번호</td>
   <td class=xl33221039>:</td>
-  <td colspan=5 class=xl34221039>업체명</td>
+  <td colspan=5 class=xl34221039>{{c_data[7]}}</td>
   <td class=xl33321039>　</td>
  </tr>
  <tr height=40 style='mso-height-source:userset;height:30.0pt'>
   <td height=40 class=xl32621039 style='height:30.0pt'>　</td>
   <td colspan=3 class=xl33221039>주소</td>
   <td class=xl33221039>:</td>
-  <td colspan=5 class=xl34821039>업체주소</td>
+  <td colspan=5 class=xl34821039>{{c_data[9]}}</td>
   <td class=xl33321039>　</td>
  </tr>
  <tr height=61 style='mso-height-source:userset;height:45.75pt'>
   <td height=61 class=xl32621039 style='height:45.75pt'>　</td>
   <td colspan=3 class=xl33221039>대표자</td>
   <td class=xl33221039>:</td>
-  <td colspan=5 class=xl34221039>업체대표<span style='mso-spacerun:yes'> 
+  <td colspan=5 class=xl34221039>{{c_data[4]}}<span style='mso-spacerun:yes'> 
   </span>(인)</td>
   <td class=xl33321039>　</td>
  </tr>
@@ -1134,7 +1137,7 @@ rt
   <td height=31 class=xl32621039 style='height:23.25pt'>　</td>
   <td colspan=3 class=xl33221039>주민(법인)등록번호</td>
   <td class=xl33421039><span style='mso-spacerun:yes'> </span>:</td>
-  <td colspan=5 class=xl33821039>현장대리인</td>
+  <td colspan=5 class=xl33821039>{{c_data[6]}}</td>
   <td class=xl33321039>　</td>
  </tr>
  <tr height=31 style='mso-height-source:userset;height:23.25pt'>
@@ -1305,7 +1308,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 function save(){
 	$.post( "/postmethod", {
-	javascript_data: document.getElementById("d2").textContent
+	javascript_data: document.getElementById("c3").textContent
 	});
 } 
 /* 저장하기 버튼 */

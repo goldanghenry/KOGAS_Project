@@ -430,7 +430,7 @@ def postmethod():
     elif request.method == 'GET':
         jsdata = request.args.get('javascript_data')
     print(jsdata)
-    return redirect(url_for("index"))
+    return redirect(url_for("contract1"))
 
 
 
