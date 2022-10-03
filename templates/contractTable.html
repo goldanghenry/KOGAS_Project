@@ -18,7 +18,12 @@
       <tr>
         <td rowspan='7'><b>공사계약</b></td>
         <td onclick="window.open('/contract1')" style="cursor:pointer;">1. 계약이행각서</td>
-        <td>G</td>
+        <td>
+          <form action="{{url_for('fileupload', id ='contract1')}}" method = "POST" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <input type="submit">
+          </form>
+        </td>
       </tr>
       <tr>
         <td>2. 청렴이행서약서(업체)</td>
@@ -46,4 +51,5 @@
       </tr>
     </tbody>
   </table>
+  
 {% endblock %}
