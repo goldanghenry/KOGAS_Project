@@ -19,6 +19,8 @@ def index():
     cur.execute(sql)
     list = cur.fetchall()
     list = sorted(list, key=lambda x : x[0], reverse=True)
+    session['logFlag_b'] = False
+    session['contractNum'] = False
     return render_template('index.html', login=session.get('logFlag'), constructionList=list)
 
 # 2. 개요
@@ -41,7 +43,7 @@ def serviceStatus():
 def createConstruction():
     # 로그인체크
     if 'userName' in session:
-        return render_template('createConstruction.html', login=session.get('logFlag'), lightMode = session.get('light'))
+        return render_template('createConstruction.html', login=session.get('logFlag'))
     # 로그인 하지 않으면 로그인 페이지로 이동
     else:
         flash("해당 페이지는 관리자 로그인이 필요합니다.")
@@ -55,71 +57,164 @@ def login():
 # 7. 업체 로그인
 @app.route("/pre/<id>")
 def pre(id):
-    # 관리자 로그인이 되어 있으면 myPage
+    # 관리자 로그인이 되어 있으면 myPage로 이동
     if 'userName' in session:
-        return render_template('myPage.html', login=session.get('logFlag'), lightMode = session.get('light'))
-    # 로그인 하지 않으면 로그인 페이지로 이동
+        # 세션에 contractNum 추가
+        session['contractNum'] = id
+        return redirect(url_for("myPage"))
+    
+    # 관리자 로그인이 되어있지 않으면 업체 로그인 페이지로 이동
     else:
+        session['contractNum'] = id
         return render_template('pre.html')
 
 # 8. 업체 메인 페이지
 @app.route('/myPage')
 def myPage():
-    return render_template('myPage.html')
+    # 관리자 로그인 또는 업체 로그인 확인
+    if 'userName' in session or session.get('logFlag_b'):
+        # DB에서 현재 상태 출력
+        con1 = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
+        cur1 = con1.cursor()
+        sql1 = f"SELECT * FROM constructionList WHERE contractNum=?"
 
+        cur1.execute(sql1, (session.get('contractNum'),))
+        data_ = cur1.fetchone()
+        session['progress'] = data_[9]
+        return render_template('myPage.html', login=session.get('logFlag'), data=data_, progress = session.get('progress'))
+    else:
+        flash("업체 로그인이 필요합니다")
+        return render_template('pre.html')
 # 9. 계약 단계
 # 개요
 @app.route('/contractPhase')
 def contractPhase():
-    return render_template('contractPhase.html')
+    if 'userName' in session or session.get('logFlag_b'):
+        return render_template('contractPhase.html', login=session.get('logFlag'), progress = session.get('progress'))
+    else:
+        flash("업체 로그인이 필요합니다")
+        return redirect(url_for("pre"))
 # 기본 정보 입력
 @app.route('/contractInput')
 def contractInput():
-    return render_template('contractInput.html')
+    # 관리자 로그인 또는 업체 로그인 확인
+    if 'userName' in session or session.get('logFlag_b'):
+        con1 = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
+        cur1 = con1.cursor()
+        sql1 = f"SELECT * FROM constructionList WHERE contractNum=?"
+
+        cur1.execute(sql1, (session.get('contractNum'),))
+        data_ = cur1.fetchone()
+        # DB에서 현재 상태 출력
+        return render_template('contractInput.html', login=session.get('logFlag'),data=data_,progress = session.get('progress') )
+    else:
+        flash("업체 로그인이 필요합니다")
+        return redirect(url_for("pre"))
 # 필요 서류 다운 및 업로드
 @app.route('/contractTable')
 def contractTable():
-    return render_template('contractTable.html')
+    if 'userName' in session or session.get('logFlag_b'):
+        # 기본 정보를 입력했는지 체크
+        contract_data = session.get('contractNum')
+        con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
+        cur = con.cursor()
+        sql = "SELECT * FROM contractList where contractNum =?"
+        cur.execute(sql, (contract_data,))
+        c_data = cur.fetchall()
+
+        # 이미 있다면 update
+        if c_data:
+            sql = "SELECT * FROM constructionList where contractNum =?"
+            cur.execute(sql, (contract_data,))
+            k_data = cur.fetchall()
+            return render_template('contractTable.html',login=session.get('logFlag'), progress = session.get('progress'), c_data=c_data, k_data=k_data)
+        elif 'userName' in session:
+            sql = "SELECT * FROM constructionList where contractNum =?"
+            cur.execute(sql, (contract_data,))
+            k_data = cur.fetchall()
+            flash("주의!! 업체 기본정보 입력전입니다!")
+            return render_template('contractTable.html',login=session.get('logFlag'), progress = session.get('progress'), c_data=c_data, k_data=k_data)
+        else:
+            flash("계약단계의 업체 기본정보를 먼저 입력해주세요!")
+            return redirect(url_for("contractInput"))
+
+    else:
+        flash("업체 로그인이 필요합니다")
+        return redirect(url_for("pre"))
 # 계약서
 # 1 : 계약 이행 각서
-@app.route("/contract1/<id>")
-def contract1(id):
-    con1 = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
-    cur1 = con1.cursor()
-    sql1 = f"SELECT * FROM constructionList WHERE managementNum=?"
-    cur1.execute(sql1, (id,))
-    data_ = cur1.fetchone()
-    return render_template('contract1.html', login=session.get('logFlag'), data_=data_, lightMode = session.get('light'))
+@app.route("/contract1")
+def contract1():
+    contract_data = session.get('contractNum')
+    # 업체 입력 데이터 가져오기
+    con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
+    cur = con.cursor()
+    sql = "SELECT * FROM contractList WHERE contractNum=?"
+    cur.execute(sql, (contract_data,))
+    c_data = cur.fetchone()
 
+    if c_data:
+        # 가스공사 데이터 가져오기
+        sql = "SELECT * FROM constructionList WHERE contractNum=?"
+        cur.execute(sql, (contract_data,))
+        k_data = cur.fetchone()
+        return render_template('contract1.html', login=session.get('logFlag'), k_data=k_data, c_data=c_data)
+    else:
+        flash("계약단계의 업체 기본정보 입력전입니다.")
+        return redirect(url_for("contractInput"))
 
 # 10. 착공 단계
 # 개요
 @app.route('/startPhase')
 def startPhase():
-    return render_template('startPhase.html')
+    if 'userName' in session or session.get('logFlag_b'):
+        return render_template('startPhase.html',login=session.get('logFlag'), progress = session.get('progress'))
+    else:
+        flash("업체 로그인이 필요합니다")
+        return redirect(url_for("pre"))
 # 기본 정보 입력
 @app.route('/startPhaseInput')
 def startPhaseInput():
-    return render_template('startPhaseInput.html')
+    if 'userName' in session or session.get('logFlag_b'):
+        return render_template('startPhaseInput.html',login=session.get('logFlag'), progress = session.get('progress'))
+    else:
+        flash("업체 로그인이 필요합니다")
+        return redirect(url_for("pre"))
 # 필요 서류 다운 및 업로드
 @app.route('/startPhaseTable')
 def startPhaseTable():
-    return render_template('startPhaseTable.html')
+    if 'userName' in session or session.get('logFlag_b'):
+        return render_template('startPhaseTable.html',login=session.get('logFlag'), progress = session.get('progress'))
+    else:
+        flash("업체 로그인이 필요합니다")
+        return redirect(url_for("pre"))
 # 계약서
 
 # 11. 준공 단계
 # 개요
 @app.route('/completionPhase')
 def completionPhase():
-    return render_template('completionPhase.html')
+    if 'userName' in session or session.get('logFlag_b'):
+        return render_template('completionPhase.html',login=session.get('logFlag'), progress = session.get('progress'))
+    else:
+        flash("업체 로그인이 필요합니다")
+        return redirect(url_for("pre"))
 # 기본 정보 입력
 @app.route('/completionInput')
 def completionInput():
-    return render_template('completionInput.html')
+    if 'userName' in session or session.get('logFlag_b'):
+        return render_template('completionInput.html',login=session.get('logFlag'), progress = session.get('progress'))
+    else:
+        flash("업체 로그인이 필요합니다")
+        return redirect(url_for("pre"))
 # 필요 서류 다운 및 업로드
 @app.route('/completionTable')
 def completionTable():
-    return render_template('completionTable.html')
+    if 'userName' in session or session.get('logFlag_b'):
+        return render_template('completionTable.html',login=session.get('logFlag'), progress = session.get('progress'))
+    else:
+        flash("업체 로그인이 필요합니다")
+        return redirect(url_for("pre"))
 # 계약서
 
 # ------------------------------------------ function ------------------------------------------
@@ -231,6 +326,7 @@ def logout():
 def createConstruction_proc():
     # 폼에서 가져오기 
     if request.method == 'POST':
+        c0 = request.form['C0']
         c1 = request.form['C1']
         c2 = request.form['C2']
         c3 = request.form['C3']
@@ -239,24 +335,94 @@ def createConstruction_proc():
         c6 = request.form['C6']
         c7 = request.form['C7']
         c8 = request.form['C8']
-        c9 = request.form['C9']
-        c10 = request.form['C10']
-        c11 = request.form['C11']
-    
-    # DB에 회원가입 정보 삽입
+        
+    # DB에 발주기관 자료 입력
     sql = """
-        INSERT INTO constructionList(managementNum, title, company, c_contact,supervisor,s_position,progress,guaranteeAmount,contractAmount,c_start,c_end)
-        values(?,?,?,?,?,?,?,?,?,?,?)
+        INSERT INTO constructionList(contractNum, title, department, company,supervisor,s_contact,contractAmount,deposit_rate,fault_rate,progress)
+        values(?,?,?,?,?,?,?,?,?,?)
     """
     con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
     cur = con.cursor()
-    cur.execute(sql, (c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,))
+    cur.execute(sql, (c0,c1,c2,c3,c4,c5,c6,c7,c8,0,))
     con.commit()
     flash("공사 생성 완료")
     return redirect(url_for("index"))
 
-# 계약서 수정시 DB에 입력 처리
-@app.route('/postmethod', methods = ['GET', 'POST'])
+# 6. 업체 로그인 처리(계약 번호 확인)
+@app.route('/pre_proc', methods=['POST','GET'])
+def pre_proc():
+    if request.method == 'POST':
+        input_data = request.form['d1']
+    elif request.method == 'GET':
+        input_data = request.args.get('d1')
+
+    contract_data = session.get('contractNum')
+    if  contract_data == input_data:
+        session['logFlag_b'] = True
+        flash("업체 로그인 완료!")
+        return redirect(url_for("myPage"))
+    else:
+        flash("Please check your password")
+        return render_template('pre.html')
+
+# 7. 계약 단계 업체 정보 입력 처리
+@app.route('/contractInput_proc', methods=['GET', 'POST'])
+def contractInput_proc():
+    # 폼에서 가져오기
+    if request.method == 'POST':
+        d0 = request.form['d0']
+        d1 = request.form['d1']
+        d2 = request.form['d2']
+        d3 = request.form['d3']
+        d4 = request.form['d4']
+        d5 = request.form['d5']
+        d6 = request.form['d6']
+        d7 = request.form['d7']
+        d8 = request.form['d8']
+        d9 = request.form['d9']
+        d10 = request.form['d10']
+        d11 = request.form['d11']
+
+    contract_data = session.get('contractNum')
+    con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
+    cur = con.cursor()
+    sql = "SELECT contractNum FROM contractList where contractNum =?"
+    cur.execute(sql, (contract_data,))
+    result = cur.fetchall()
+    # 이미 있다면 update
+    if result:
+        sql = """
+            UPDATE contractList SET date=?,start=?,end=?,name=?,businessNum=?,corporationNum=?,c_contact=?,fax=?,addr=?,bankName=?,accountHolder=?,accountNum=? WHERE contractNum=?
+        """
+        cur.execute(sql, (d0,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,contract_data,))
+        con.commit()
+        sql = "UPDATE constructionList SET progress=? WHERE contractNum=?"
+        flash("계약 단계 정보 수정 완료\n가스 공사에 승인을 요청합니다.")
+        cur.execute(sql, (1, contract_data,))
+        con.commit()
+        return redirect(url_for("contractPhase"))
+
+    else:
+        # 없다면 insert
+        sql = """
+            INSERT INTO contractList(contractNum, date, start, end, name, businessNum,corporationNum,c_contact,fax,addr,bankName,accountHolder,accountNum )
+            values(?,?,?,?,?, ?,?,?,?,?, ?,?,?)
+        """
+        cur.execute(sql, (contract_data, d0,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,))
+        con.commit()
+
+        # pregress update
+        sql = "UPDATE constructionList SET progress=? WHERE contractNum=?"
+        # con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
+        # cur = con.cursor()
+        cur.execute(sql, (1, contract_data,))
+        con.commit()
+        flash("계약 단계 정보 입력 완료\n가스 공사에 승인을 요청합니다.")
+    return redirect(url_for("contractPhase"))
+
+
+# 7. 계약서 수정시 DB에 입력 처리
+@app.route('/postmethod', methods = ['POST','GET'])
 def postmethod():
     if request.method == 'POST':
         jsdata = request.form['javascript_data']
@@ -265,6 +431,8 @@ def postmethod():
         jsdata = request.args.get('javascript_data')
     print(jsdata)
     return redirect(url_for("index"))
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

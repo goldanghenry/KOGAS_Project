@@ -1,4 +1,54 @@
-{% extends "index.html" %}
+{% extends "myPage.html" %}
 {% block main %}
-    페이지 준비 중입니다 . . .
+<br>
+<h3><b>계약 단계에 필요한 정보를 채워주세요!</b></h3>
+<br><br>
+<table>
+    <tbody>
+        <tr>
+            <td>계약 번호</td>
+            <td>{{data[0]}}</td>
+        </tr>
+        <tr>
+            <td>공사명</td>
+            <td>{{data[1]}}</td>
+        </tr>
+        <tr>
+            <td>업체명</td>                                   
+            <td>{{data[3]}}</td>
+        </tr>
+        <tr>
+            <td>계약금액(VAT 제외)</td>                                   
+            <td>{{data[6]}}</td>
+        </tr>
+
+    </tbody>
+</table>
+<style>
+    table {
+      width: 30%;
+      border: 1px solid #444444;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #444444;
+      padding: 10px;
+    }
+  </style>
+  <br>
+<form method= "POST" id="contractInput_proc" action="{{url_for('contractInput_proc')}}" class="input-group">
+    <input type="text" id="d0" name="d0" class="input-field" placeholder="계약일" required>
+    <input type="text" id="d1" name="d1" class="input-field" placeholder="공사 시작일" required>
+    <input type="text" id="d2" name="d2" class="input-field" placeholder="공사 종료일" required>
+    <input type="text" id="d3" name="d3" class="input-field" placeholder="대표자 성명" required>
+    <input type="text" id="d4" name="d4" class="input-field" placeholder="사업자등록번호" required><div><br></div>
+    <input type="text" id="d5" name="d5" class="input-field" placeholder="법인등록번호" required>
+    <input type="text" id="d6" name="d6" class="input-field" placeholder="업체 연락처" required><br>
+    <input type="text" id="d7" name="d7" class="input-field" placeholder="팩스번호" required>
+    <input type="text" id="d8" name="d8" class="input-field" placeholder="계약업체 주소" required>
+    <input type="text" id="d9" name="d9" class="input-field" placeholder="은행명" required>
+    <input type="text" id="d10" name="d10" class="input-field" placeholder="예금주명" required>
+    <input type="text" id="d11" name="d11" class="input-field" placeholder="계좌번호" required>
+    <button type="submit" class="submit">저장하기</button>
+</form>
 {% endblock %}

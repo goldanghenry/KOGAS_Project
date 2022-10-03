@@ -1,4 +1,49 @@
-{% extends "index.html" %}
+{% extends "myPage.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
+{% endblock %}
+
 {% block main %}
-    페이지 준비 중입니다 . . .
+<h4><b>필요서류 확인 및 업로드</b></h4><br>
+<table>
+    <thead>
+      <tr>
+        <th>단계</th>
+        <th>필요서류</th>
+        <th>첨부파일</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan='7'><b>공사계약</b></td>
+        <td onclick="window.open('/contractPhase')" style="cursor:pointer;">1. 계약이행각서</td>
+        <td>G</td>
+      </tr>
+      <tr>
+        <td>2. 청렴이행서약서(업체)</td>
+        <td>F</td>
+      </tr>
+      <tr>
+        <td>3. 청렴이행서약서(교부)</td>
+        <td>G-F</td>
+      </tr>
+      <tr>
+        <td>4. 하자보수 이행각서</td>
+        <td>G-F</td>
+      </tr>
+      <tr>
+        <td>5. 계좌입금거래 약정서(신규용)</td>
+        <td>G-F</td>
+      </tr>
+      <tr>
+        <td>6. 사업자등록증 사본</td>
+        <td>G-F</td>
+      </tr>
+      <tr>
+        <td>7. 시세 및 국세완납 필증</td>
+        <td>G-F</td>
+      </tr>
+    </tbody>
+  </table>
 {% endblock %}

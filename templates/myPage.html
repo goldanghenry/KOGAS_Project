@@ -1,4 +1,97 @@
 {% extends "index.html" %}
+
+{% block MyMenu %}
+<!-- MY MENU -->
+<div class="sb-sidenav-menu-heading">MY MENU</div>
+<a class="nav-link" href="{{ url_for('myPage') }}">
+    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+    현황 한 눈에 보기
+</a>
+<!-- 계약 단계 -->
+<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+    data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapseLayouts">
+    1. 계약 단계
+    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+</a>
+<div class="collapse" id="collapse1" aria-labelledby="heading1"
+    data-bs-parent="#sidenavAccordion">
+    <nav class="sb-sidenav-menu-nested nav">
+        <a class="nav-link" href="{{ url_for('contractPhase') }}"> - 계약 개요</a>
+    </nav>
+    <nav class="sb-sidenav-menu-nested nav">
+        <a class="nav-link" href="{{ url_for('contractInput') }}"> - 기본정보 입력하기</a>
+    </nav>
+    <nav class="sb-sidenav-menu-nested nav">
+        <a class="nav-link" href="{{ url_for('contractTable') }}"> - 필요 서류</a>
+    </nav>
+</div>
+<!-- 계약단계가 승인된다면 메뉴 활성화 -->
+{% if progress > 2 or login==True %}
+<!-- 착공 단계 -->
+<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+    data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapseLayouts">
+    2. 착공 단계
+    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+</a>
+<div class="collapse" id="collapse2" aria-labelledby="heading2"
+    data-bs-parent="#sidenavAccordion">
+    <nav class="sb-sidenav-menu-nested nav">
+        <a class="nav-link" href="{{ url_for('startPhase') }}"> - 착공 개요</a>
+    </nav>
+    <nav class="sb-sidenav-menu-nested nav">
+        <a class="nav-link" href="{{ url_for('startPhaseInput') }}"> - 기본정보 입력하기</a>
+    </nav>
+    <nav class="sb-sidenav-menu-nested nav">
+        <a class="nav-link" href="{{ url_for('startPhaseTable') }}"> - 필요 서류</a>
+    </nav>
+</div>
+{% endif %}
+
+{% if progress > 4 or login == True %}
+<!-- 준공 단계 -->
+<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+    data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapseLayouts">
+    3. 준공 단계
+    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+</a>
+<div class="collapse" id="collapse3" aria-labelledby="heading3"
+    data-bs-parent="#sidenavAccordion">
+    <nav class="sb-sidenav-menu-nested nav">
+        <a class="nav-link" href="{{ url_for('completionPhase') }}"> - 준공 개요</a>
+    </nav>
+    <nav class="sb-sidenav-menu-nested nav">
+        <a class="nav-link" href="{{ url_for('completionInput') }}"> - 기본정보 입력하기</a>
+    </nav>
+    <nav class="sb-sidenav-menu-nested nav">
+        <a class="nav-link" href="{{ url_for('completionTable') }}"> - 필요 서류</a>
+    </nav>
+</div>
+{% endif %}
+{% endblock %}
+
+
 {% block main %}
-    페이지 준비 중입니다 . . .
+    <h3><b>{{data[1]}}</b> 계약 건 상세 페이지</h3><br>
+    관리번호 : {{data[0]}}<br>
+    공사명 : {{data[1]}}<br>
+    사업장 : {{data[2]}}<br>
+    업체명 : {{data[3]}}<br>
+    공사 감독 : {{data[4]}}<br>
+    감독 연락처 : {{data[5]}}<br><br>
+
+    {% if progress == 0%}
+    <h4>현재 진행 단계 : <b>계약 기본정보 입력</b> 단계입니다.</h4><h5>업체의 기본 계약 정보를 입력해주세요</h5>
+    {% elif progress == 1%}
+    <h4>현재 진행 단계 : <b>계약 승인 대기</b> 중입니다.</h4><h5>가스공사에서 계약 단계 서류 검토 중입니다.</h5>
+    {% elif progress == 2%}
+    <h4>현재 진행 단계 : <b>착공 정보 입력</b> 단계입니다.</h4><h5>업체의 기본 계약 정보를 입력해주세요.</h5>
+    {% elif progress == 3%}
+    <h4>현재 진행 단계 : <b>착공 승인 대기</b> 중입니다.</h4><h5>가스공사에서 착공 단계 서류 검토 중입니다.</h5>
+    {% elif progress == 4%}
+    <h4>현재 진행 단계 : <b>준공 정보 입력</b> 단계입니다.</h4><h5>업체의 기본 계약 정보를 입력해주세요.</h5>
+    {% elif progress == 5%}
+    <h4>현재 진행 단계 : <b>준공 승인 대기</b> 중입니다.</h4><h5>가스공사에서 착공 단계 서류 검토 중입니다.</h5>
+    {% elif progress == 6%}
+    <h4>현재 진행 단계 : <b>준공 승인 완료</b>되었습니다.</h4>
+    {% endif %}
 {% endblock %}

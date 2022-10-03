@@ -84,69 +84,8 @@
                             <a class="nav-link" href="{{ url_for('serviceStatus') }}">- 용역 현황</a>
                             <a class="nav-link" href="{{ url_for('createConstruction') }}">- 공사 추가하기</a>
 
-                            <!-- MY MENU -->
-                            <div class="sb-sidenav-menu-heading">MY MENU</div>
-                            <a class="nav-link" href="{{ url_for('myPage') }}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                현황 한 눈에 보기
-                            </a>
-                            <!-- 계약 단계 -->
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapseLayouts">
-                                1. 계약 단계
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapse1" aria-labelledby="heading1"
-                                data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{ url_for('contractPhase') }}"> - 계약 개요</a>
-                                </nav>
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{ url_for('contractInput') }}"> - 기본정보 입력하기</a>
-                                </nav>
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{ url_for('contractTable') }}"> - 필요 서류</a>
-                                </nav>
-                            </div>
-
-                            <!-- 착공 단계 -->
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapseLayouts">
-                                2. 착공 단계
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapse2" aria-labelledby="heading2"
-                                data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{ url_for('startPhase') }}"> - 착공 개요</a>
-                                </nav>
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{ url_for('startPhaseInput') }}"> - 기본정보 입력하기</a>
-                                </nav>
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{ url_for('startPhaseTable') }}"> - 필요 서류</a>
-                                </nav>
-                            </div>
-
-                            <!-- 준공 단계 -->
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapseLayouts">
-                                3. 준공 단계
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapse3" aria-labelledby="heading3"
-                                data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{ url_for('completionPhase') }}"> - 준공 개요</a>
-                                </nav>
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{ url_for('completionInput') }}"> - 기본정보 입력하기</a>
-                                </nav>
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{ url_for('completionTable') }}"> - 필요 서류</a>
-                                </nav>
-                            </div>
-
+                            {% block MyMenu %}
+                            {% endblock %}
                         </div>
                     </div>
                 </nav>
@@ -211,7 +150,6 @@
                     </div>
                 
 
-
                     <a href="{{ url_for('createConstruction') }}"><button> 신규생성 </button></a>
                     <div class="card mb-4">
                         <div class="card-header">
@@ -226,7 +164,6 @@
                                         <th>계약번호</th>
                                         <th>계약건명</th>
                                         <th>사업장</th>
-                                        <th>계약구분</th>
                                         <th>업체명</th>
                                     </tr>
                                 </thead>
@@ -235,19 +172,17 @@
                                         <th>계약번호</th>
                                         <th>계약건명</th>
                                         <th>사업장</th>
-                                        <th>계약구분</th>
                                         <th>업체명</th>
                                     </tr>
                                 </tfoot>
                                 <tbody>
 
                                     {% for construction in constructionList %}
-
-                                    <tr onclick="location.href='/go_detail/{{construction[1]}}';" style="cursor:pointer;">
+                                    <!-- 해당 공사 상세페이지로 이동 -->
+                                    <tr onclick="location.href='/pre/{{construction[0]}}';" style="cursor:pointer;">
+                                        <td>{{construction[0]}}</td>
                                         <td>{{construction[1]}}</td>
                                         <td>{{construction[2]}}</td>
-                                        <td>{{construction[6]}}</td>
-                                        <td>{{construction[7]}}</td>
                                         <td>{{construction[3]}}</td>                                   
                                     </tr>
 

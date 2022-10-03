@@ -1,4 +1,9 @@
 {% extends "index.html" %}
 {% block main %}
-    페이지 준비 중입니다 . . .
+<div>업체 로그인 비밀번호를 입력해주세요</div>
+<form method = "POST" id="pre_proc" action="{{url_for('pre_proc')}}" class="input-group">
+    <input type="password" id="d1" name="d1" class="input-field" placeholder="계약번호" required>
+    <button type="submit" class="submit">입력완료</button>
+</form>
+
 {% endblock %}
