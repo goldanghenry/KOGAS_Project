@@ -12,6 +12,7 @@
         <th>단계</th>
         <th>필요서류</th>
         <th>첨부파일</th>
+        <th>제출서류 확인하기</th>
       </tr>
     </thead>
     <tbody>
@@ -19,37 +20,102 @@
         <td rowspan='7'><b>공사계약</b></td>
         <td onclick="window.open('/contract1')" style="cursor:pointer;">1. 계약이행각서</td>
         <td>
-          <form action="{{url_for('fileupload', id ='contract1')}}" method = "POST" enctype="multipart/form-data">
-            <input type="file" name="file">
-            <input type="submit">
-          </form>
+          <input class="contract1"type="file" id="multiFiles" name="files[]" multiple="multiple"/>
+			    <button id="upload">Upload</button><p id="msg"></p>
         </td>
+        <td> 추가예정 </td>
       </tr>
       <tr>
         <td>2. 청렴이행서약서(업체)</td>
-        <td>F</td>
+        <td>
+          <input class="contract1"type="file" id="multiFiles" name="files[]" multiple="multiple"/>
+			    <button id="upload">Upload</button><p id="msg"></p>
+        </td>
+        <td> 추가예정 </td>
       </tr>
       <tr>
         <td>3. 청렴이행서약서(교부)</td>
-        <td>G-F</td>
+        <td>
+          <input class="contract1"type="file" id="multiFiles" name="files[]" multiple="multiple"/>
+			    <button id="upload">Upload</button><p id="msg"></p>
+        </td>
+        <td> 추가예정 </td>
       </tr>
       <tr>
         <td>4. 하자보수 이행각서</td>
-        <td>G-F</td>
+        <td>
+          <input class="contract1"type="file" id="multiFiles" name="files[]" multiple="multiple"/>
+			    <button id="upload">Upload</button><p id="msg"></p>
+        </td>
+        <td> 추가예정 </td>
       </tr>
       <tr>
         <td>5. 계좌입금거래 약정서(신규용)</td>
-        <td>G-F</td>
+        <td>
+          <input class="contract1"type="file" id="multiFiles" name="files[]" multiple="multiple"/>
+			    <button id="upload">Upload</button><p id="msg"></p>
+        </td>
+        <td> 추가예정 </td>
       </tr>
       <tr>
         <td>6. 사업자등록증 사본</td>
-        <td>G-F</td>
+        <td>
+          <input class="contract1"type="file" id="multiFiles" name="files[]" multiple="multiple"/>
+			    <button id="upload">Upload</button><p id="msg"></p>
+        </td>
+        <td> 추가예정 </td>
       </tr>
       <tr>
         <td>7. 시세 및 국세완납 필증</td>
-        <td>G-F</td>
+        <td>
+          <input class="contract1"type="file" id="multiFiles" name="files[]" multiple="multiple"/>
+			    <button id="upload">Upload</button><p id="msg"></p>
+        </td>
+        <td> 추가예정 </td>
       </tr>
     </tbody>
   </table>
   
+{% endblock %}
+{% block js %}
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function (e) {
+			$('#upload').on('click', function () {
+				var form_data = new FormData();
+				var ins = document.getElementById('multiFiles').files.length;
+				
+				if(ins == 0) {
+					$('#msg').html('<span style="color:red">Select at least one file</span>');
+					return;
+				}
+				
+				for (var x = 0; x < ins; x++) {
+					form_data.append("files[]", document.getElementById('multiFiles').files[x]);
+				}
+				$.ajax({
+					url: 'python-flask-files-upload', // point to server-side URL
+					dataType: 'json', // what to expect back from server
+					cache: false,
+					contentType: false,
+					processData: false,
+					data: form_data,
+					type: 'post',
+					success: function (response) { // display success response
+						$('#msg').html('');
+						$.each(response, function (key, data) {							
+							if(key !== 'message') {
+								$('#msg').append(key + ' -> ' + data + '<br/>');
+							} else {
+								$('#msg').append(data + '<br/>');
+							}
+						})
+					},
+					error: function (response) {
+						$('#msg').html(response.message); // display error response
+					}
+				});
+			});
+		});
+	</script>
 {% endblock %}

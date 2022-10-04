@@ -17,7 +17,8 @@
 12. 웹 계약서에서 두개 이상 수정 후 DB 테스트
 
 ### < 현재 진행중인 작업 >
-1. 파일 업로드 로직 File upload using Flask without refresh
+1. 파일 업로드 로직
+다시 뿌리는 것
 
 ### < 해야할 작업 >
 1. 승인 요청 페이지 -> 북마크처럼 요청 온 리스트를 만들어서 버튼 생성
@@ -102,3 +103,8 @@
 
 ### 메모
 : 가스 공사에서 작성한 내용은 업체에서 수정할 수 없도록! 확인만 가능
+<!-- redirect version
+            <form action="{{url_for('fileupload', id ='contract1')}}" method = "POST" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <input type="submit">
+          </form> -->

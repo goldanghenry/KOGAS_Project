@@ -1,4 +1,4 @@
-from flask import Flask, url_for, session, render_template, request, redirect, flash
+from flask import Flask, url_for, session, render_template, request, redirect, flash, jsonify
 import sqlite3
 from os import path
 import os
@@ -9,6 +9,11 @@ ROOT = path.dirname(path.realpath(__file__))
 app = Flask(__name__)
 app.secret_key = 'tjdgus12'
 management_KEY = 'KOGAS_333K'   # 관리자 암호키
+
+UPLOAD_FOLDER = 'static/contract_dir'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 # ------------------------------------------ Page route ------------------------------------------
 # 1. 메인페이지
@@ -100,14 +105,20 @@ def contractPhase():
 def contractInput():
     # 관리자 로그인 또는 업체 로그인 확인
     if 'userName' in session or session.get('logFlag_b'):
-        con1 = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
-        cur1 = con1.cursor()
+        contractNum = session.get('contractNum')
+        con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
+        cur = con.cursor()
         sql1 = f"SELECT * FROM constructionList WHERE contractNum=?"
+        cur.execute(sql1, (contractNum,))
+        k_data= cur.fetchone()
 
-        cur1.execute(sql1, (session.get('contractNum'),))
-        data_ = cur1.fetchone()
+        sql = "SELECT * FROM contractList WHERE contractNum=?"
+        cur.execute(sql, (contractNum,))
+        c_data = cur.fetchone()
         # DB에서 현재 상태 출력
-        return render_template('contractInput.html', login=session.get('logFlag'),data=data_,progress = session.get('progress') )
+        if c_data and k_data[9] >2:
+            flash('계약 정보를 수정하면, 가스공사에 변경 승인을 요청합니다.')
+        return render_template('contractInput.html', login=session.get('logFlag'), c_data=c_data, k_data=k_data, progress = session.get('progress') )
     else:
         flash("업체 로그인이 필요합니다")
         return redirect(url_for("pre"))
@@ -371,7 +382,6 @@ def pre_proc():
 def contractInput_proc():
     # 폼에서 가져오기
     if request.method == 'POST':
-        d0 = request.form['d0']
         d1 = request.form['d1']
         d2 = request.form['d2']
         d3 = request.form['d3']
@@ -383,6 +393,7 @@ def contractInput_proc():
         d9 = request.form['d9']
         d10 = request.form['d10']
         d11 = request.form['d11']
+        d12 = request.form['d12']
 
     contract_data = session.get('contractNum')
     con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
@@ -395,7 +406,7 @@ def contractInput_proc():
         sql = """
             UPDATE contractList SET date=?,start=?,end=?,name=?,businessNum=?,corporationNum=?,c_contact=?,fax=?,addr=?,bankName=?,accountHolder=?,accountNum=? WHERE contractNum=?
         """
-        cur.execute(sql, (d0,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,contract_data,))
+        cur.execute(sql, (d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,contract_data,))
         con.commit()
         sql = "UPDATE constructionList SET progress=? WHERE contractNum=?"
         flash("계약 단계 정보 수정 완료\n가스 공사에 승인을 요청합니다.")
@@ -409,7 +420,7 @@ def contractInput_proc():
             INSERT INTO contractList(contractNum, date, start, end, name, businessNum,corporationNum,c_contact,fax,addr,bankName,accountHolder,accountNum )
             values(?,?,?,?,?, ?,?,?,?,?, ?,?,?)
         """
-        cur.execute(sql, (contract_data, d0,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,))
+        cur.execute(sql, (contract_data,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,))
         con.commit()
 
         # pregress update
@@ -437,17 +448,57 @@ def postmethod():
 
 # 파일 업로드 처리
 # 파일 업로드
-@app.route('/fileupload/<id>', methods=['POST'])
-def fileupload(id):
-    file = request.files['file']
-    contract_data = session.get('contractNum')
-    image_path = f'static/contract_dir/{contract_data}'
-    ext = file.filename.split('.')[1]
-    file.filename = id+'.'+ext
-    os.makedirs(image_path, exist_ok=True)
-    file.save(os.path.join(image_path, file.filename))
-    return '204'
+# @app.route('/fileupload/<id>', methods=['POST'])
+# def fileupload(id):
+#     file = request.files['file']
+#     contract_data = session.get('contractNum')
+#     image_path = f'static/contract_dir/{contract_data}'
+#     ext = file.filename.split('.')[1]
+#     file.filename = id+'.'+ext
+#     os.makedirs(image_path, exist_ok=True)
+#     file.save(os.path.join(image_path, file.filename))
+#     return redirect(url_for("contractTable"))
 
+def allowed_file(filename):
+	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+	
+@app.route('/')
+def upload_form():
+	return render_template('file-upload.html')
+
+@app.route('/python-flask-files-upload', methods=['POST'])
+def upload_file():
+	# check if the post request has the file part
+	if 'files[]' not in request.files:
+		resp = jsonify({'message' : 'No file part in the request'})
+		resp.status_code = 400
+		return resp
+	
+	files = request.files.getlist('files[]')
+	errors = {}
+	success = False
+    
+	for file in files:
+		if file and allowed_file(file.filename):
+			filename = secure_filename(file.filename)
+			file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+			success = True
+		else:
+			errors['message'] = 'File type is not allowed'
+	
+	if success and errors:
+		errors['message'] = 'File(s) successfully uploaded'
+		resp = jsonify(errors)
+		resp.status_code = 206
+		return resp
+	if success:
+		resp = jsonify({'message' : 'Files successfully uploaded'})
+		resp.status_code = 201
+		return resp
+	else:
+		resp = jsonify(errors)
+		resp.status_code = 400
+		return resp
 
 if __name__ == '__main__':
     app.run(debug=True)
