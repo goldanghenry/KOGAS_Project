@@ -1,6 +1,8 @@
 from flask import Flask, url_for, session, render_template, request, redirect, flash
 import sqlite3
 from os import path
+import os
+from werkzeug.utils import secure_filename
 
 ROOT = path.dirname(path.realpath(__file__))
 
@@ -77,7 +79,6 @@ def myPage():
         con1 = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
         cur1 = con1.cursor()
         sql1 = f"SELECT * FROM constructionList WHERE contractNum=?"
-
         cur1.execute(sql1, (session.get('contractNum'),))
         data_ = cur1.fetchone()
         session['progress'] = data_[9]
@@ -113,9 +114,9 @@ def contractInput():
 # 필요 서류 다운 및 업로드
 @app.route('/contractTable')
 def contractTable():
+    contract_data = session.get('contractNum')
     if 'userName' in session or session.get('logFlag_b'):
         # 기본 정보를 입력했는지 체크
-        contract_data = session.get('contractNum')
         con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
         cur = con.cursor()
         sql = "SELECT * FROM contractList where contractNum =?"
@@ -140,7 +141,7 @@ def contractTable():
 
     else:
         flash("업체 로그인이 필요합니다")
-        return redirect(url_for("pre"))
+        return redirect(url_for(f"pre/{contract_data}"))
 # 계약서
 # 1 : 계약 이행 각서
 @app.route("/contract1")
@@ -425,13 +426,27 @@ def contractInput_proc():
 @app.route('/postmethod', methods = ['POST','GET'])
 def postmethod():
     if request.method == 'POST':
-        jsdata = request.form['javascript_data']
-
+        c2 = request.form['javascript_data']
+        c3 = request.form['javascript_data1']
+        print('Post',c2,c3)
     elif request.method == 'GET':
-        jsdata = request.args.get('javascript_data')
-    print(jsdata)
+        c2 = request.args.get('javascript_data')
+        c3 = request.args.get('javascript_data1')
+        print('get',c2,c3)
     return redirect(url_for("contract1"))
 
+# 파일 업로드 처리
+# 파일 업로드
+@app.route('/fileupload/<id>', methods=['POST'])
+def fileupload(id):
+    file = request.files['file']
+    contract_data = session.get('contractNum')
+    image_path = f'static/contract_dir/{contract_data}'
+    ext = file.filename.split('.')[1]
+    file.filename = id+'.'+ext
+    os.makedirs(image_path, exist_ok=True)
+    file.save(os.path.join(image_path, file.filename))
+    return '204'
 
 
 if __name__ == '__main__':
