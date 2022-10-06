@@ -20,102 +20,63 @@
         <td rowspan='7'><b>공사계약</b></td>
         <td onclick="window.open('/contract1')" style="cursor:pointer;">1. 계약이행각서</td>
         <td>
-          <input class="contract1"type="file" id="multiFiles" name="files[]" multiple="multiple"/>
-			    <button id="upload">Upload</button><p id="msg"></p>
+          <input type="file" id="multiFiles1" name="files[]" multiple="multiple"/>
+			    <button id="upload1">Upload1</button><p id="msg1"></p>
         </td>
-        <td> 추가예정 </td>
+        <td> <img src="static/contract_dir/{{c_data[0][0]}}/{{c_data[0][13]}}" alt="" onclick="window.open(this.src, 'width=100,height=100');" style="cursor:pointer; width: 100px"></td>
       </tr>
       <tr>
         <td>2. 청렴이행서약서(업체)</td>
         <td>
-          <input class="contract1"type="file" id="multiFiles" name="files[]" multiple="multiple"/>
-			    <button id="upload">Upload</button><p id="msg"></p>
+          <input type="file" id="multiFiles2" name="files[]" multiple="multiple"/>
+			    <button id="upload2">Upload2</button><p id="msg2"></p>
         </td>
-        <td> 추가예정 </td>
+        <td><img src="static/contract_dir/{{c_data[0][0]}}/{{c_data[0][14]}}" alt="" onclick="window.open(this.src, 'width=100,height=100');" style="cursor:pointer; width: 100px"></td>
       </tr>
       <tr>
         <td>3. 청렴이행서약서(교부)</td>
         <td>
-          <input class="contract1"type="file" id="multiFiles" name="files[]" multiple="multiple"/>
-			    <button id="upload">Upload</button><p id="msg"></p>
+          <input type="file" id="multiFiles3" name="files[]" multiple="multiple"/>
+			    <button id="upload3">Upload3</button><p id="msg3"></p>
         </td>
-        <td> 추가예정 </td>
+        <td><img src="static/contract_dir/{{c_data[0][0]}}/{{c_data[0][15]}}" alt="" onclick="window.open(this.src, 'width=100,height=100');" style="cursor:pointer; width: 100px"></td>
       </tr>
       <tr>
         <td>4. 하자보수 이행각서</td>
         <td>
-          <input class="contract1"type="file" id="multiFiles" name="files[]" multiple="multiple"/>
-			    <button id="upload">Upload</button><p id="msg"></p>
+          <input type="file" id="multiFiles4" name="files[]" multiple="multiple"/>
+			    <button id="upload4">Upload4</button><p id="msg4"></p>
         </td>
-        <td> 추가예정 </td>
+        <td><img src="static/contract_dir/{{c_data[0][0]}}/{{c_data[0][16]}}" alt="" onclick="window.open(this.src, 'width=100,height=100');" style="cursor:pointer; width: 100px"></td>
       </tr>
       <tr>
         <td>5. 계좌입금거래 약정서(신규용)</td>
         <td>
-          <input class="contract1"type="file" id="multiFiles" name="files[]" multiple="multiple"/>
-			    <button id="upload">Upload</button><p id="msg"></p>
+          <input type="file" id="multiFiles5" name="files[]" multiple="multiple"/>
+			    <button id="upload5">Upload5</button><p id="msg5"></p>
         </td>
-        <td> 추가예정 </td>
+        <td><img src="static/contract_dir/{{c_data[0][0]}}/{{c_data[0][17]}}" alt="" onclick="window.open(this.src, 'width=100,height=100');" style="cursor:pointer; width: 100px"></td>
       </tr>
       <tr>
         <td>6. 사업자등록증 사본</td>
         <td>
-          <input class="contract1"type="file" id="multiFiles" name="files[]" multiple="multiple"/>
-			    <button id="upload">Upload</button><p id="msg"></p>
+          <input type="file" id="multiFiles6" name="files[]" multiple="multiple"/>
+			    <button id="upload6">Upload6</button><p id="msg6"></p>
         </td>
-        <td> 추가예정 </td>
+        <td><img src="static/contract_dir/{{c_data[0][0]}}/{{c_data[0][18]}}" alt="" onclick="window.open(this.src, 'width=100,height=100');" style="cursor:pointer; width: 100px"></td>
       </tr>
       <tr>
         <td>7. 시세 및 국세완납 필증</td>
         <td>
-          <input class="contract1"type="file" id="multiFiles" name="files[]" multiple="multiple"/>
-			    <button id="upload">Upload</button><p id="msg"></p>
+          <input type="file" id="multiFiles7" name="files[]" multiple="multiple"/>
+			    <button id="upload7">Upload7</button><p id="msg7"></p>
         </td>
-        <td> 추가예정 </td>
+        <td><img src="static/contract_dir/{{c_data[0][0]}}/{{c_data[0][19]}}" alt="" onclick="window.open(this.src, 'width=100,height=100');" style="cursor:pointer; width: 100px"></td>
       </tr>
     </tbody>
   </table>
   
 {% endblock %}
 {% block js %}
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function (e) {
-			$('#upload').on('click', function () {
-				var form_data = new FormData();
-				var ins = document.getElementById('multiFiles').files.length;
-				
-				if(ins == 0) {
-					$('#msg').html('<span style="color:red">Select at least one file</span>');
-					return;
-				}
-				
-				for (var x = 0; x < ins; x++) {
-					form_data.append("files[]", document.getElementById('multiFiles').files[x]);
-				}
-				$.ajax({
-					url: 'python-flask-files-upload', // point to server-side URL
-					dataType: 'json', // what to expect back from server
-					cache: false,
-					contentType: false,
-					processData: false,
-					data: form_data,
-					type: 'post',
-					success: function (response) { // display success response
-						$('#msg').html('');
-						$.each(response, function (key, data) {							
-							if(key !== 'message') {
-								$('#msg').append(key + ' -> ' + data + '<br/>');
-							} else {
-								$('#msg').append(data + '<br/>');
-							}
-						})
-					},
-					error: function (response) {
-						$('#msg').html(response.message); // display error response
-					}
-				});
-			});
-		});
-	</script>
+
 {% endblock %}

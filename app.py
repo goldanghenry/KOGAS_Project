@@ -446,19 +446,6 @@ def postmethod():
         print('get',c2,c3)
     return redirect(url_for("contract1"))
 
-# 파일 업로드 처리
-# 파일 업로드
-# @app.route('/fileupload/<id>', methods=['POST'])
-# def fileupload(id):
-#     file = request.files['file']
-#     contract_data = session.get('contractNum')
-#     image_path = f'static/contract_dir/{contract_data}'
-#     ext = file.filename.split('.')[1]
-#     file.filename = id+'.'+ext
-#     os.makedirs(image_path, exist_ok=True)
-#     file.save(os.path.join(image_path, file.filename))
-#     return redirect(url_for("contractTable"))
-
 def allowed_file(filename):
 	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 	
@@ -468,37 +455,46 @@ def upload_form():
 
 @app.route('/python-flask-files-upload', methods=['POST'])
 def upload_file():
-	# check if the post request has the file part
-	if 'files[]' not in request.files:
-		resp = jsonify({'message' : 'No file part in the request'})
-		resp.status_code = 400
-		return resp
-	
-	files = request.files.getlist('files[]')
-	errors = {}
-	success = False
-    
-	for file in files:
-		if file and allowed_file(file.filename):
-			filename = secure_filename(file.filename)
-			file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-			success = True
-		else:
-			errors['message'] = 'File type is not allowed'
-	
-	if success and errors:
-		errors['message'] = 'File(s) successfully uploaded'
-		resp = jsonify(errors)
-		resp.status_code = 206
-		return resp
-	if success:
-		resp = jsonify({'message' : 'Files successfully uploaded'})
-		resp.status_code = 201
-		return resp
-	else:
-		resp = jsonify(errors)
-		resp.status_code = 400
-		return resp
+    if 'files[]' not in request.files:
+        resp = jsonify({'message' : 'No file part in the request'})
+        resp.status_code = 400
+        return resp
+    contract_data = session.get('contractNum')
+    files = request.files.getlist('files[]')
+    f_name = request.form['filename']
+    print(f_name)
+    errors = {}
+    success = False
+
+    for file in files:
+        if file and allowed_file(file.filename):
+            image_path = f'static/contract_dir/{contract_data}'
+            os.makedirs(image_path, exist_ok=True)
+            file.save(os.path.join(image_path, file.filename))
+
+            # DB에 file path 저장
+            con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
+            cur = con.cursor()
+            sql = f"UPDATE contractList SET {f_name}=? WHERE contractNum=?"
+            cur.execute(sql, (file.filename, contract_data,))
+            con.commit()
+            success = True
+        else:
+            errors['message'] = 'File type is not allowed'
+
+    if success and errors:
+        errors['message'] = 'File(s) successfully uploaded'
+        resp = jsonify(errors)
+        resp.status_code = 206
+        return resp
+    if success:
+        resp = jsonify({'message' : '파일 업로드 성공'})
+        resp.status_code = 201
+        return resp
+    else:
+        resp = jsonify(errors)
+        resp.status_code = 400
+        return resp
 
 if __name__ == '__main__':
     app.run(debug=True)
