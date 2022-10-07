@@ -11,15 +11,15 @@ app = Flask(__name__)
 app.secret_key = 'tjdgus12'
 management_KEY = 'KOGAS_333K'   # 관리자 암호키
 UPLOAD_FOLDER = 'static/contract_dir'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-app.config["MAIL_SERVER"] = "smtp.gmail.com"
-app.config["MAIL_PORT"] = 465
-app.config["MAIL_USERNAME"] = "#@gmail.com" # 보안상 테스트 후 가림
-app.config["MAIL_PASSWORD"] = ""
-app.config["MAIL_USE_TLS"] = False
-app.config["MAIL_USE_SSL"] = True
-mail = Mail(app)
+# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+# app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+# app.config["MAIL_SERVER"] = "smtp.gmail.com"
+# app.config["MAIL_PORT"] = 465
+# app.config["MAIL_USERNAME"] = "#@gmail.com" # 보안상 테스트 후 가림
+# app.config["MAIL_PASSWORD"] = ""
+# app.config["MAIL_USE_TLS"] = False
+# app.config["MAIL_USE_SSL"] = True
+# mail = Mail(app)
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
