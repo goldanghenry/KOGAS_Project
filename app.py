@@ -40,10 +40,60 @@ def summary():
 def notice():
     return render_template('notice.html')
 
-# 4. 용역현황
+# 4. 관리자 승인 페이지
 @app.route('/serviceStatus')
 def serviceStatus():
-    return render_template('serviceStatus.html')
+    # 로그인체크
+    if 'userName' in session:
+        # DB에서 k_data 가져오기
+        con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
+        cur = con.cursor()
+
+        # 계약 승인 요청
+        sql = f"SELECT * FROM constructionList WHERE progress=?"
+        cur.execute(sql, (1,))
+        k1_data = cur.fetchall()
+
+        # 착공 승인 요청
+        sql = f"SELECT * FROM constructionList WHERE progress=?"
+        cur.execute(sql, (4,))
+        k4_data = cur.fetchall()
+
+        # 준공 승인 요청
+        sql = f"SELECT * FROM constructionList WHERE progress=?"
+        cur.execute(sql, (7,))
+        k7_data = cur.fetchall()
+
+        return render_template('serviceStatus.html', login=session.get('logFlag'), k1_data=k1_data,k4_data=k4_data,k7_data=k7_data )
+    # 로그인 하지 않으면 로그인 페이지로 이동
+    else:
+        flash("해당 페이지는 관리자 로그인이 필요합니다.")
+        return redirect(url_for("login"))
+
+# 관리자 승인 페이지 -> 승인 버튼 처리
+@app.route('/approval_proc/<id>')
+def approval_proc(id):
+    con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
+    cur = con.cursor()
+    sql = "UPDATE constructionList SET progress=? WHERE contractNum=?"
+    flash(f"계약 승인 완료!")
+    cur.execute(sql, (2, id,))
+    con.commit()
+    return redirect(url_for("serviceStatus"))
+
+# 7. 업체 로그인
+@app.route("/goto/<id>")
+def goto(id):
+    # 관리자 로그인이 되어 있으면 myPage로 이동
+    if 'userName' in session:
+        # 세션에 contractNum 추가
+        session['contractNum'] = id
+        return redirect(url_for("contractTable") )
+    
+    # 관리자 로그인이 되어있지 않으면 업체 로그인 페이지로 이동
+    else:
+        session['contractNum'] = id
+        return render_template('pre.html')
 
 # 5. 공사생성
 @app.route('/createConstruction')
@@ -139,13 +189,14 @@ def contractTable():
             sql = "SELECT * FROM constructionList where contractNum =?"
             cur.execute(sql, (contract_data,))
             k_data = cur.fetchall()
+            session['progress'] = k_data[0][9]
             return render_template('contractTable.html',login=session.get('logFlag'), progress = session.get('progress'), c_data=c_data, k_data=k_data)
         elif 'userName' in session:
             sql = "SELECT * FROM constructionList where contractNum =?"
             cur.execute(sql, (contract_data,))
             k_data = cur.fetchall()
             flash("주의!! 업체 기본정보 입력전입니다!")
-            return render_template('contractTable.html',login=session.get('logFlag'), progress = session.get('progress'), c_data=c_data, k_data=k_data)
+            return render_template('contractTable.html',login=session.get('logFlag'), progress = session.get('progress'), c_data=c_data, k_data=k_data, data=k_data)
         else:
             flash("계약단계의 업체 기본정보를 먼저 입력해주세요!")
             return redirect(url_for("contractInput"))

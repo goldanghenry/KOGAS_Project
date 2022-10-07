@@ -1,4 +1,50 @@
 {% extends "index.html" %}
 {% block main %}
-    페이지 준비 중입니다 . . .
+<h1 class="mt-4" style="text-align:left;"><b>승인 요청 관리</b></h1>
+<ol class="breadcrumb mb-4"><li class="breadcrumb-item active">승인 처리후 업체에서 관련 서류 출력이 가능합니다.</li></ol>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-table me-1"></i>
+        <b>계약 단계 승인 요청</b>
+    </div>
+    <div class="card-body">
+        <table id="datatablesSimple3">
+            <thead>
+                <tr>
+                    <th>계약번호</th>
+                    <th>계약건명</th>
+                    <th>사업장</th>
+                    <th>업체명</th>
+                    <th>승인처리</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>계약번호</th>
+                    <th>계약건명</th>
+                    <th>사업장</th>
+                    <th>업체명</th>
+                    <th>승인처리</th>
+                </tr>
+            </tfoot>
+            <tbody>
+                {% for k1 in k1_data %}
+                <!-- 해당 공사 상세페이지로 이동 -->
+                <tr>
+                    <td onclick="location.href='/goto/{{k1[0]}}';" style="cursor:pointer;">{{k1[0]}}</td>
+                    <td onclick="location.href='/goto/{{k1[0]}}';" style="cursor:pointer;">{{k1[1]}}</td>
+                    <td onclick="location.href='/goto/{{k1[0]}}';" style="cursor:pointer;">{{k1[2]}}</td>
+                    <td onclick="location.href='/goto/{{k1[0]}}';" style="cursor:pointer;">{{k1[3]}}</td>                                   
+                    <td>
+                        <button onclick="location.href='/approval_proc/{{k1[0]}}';" style="cursor:pointer;">승인</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
 {% endblock %}

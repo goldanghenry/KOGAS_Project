@@ -21,12 +21,15 @@
     <nav class="sb-sidenav-menu-nested nav">
         <a class="nav-link" href="{{ url_for('contractInput') }}"> - 기본정보 입력하기</a>
     </nav>
+    <!-- 계약 승인 후 활성화 -->
+    {% if progress >= 2 or login==True %}
     <nav class="sb-sidenav-menu-nested nav">
         <a class="nav-link" href="{{ url_for('contractTable') }}"> - 필요 서류</a>
     </nav>
+    {% endif %}
 </div>
-<!-- 계약단계가 승인된다면 메뉴 활성화 -->
-{% if progress > 2 or login==True %}
+<!-- 계약단계의 서류를 업로드 완료 후 메뉴 활성화 -->
+{% if progress >= 3 or login==True %}
 <!-- 착공 단계 -->
 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
     data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapseLayouts">
@@ -41,13 +44,16 @@
     <nav class="sb-sidenav-menu-nested nav">
         <a class="nav-link" href="{{ url_for('startPhaseInput') }}"> - 기본정보 입력하기</a>
     </nav>
+    <!-- 착공 승인 후 활성화 -->
+    {% if progress >= 5 or login==True %}
     <nav class="sb-sidenav-menu-nested nav">
         <a class="nav-link" href="{{ url_for('startPhaseTable') }}"> - 필요 서류</a>
     </nav>
+    {% endif %}
 </div>
 {% endif %}
 
-{% if progress > 4 or login == True %}
+{% if progress >= 6 or login == True %}
 <!-- 준공 단계 -->
 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
     data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapseLayouts">
@@ -62,9 +68,12 @@
     <nav class="sb-sidenav-menu-nested nav">
         <a class="nav-link" href="{{ url_for('completionInput') }}"> - 기본정보 입력하기</a>
     </nav>
+    <!-- 준공 승인 후 활성화 -->
+    {% if progress >= 8 or login==True %}
     <nav class="sb-sidenav-menu-nested nav">
         <a class="nav-link" href="{{ url_for('completionTable') }}"> - 필요 서류</a>
     </nav>
+    {% endif %}
 </div>
 {% endif %}
 {% endblock %}
@@ -82,22 +91,25 @@
     {% if progress == 0%}
     <h4>현재 진행 단계 : <b>계약 기본정보 입력</b> 단계입니다.</h4><h5>업체의 기본 계약 정보를 입력해주세요</h5>
     {% elif progress == 1%}
-    <h4>현재 진행 단계 : <b>계약 서류 대기</b> 중입니다.</h4><h5>계약 단계 필요 서류를 출력한 후 직인을 찍고 업로드 해주세요.</h5>
-    {% elif progress == 2%}
     <h4>현재 진행 단계 : <b>계약 승인 대기</b> 중입니다.</h4><h5>가스공사에서 계약 단계 서류 검토 중입니다.</h5>
+    {% elif progress == 2%}
+    <h4>현재 진행 단계 : <b>계약 서류 업로드</b> 단계입니다.</h4><h5>계약 단계 필요 서류를 출력 후 직인을 찍고 업로드 해주세요.</h5>
+    
     {% elif progress == 3%}
     <h4>현재 진행 단계 : <b>착공 정보 입력</b> 단계입니다.</h4><h5>업체의 착공 단계 정보를 입력해주세요.</h5>
     {% elif progress == 4%}
-    <h4>현재 진행 단계 : <b>계약 서류 대기</b> 중입니다.</h4><h5>착공 단계 필요 서류를 출력한 후 직인을 찍고 업로드 해주세요.</h5>    
+    <h4>현재 진행 단계 : <b>착공 승인 대기</b> 중입니다.</h4><h5>가스공사에서 착공 단계 서류 검토 중입니다.</h5>    
     {% elif progress == 5%}
-    <h4>현재 진행 단계 : <b>착공 승인 대기</b> 중입니다.</h4><h5>가스공사에서 착공 단계 서류 검토 중입니다.</h5>
+    <h4>현재 진행 단계 : <b>착공 서류 업로드</b> 단계입니다.</h4><h5>착공 단계 필요 서류를 출력 후 직인을 찍고 업로드 해주세요.</h5>
+    
     {% elif progress == 6%}
     <h4>현재 진행 단계 : <b>준공 정보 입력</b> 단계입니다.</h4><h5>업체의 준공 단계 정보를 입력해주세요.</h5>
     {% elif progress == 7%}
-    <h4>현재 진행 단계 : <b>계약 서류 대기</b> 중입니다.</h4><h5>준공 단계 필요 서류를 출력한 후 직인을 찍고 업로드 해주세요.</h5>    
-    {% elif progress == 5%}
-    <h4>현재 진행 단계 : <b>준공 승인 대기</b> 중입니다.</h4><h5>가스공사에서 준공 단계 서류 검토 중입니다.</h5>
-    {% elif progress == 6%}
+    <h4>현재 진행 단계 : <b>준공 승인 대기</b> 중입니다.</h4><h5>가스공사에서 준공 단계 서류 검토 중입니다.</h5>    
+    {% elif progress == 8%}
+    <h4>현재 진행 단계 : <b>준공 승인 대기</b> 중입니다.</h4><h5>준공 단계 필요 서류를 출력 후 직인을 찍고 업로드 해주세요.</h5>
+    
+    {% elif progress == 9%}
     <h4>현재 진행 단계 : <b>준공 승인 완료</b>되었습니다.</h4>
     {% endif %}
 {% endblock %}

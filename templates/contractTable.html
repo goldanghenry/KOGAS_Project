@@ -6,6 +6,9 @@
 
 {% block main %}
 <h4><b>필요서류 확인 및 업로드</b></h4><br>
+{% if login == True %}
+<button onclick="location.href='/approval_proc/{{k_data[0][0]}}';" style="cursor:pointer;">승인</button>
+{% endif %}
 <table>
     <thead>
       <tr>

@@ -12,14 +12,7 @@
     <link rel="shortcut icon" href="/static/favicon.ico">
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NVSRNY03C8"></script>
-    <!-- <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-NVSRNY03C8');
-    </script> -->
     {% block head %}
     {% endblock %}
 </head>
@@ -81,10 +74,11 @@
                             <!-- HOME -->
                             <div class="sb-sidenav-menu-heading">Home</div>
                             <a class="nav-link" href="{{ url_for('index') }}">- 공사 진행 현황</a>
-                            <a class="nav-link" href="{{ url_for('summary') }}">- 개요</a>
-                            <a class="nav-link" href="{{ url_for('serviceStatus') }}">- 용역 현황</a>
+                            {% if login == True %}
+                            <a class="nav-link" href="{{ url_for('serviceStatus') }}">- 승인 관리</a>
                             <a class="nav-link" href="{{ url_for('createConstruction') }}">- 공사 추가하기</a>
-
+                            {% endif %}
+                            <a class="nav-link" href="{{ url_for('summary') }}">- 개요</a>
                             {% block MyMenu %}
                             {% endblock %}
                         </div>
@@ -97,11 +91,9 @@
                 <div class="container-fluid px-4">
 
                     {% block main %}
-                    
                     <!-- 제목 -->
                     <h1 class="mt-4" style="text-align:left;"><b>Admin page</b></h1>
                     <ol class="breadcrumb mb-4"><li class="breadcrumb-item active">One-stop service for simplified construction</li></ol>
-                    
                     
                     <!-- 공지사항 -->
                     <div class="card mb-4">
@@ -149,16 +141,15 @@
                             </table>
                         </div>
                     </div>
-                
-
+                    {% if login == True %}
                     <a href="{{ url_for('createConstruction') }}"><button> 신규생성 </button></a>
+                    {% endif %}
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
                             <b>간이공사 진행 리스트</b>
                         </div>
                         <div class="card-body">
-                            
                             <table id="datatablesSimple">
                                 <thead>
                                     <tr>
@@ -177,7 +168,6 @@
                                     </tr>
                                 </tfoot>
                                 <tbody>
-
                                     {% for construction in constructionList %}
                                     <!-- 해당 공사 상세페이지로 이동 -->
                                     <tr onclick="location.href='/pre/{{construction[0]}}';" style="cursor:pointer;">
@@ -186,14 +176,11 @@
                                         <td>{{construction[2]}}</td>
                                         <td>{{construction[3]}}</td>                                   
                                     </tr>
-
                                     {% endfor %}
-
                                 </tbody>
                             </table>
                         </div>
                     </div>
-
                     {% endblock %}
 
                 </div>
