@@ -1,25 +1,32 @@
 from flask import Flask, url_for, session, render_template, request, redirect, flash, jsonify
 from flask_mail import Mail, Message
+from dotenv import load_dotenv
 import sqlite3
 from os import path
 import os
 from werkzeug.utils import secure_filename
+load_dotenv()
 
 ROOT = path.dirname(path.realpath(__file__))
-
 app = Flask(__name__)
-app.secret_key = 'tjdgus12'
-management_KEY = 'KOGAS_333K'   # 관리자 암호키
+GOOGLE_GMAIL_ADDR = os.getenv("GOOGLE_GMAIL_ADDR")
+GOOGLE_GMAIL_PW =os.getenv("GOOGLE_GMAIL_PW")
+APP_SECRET_KEY = os.getenv("APP_SECRET_KEY")
+MANAGEMENT_KEY = os.getenv("MANAGEMENT_KEY")
+
+app.secret_key = APP_SECRET_KEY
+management_KEY = MANAGEMENT_KEY
+
 UPLOAD_FOLDER = 'static/contract_dir'
-# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-# app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-# app.config["MAIL_SERVER"] = "smtp.gmail.com"
-# app.config["MAIL_PORT"] = 465
-# app.config["MAIL_USERNAME"] = "#@gmail.com" # 보안상 테스트 후 가림
-# app.config["MAIL_PASSWORD"] = ""
-# app.config["MAIL_USE_TLS"] = False
-# app.config["MAIL_USE_SSL"] = True
-# mail = Mail(app)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_PORT"] = 465
+app.config["MAIL_USERNAME"] = GOOGLE_GMAIL_ADDR
+app.config["MAIL_PASSWORD"] = GOOGLE_GMAIL_PW
+app.config["MAIL_USE_TLS"] = False
+app.config["MAIL_USE_SSL"] = True
+mail = Mail(app)
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
@@ -592,13 +599,13 @@ def contractInput_proc():
         k_data = cur.fetchone()
 
         # 관리자 이 메일로 승인 요청 메일 전송
-        # msg = Message(f'{k_data[1]} 공사건 승인 요청', sender='#@gmail.com', recipients=[k_data[11]])
-        # msg.body = f"""
-        # {k_data[1]} 공사건의 계약 단계에 대한 업체 정보가 수정되었습니다.
-        # 서류를 검토 후 승인 처리해주세요.
-        # 링크 : https://kogasonestop.pythonanywhere.com/serviceStatus
-        # """
-        # mail.send(msg)
+        msg = Message(f'{k_data[1]} 공사건 승인 요청', sender='#@gmail.com', recipients=[k_data[11]])
+        msg.body = f"""
+        {k_data[1]} 공사건의 계약 단계에 대한 업체 정보가 수정되었습니다.
+        서류를 검토 후 승인 처리해주세요.
+        링크 : https://kogasonestop.pythonanywhere.com/serviceStatus
+        """
+        mail.send(msg)
         return redirect(url_for("contractPhase"))
 
     else:
@@ -621,13 +628,13 @@ def contractInput_proc():
         k_data = cur.fetchone()
         
         # 관리자 이 메일로 승인 요청 메일 전송
-        # msg = Message(f'{k_data[1]} 공사건 승인 요청', sender='#@naver.com', recipients=[k_data[11]])
-        # msg.body = f"""
-        # {k_data[1]} 공사건의 계약 단계에 대한 업체 정보 입력이 완료되었습니다.
-        # 서류를 검토 후 승인 처리해주세요.
-        # 링크 : https://kogasonestop.pythonanywhere.com/serviceStatus
-        # """
-        # mail.send(msg)
+        msg = Message(f'{k_data[1]} 공사건 승인 요청', sender='#@naver.com', recipients=[k_data[11]])
+        msg.body = f"""
+        {k_data[1]} 공사건의 계약 단계에 대한 업체 정보 입력이 완료되었습니다.
+        서류를 검토 후 승인 처리해주세요.
+        링크 : https://kogasonestop.pythonanywhere.com/serviceStatus
+        """
+        mail.send(msg)
         return redirect(url_for("contractPhase"))
 
 
