@@ -1,4 +1,5 @@
 from flask import Flask, url_for, session, render_template, request, redirect, flash, jsonify
+from flask_mail import Mail, Message
 import sqlite3
 from os import path
 import os
@@ -9,10 +10,17 @@ ROOT = path.dirname(path.realpath(__file__))
 app = Flask(__name__)
 app.secret_key = 'tjdgus12'
 management_KEY = 'KOGAS_333K'   # 관리자 암호키
-
 UPLOAD_FOLDER = 'static/contract_dir'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_PORT"] = 465
+app.config["MAIL_USERNAME"] = "#@gmail.com" # 보안상 테스트 후 가림
+app.config["MAIL_PASSWORD"] = ""
+app.config["MAIL_USE_TLS"] = False
+app.config["MAIL_USE_SSL"] = True
+mail = Mail(app)
+
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 # ------------------------------------------ Page route ------------------------------------------
@@ -154,10 +162,13 @@ def contractInput():
         sql = "SELECT * FROM contractList WHERE contractNum=?"
         cur.execute(sql, (contractNum,))
         c_data = cur.fetchone()
+
+        data1 = str(format(int(k_data[6]),',d'))+'원'
+
         # DB에서 현재 상태 출력
         if c_data and k_data[9] >2:
             flash('계약 정보를 수정하면, 가스공사에 변경 승인을 요청합니다.')
-        return render_template('contractInput.html', login=session.get('logFlag'), c_data=c_data, k_data=k_data, progress = session.get('progress') )
+        return render_template('contractInput.html', login=session.get('logFlag'), c_data=c_data, k_data=k_data, progress = session.get('progress'),data1=data1 )
     else:
         flash("업체 로그인이 필요합니다")
         return redirect(url_for("pre"))
@@ -508,15 +519,17 @@ def createConstruction_proc():
         c6 = request.form['C6']
         c7 = request.form['C7']
         c8 = request.form['C8']
+        c10 = request.form['C10']
+        c11 = request.form['C11']
         
     # DB에 발주기관 자료 입력
     sql = """
-        INSERT INTO constructionList(contractNum, title, department, company,supervisor,s_contact,contractAmount,deposit_rate,fault_rate,progress)
-        values(?,?,?,?,?,?,?,?,?,?)
+        INSERT INTO constructionList(contractNum, title, department, company,supervisor,s_contact,contractAmount,deposit_rate,fault_rate,progress,s_position,s_email)
+        values(?,?,?,?,?,?,?,?,?,?,?,?)
     """
     con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
     cur = con.cursor()
-    cur.execute(sql, (c0,c1,c2,c3,c4,c5,c6,c7,c8,0,))
+    cur.execute(sql, (c0,c1,c2,c3,c4,c5,c6,c7,c8,0,c10,c11,))
     con.commit()
     flash("공사 생성 완료")
     return redirect(url_for("index"))
@@ -570,9 +583,22 @@ def contractInput_proc():
         cur.execute(sql, (d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,contract_data,))
         con.commit()
         sql = "UPDATE constructionList SET progress=? WHERE contractNum=?"
-        flash("계약 단계 정보 수정 완료\n가스 공사에 승인을 요청합니다.")
         cur.execute(sql, (1, contract_data,))
         con.commit()
+        flash("계약 단계 정보 수정 완료\n가스 공사에 승인을 요청합니다.")
+
+        sql = "SELECT * FROM constructionList WHERE contractNum=?"
+        cur.execute(sql, (contract_data,))
+        k_data = cur.fetchone()
+
+        # 관리자 이 메일로 승인 요청 메일 전송
+        # msg = Message(f'{k_data[1]} 공사건 승인 요청', sender='#@gmail.com', recipients=[k_data[11]])
+        # msg.body = f"""
+        # {k_data[1]} 공사건의 계약 단계에 대한 업체 정보가 수정되었습니다.
+        # 서류를 검토 후 승인 처리해주세요.
+        # 링크 : https://kogasonestop.pythonanywhere.com/serviceStatus
+        # """
+        # mail.send(msg)
         return redirect(url_for("contractPhase"))
 
     else:
@@ -589,7 +615,20 @@ def contractInput_proc():
         cur.execute(sql, (1, contract_data,))
         con.commit()
         flash("계약 단계 정보 입력 완료\n가스 공사에 승인을 요청합니다.")
-    return redirect(url_for("contractPhase"))
+        
+        sql = "SELECT * FROM constructionList WHERE contractNum=?"
+        cur.execute(sql, (contract_data,))
+        k_data = cur.fetchone()
+        
+        # 관리자 이 메일로 승인 요청 메일 전송
+        # msg = Message(f'{k_data[1]} 공사건 승인 요청', sender='#@naver.com', recipients=[k_data[11]])
+        # msg.body = f"""
+        # {k_data[1]} 공사건의 계약 단계에 대한 업체 정보 입력이 완료되었습니다.
+        # 서류를 검토 후 승인 처리해주세요.
+        # 링크 : https://kogasonestop.pythonanywhere.com/serviceStatus
+        # """
+        # mail.send(msg)
+        return redirect(url_for("contractPhase"))
 
 
 # 7. 계약서 수정시 DB에 입력 처리

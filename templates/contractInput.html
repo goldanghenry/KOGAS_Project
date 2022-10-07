@@ -19,7 +19,7 @@
         </tr>
         <tr>
             <td>계약금액(VAT 제외)</td>                                   
-            <td>{{k_data[6]}}</td>
+            <td>{{data1}}</td>
         </tr>
 
     </tbody>
@@ -54,7 +54,7 @@
         <tr><td>계좌번호</td><td><p id="d12" class="rowColumn" contenteditable="false" data-default="{{c_data[12]}}">{{c_data[12]}}</p></td></tr>
     </tbody>
 </table>
-<a href="{{url_for('contractTable')}}"><button type="button" onclick="saveContractInput()">저장하기</button></a>
+<a href="{{url_for('contractPhase')}}"><button type="button" onclick="saveContractInput()">저장하기</button></a>
 {% else %}
 <form method= "POST" id="contractInput_proc" action="{{url_for('contractInput_proc')}}" class="input-group">
     <input type="text" id="d1" name="d1" class="input-field" placeholder="계약일" required>
