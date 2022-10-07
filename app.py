@@ -198,7 +198,7 @@ def contractTable():
             k_data = cur.fetchall()
 
             # 승인 대기 상태(2) -> 업로드 완료시 3으로 변경
-            if k_data[0][9]==2 and c_data[0][13] !='#' and c_data[0][14] !='#' and c_data[0][15] !='#' and c_data[0][16] !='#' and c_data[0][17] !='#':
+            if k_data[0][9]==2 and c_data[0][14] !='#' and c_data[0][15] !='#' and c_data[0][16] !='#' and c_data[0][17] !='#':
                 sql = "UPDATE constructionList SET progress=? WHERE contractNum=?"
                 cur.execute(sql, (3, contract_data,))
                 con.commit()
