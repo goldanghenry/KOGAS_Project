@@ -167,7 +167,7 @@ def contractInput():
 
         # DB에서 현재 상태 출력
         if c_data and k_data[9] >2:
-            flash('계약 정보를 수정하면, 가스공사에 변경 승인을 요청합니다.')
+            flash('계약 정보를 수정하면, 가스공사에 변경 승인을 재요청합니다.')
         return render_template('contractInput.html', login=session.get('logFlag'), c_data=c_data, k_data=k_data, progress = session.get('progress'),data1=data1 )
     else:
         flash("업체 로그인이 필요합니다")
