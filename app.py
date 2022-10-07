@@ -48,23 +48,12 @@ def serviceStatus():
         # DB에서 k_data 가져오기
         con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
         cur = con.cursor()
-
-        # 계약 승인 요청
-        sql = f"SELECT * FROM constructionList WHERE progress=?"
-        cur.execute(sql, (1,))
-        k1_data = cur.fetchall()
-
-        # 착공 승인 요청
-        sql = f"SELECT * FROM constructionList WHERE progress=?"
-        cur.execute(sql, (4,))
-        k4_data = cur.fetchall()
-
-        # 준공 승인 요청
-        sql = f"SELECT * FROM constructionList WHERE progress=?"
-        cur.execute(sql, (7,))
-        k7_data = cur.fetchall()
-
-        return render_template('serviceStatus.html', login=session.get('logFlag'), k1_data=k1_data,k4_data=k4_data,k7_data=k7_data )
+        k_data = [ [] for i in range(4)]
+        for i in range(4):
+            sql = f"SELECT * FROM constructionList WHERE progress=?"
+            cur.execute(sql, (i,))
+            k_data[i] = cur.fetchall()
+        return render_template('serviceStatus.html', login=session.get('logFlag'), k_data0=k_data[0],k_data1=k_data[1],k_data2=k_data[2],k_data3=k_data[3])
     # 로그인 하지 않으면 로그인 페이지로 이동
     else:
         flash("해당 페이지는 관리자 로그인이 필요합니다.")
@@ -189,7 +178,16 @@ def contractTable():
             sql = "SELECT * FROM constructionList where contractNum =?"
             cur.execute(sql, (contract_data,))
             k_data = cur.fetchall()
-            session['progress'] = k_data[0][9]
+
+            # 승인 대기 상태(2) -> 업로드 완료시 3으로 변경
+            if k_data[0][9]==2 and c_data[0][13] !='#' and c_data[0][14] !='#' and c_data[0][15] !='#' and c_data[0][16] !='#' and c_data[0][17] !='#':
+                sql = "UPDATE constructionList SET progress=? WHERE contractNum=?"
+                cur.execute(sql, (3, contract_data,))
+                con.commit()
+                session['progress'] = 3
+            else: 
+                session['progress'] = k_data[0][9]
+            
             return render_template('contractTable.html',login=session.get('logFlag'), progress = session.get('progress'), c_data=c_data, k_data=k_data)
         elif 'userName' in session:
             sql = "SELECT * FROM constructionList where contractNum =?"
@@ -205,9 +203,9 @@ def contractTable():
         flash("업체 로그인이 필요합니다")
         return redirect(url_for(f"pre/{contract_data}"))
 # 계약서
-# 1 : 계약 이행 각서
-@app.route("/contract1")
-def contract1():
+# 2: 계약이행보증금 지급확약서
+@app.route("/contract2")
+def contract2():
     contract_data = session.get('contractNum')
     # 업체 입력 데이터 가져오기
     con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
@@ -221,7 +219,119 @@ def contract1():
         sql = "SELECT * FROM constructionList WHERE contractNum=?"
         cur.execute(sql, (contract_data,))
         k_data = cur.fetchone()
-        return render_template('contract1.html', login=session.get('logFlag'), k_data=k_data, c_data=c_data)
+        data1 = str(format(int(k_data[6] * k_data[7]),',d'))+'원'
+        data2 = str(format(k_data[6],',d'))+'원'
+        return render_template('contract2.html', login=session.get('logFlag'), k_data=k_data, c_data=c_data, data1= data1, data2=data2)
+    else:
+        flash("계약단계의 업체 기본정보 입력전입니다.")
+        return redirect(url_for("contractInput"))
+
+# 3: 하자보증이행각서
+@app.route("/contract3")
+def contract3():
+    contract_data = session.get('contractNum')
+    # 업체 입력 데이터 가져오기
+    con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
+    cur = con.cursor()
+    sql = "SELECT * FROM contractList WHERE contractNum=?"
+    cur.execute(sql, (contract_data,))
+    c_data = cur.fetchone()
+
+    if c_data:
+        # 가스공사 데이터 가져오기
+        sql = "SELECT * FROM constructionList WHERE contractNum=?"
+        cur.execute(sql, (contract_data,))
+        k_data = cur.fetchone()
+        data2 = str(format(k_data[6],',d'))+'원'
+        t = c_data[1]
+        data3 = t[:4]+ '년 '+t[5:7]+'월 '+t[8:]+'일'
+        return render_template('contract3.html', login=session.get('logFlag'), k_data=k_data, c_data=c_data, data3= data3, data2=data2)
+    else:
+        flash("계약단계의 업체 기본정보 입력전입니다.")
+        return redirect(url_for("contractInput"))
+
+# 4: 사용인감계
+@app.route("/contract4")
+def contract4():
+    contract_data = session.get('contractNum')
+    # 업체 입력 데이터 가져오기
+    con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
+    cur = con.cursor()
+    sql = "SELECT * FROM contractList WHERE contractNum=?"
+    cur.execute(sql, (contract_data,))
+    c_data = cur.fetchone()
+
+    if c_data:
+        # 가스공사 데이터 가져오기
+        sql = "SELECT * FROM constructionList WHERE contractNum=?"
+        cur.execute(sql, (contract_data,))
+        k_data = cur.fetchone()
+        t = c_data[1]
+        data3 = t[:4]+ '년 '+t[5:7]+'월 '+t[8:]+'일'
+        return render_template('contract4.html', login=session.get('logFlag'), k_data=k_data, c_data=c_data, data3= data3)
+    else:
+        flash("계약단계의 업체 기본정보 입력전입니다.")
+        return redirect(url_for("contractInput"))
+
+# 5: 청렴계약이행서약서(업체용)
+@app.route("/contract5")
+def contract5():
+    contract_data = session.get('contractNum')
+    # 업체 입력 데이터 가져오기
+    con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
+    cur = con.cursor()
+    sql = "SELECT * FROM contractList WHERE contractNum=?"
+    cur.execute(sql, (contract_data,))
+    c_data = cur.fetchone()
+
+    if c_data:
+        t = c_data[1]
+        data3 = t[:4]+ '년 '+t[5:7]+'월 '+t[8:]+'일'
+        return render_template('contract5.html', login=session.get('logFlag'), c_data=c_data, data3= data3)
+    else:
+        flash("계약단계의 업체 기본정보 입력전입니다.")
+        return redirect(url_for("contractInput"))
+
+# 6: 청렴계약이행서약서(교부용)
+@app.route("/contract6")
+def contract6():
+    contract_data = session.get('contractNum')
+    # 업체 입력 데이터 가져오기
+    con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
+    cur = con.cursor()
+    sql = "SELECT * FROM contractList WHERE contractNum=?"
+    cur.execute(sql, (contract_data,))
+    c_data = cur.fetchone()
+
+    if c_data:
+        sql = "SELECT * FROM constructionList WHERE contractNum=?"
+        cur.execute(sql, (contract_data,))
+        k_data = cur.fetchone()
+        t = c_data[1]
+        data3 = t[:4]+ '년 '+t[5:7]+'월 '+t[8:]+'일'
+        return render_template('contract6.html', login=session.get('logFlag'),data3= data3, k_data=k_data)
+    else:
+        flash("계약단계의 업체 기본정보 입력전입니다.")
+        return redirect(url_for("contractInput"))
+
+# 7: 청렴계약이행서약서(직원용)
+@app.route("/contract7")
+def contract7():
+    contract_data = session.get('contractNum')
+    # 업체 입력 데이터 가져오기
+    con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
+    cur = con.cursor()
+    sql = "SELECT * FROM contractList WHERE contractNum=?"
+    cur.execute(sql, (contract_data,))
+    c_data = cur.fetchone()
+
+    if c_data:
+        sql = "SELECT * FROM constructionList WHERE contractNum=?"
+        cur.execute(sql, (contract_data,))
+        k_data = cur.fetchone()
+        t = c_data[1]
+        data3 = t[:4]+ '년 '+t[5:7]+'월 '+t[8:]+'일'
+        return render_template('contract7.html', login=session.get('logFlag'),data3= data3, k_data=k_data)
     else:
         flash("계약단계의 업체 기본정보 입력전입니다.")
         return redirect(url_for("contractInput"))
@@ -476,8 +586,6 @@ def contractInput_proc():
 
         # pregress update
         sql = "UPDATE constructionList SET progress=? WHERE contractNum=?"
-        # con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
-        # cur = con.cursor()
         cur.execute(sql, (1, contract_data,))
         con.commit()
         flash("계약 단계 정보 입력 완료\n가스 공사에 승인을 요청합니다.")
@@ -513,7 +621,6 @@ def upload_file():
     contract_data = session.get('contractNum')
     files = request.files.getlist('files[]')
     f_name = request.form['filename']
-    print(f_name)
     errors = {}
     success = False
 
