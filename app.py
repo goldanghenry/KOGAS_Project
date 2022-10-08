@@ -189,28 +189,28 @@ def contractTable():
         cur = con.cursor()
         sql = "SELECT * FROM contractList where contractNum =?"
         cur.execute(sql, (contract_data,))
-        c_data = cur.fetchall()
+        c_data = cur.fetchone()
 
         # 이미 있다면 update
         if c_data:
             sql = "SELECT * FROM constructionList where contractNum =?"
             cur.execute(sql, (contract_data,))
-            k_data = cur.fetchall()
+            k_data = cur.fetchone()
 
             # 승인 대기 상태(2) -> 업로드 완료시 3으로 변경
-            if k_data[0][9]==2 and c_data[0][14] !='#' and c_data[0][15] !='#' and c_data[0][16] !='#' and c_data[0][17] !='#':
+            if k_data[9]==2 and c_data[13] !='#' and c_data[14] !='#' and c_data[15] !='#' and c_data[16] !='#' and c_data[17] !='#':
                 sql = "UPDATE constructionList SET progress=? WHERE contractNum=?"
                 cur.execute(sql, (3, contract_data,))
                 con.commit()
                 session['progress'] = 3
             else: 
-                session['progress'] = k_data[0][9]
+                session['progress'] = k_data[9]
             
             return render_template('contractTable.html',login=session.get('logFlag'), progress = session.get('progress'), c_data=c_data, k_data=k_data)
         elif 'userName' in session:
             sql = "SELECT * FROM constructionList where contractNum =?"
             cur.execute(sql, (contract_data,))
-            k_data = cur.fetchall()
+            k_data = cur.fetchone()
             flash("주의!! 업체 기본정보 입력전입니다!")
             return render_template('contractTable.html',login=session.get('logFlag'), progress = session.get('progress'), c_data=c_data, k_data=k_data, data=k_data)
         else:
