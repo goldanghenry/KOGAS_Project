@@ -41,7 +41,7 @@
 1. 메인페이지 : index.html
 2. 개요 : summary.html
 3. 공지사항 : notice.html
-4. 용역 현황 : serviceStatus.html
+4. 공사진행 현황 : serviceStatus.html
 5. 공사 리스트 생성 페이지 : createConstruction.html
 6. 관리자용 로그인&회원가입 페이지 : login.html
 
