@@ -1,0 +1,109 @@
+p {
+  margin: 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form .inputBox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+form .inputBox:last-child {
+  margin-bottom: 0;
+}
+
+.inputBox .moneyInputs,
+.inputBox .percentInputs {
+  width: 400px;
+  position: relative;
+  border: 1px solid rgb(0, 0, 0, 0.125);
+  border-radius: calc(0.25rem - 1px);
+}
+
+.inputBox .moneyInputs input,
+.inputBox .percentInputs input {
+  width: 100%;
+  padding-right: 65px;
+  border: none;
+}
+
+.inputBox .moneyInputs::after {
+  content: '원';
+  width: 45px;
+  line-height: 20px;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(0, -50%);
+  border-left: 1px solid rgb(0, 0, 0, 0.125);
+  color: #bbb;
+  text-align: center;
+  font-weight: 500;
+}
+
+.inputBox .percentInputs::after {
+  content: '%';
+  width: 45px;
+  line-height: 20px;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(0, -50%);
+  border-left: 1px solid rgb(0, 0, 0, 0.125);
+  color: #bbb;
+  text-align: center;
+  font-weight: 500;
+}
+
+.inputBox p {
+  width: 200px;
+  font-weight: 600;
+}
+
+.inputBox p span {
+  margin-left: 0.5rem;
+  color: #0460ae;
+}
+
+.inputBox input {
+  width: 400px;
+  height: 45px;
+  padding: 0 20px;
+  border: 1px solid rgb(0, 0, 0, 0.125);
+  border-radius: calc(0.25rem - 1px);
+  outline-color: #0460ae;
+}
+
+.inputBox input::placeholder {
+  color: #ccc;
+  font-weight: 100 !important;
+}
+
+form .formBtn {
+  width: 400px;
+  height: 45px;
+  margin: 0 auto;
+  margin-bottom: 1.5rem;
+  background-color: #0460ae;
+  border: none;
+  color: #fff;
+  border-radius: calc(0.25rem - 1px);
+}
+
+/* 화살표 삭제 */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
