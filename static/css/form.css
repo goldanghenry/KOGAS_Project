@@ -2,6 +2,19 @@ p {
   margin: 0;
 }
 
+section {
+  display: flex;
+  flex-direction: row;
+}
+
+section .card {
+  width: 50%;
+}
+
+section .card:first-child {
+  margin-right: 1.5rem;
+}
+
 form {
   display: flex;
   flex-direction: column;
@@ -21,7 +34,7 @@ form .inputBox:last-child {
 
 .inputBox .moneyInputs,
 .inputBox .percentInputs {
-  width: 400px;
+  flex: 1;
   position: relative;
   border: 1px solid rgb(0, 0, 0, 0.125);
   border-radius: calc(0.25rem - 1px);
@@ -73,7 +86,7 @@ form .inputBox:last-child {
 }
 
 .inputBox input {
-  width: 400px;
+  flex: 1;
   height: 45px;
   padding: 0 20px;
   border: 1px solid rgb(0, 0, 0, 0.125);
@@ -84,6 +97,25 @@ form .inputBox:last-child {
 .inputBox input::placeholder {
   color: #ccc;
   font-weight: 100 !important;
+}
+
+.inputBox .temp {
+  width: 60px !important;
+  margin-right: 1.5rem;
+}
+
+textarea {
+  flex: 1;
+  height: 100px;
+  padding: 20px;
+  border: 1px solid rgb(0, 0, 0, 0.125);
+  border-radius: calc(0.25rem - 1px);
+  outline-color: #0460ae;
+  resize: none;
+}
+
+textarea::-webkit-scrollbar {
+  display: none;
 }
 
 form .formBtn {
