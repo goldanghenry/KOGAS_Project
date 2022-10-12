@@ -96,7 +96,7 @@
 12)class_code(분류기호)  13)budget_course(예산 과목)   14)start_date(착공일) 15)contract_completion(계약 준공일)   16)real_completion(실준공일)     17)summary(공사 개요 및 시방)
 4 계약 정보<br>
 6)contractAmount(계약금액1) 7)deposit_rate(계약보증금율)    8)fault_rate(하자보증금율) 
-18)company2(업체명2)  19)company2_amount(업체2계약금액) 20)company3(업체명3) 21)company2_amount(업체3계약금액)
+18)company2(업체명2)  19)company2_amount(업체2계약금액) 20)company3(업체명3) 21)company3_amount(업체3계약금액)
 
 9)progress(진행관리)
 

@@ -528,15 +528,25 @@ def createConstruction_proc():
         c8 = request.form['C8']
         c10 = request.form['C10']
         c11 = request.form['C11']
+        c12 = request.form['C12']
+        c13 = request.form['C13']
+        c14 = request.form['C14']
+        c15 = request.form['C15']
+        c16 = request.form['C16']
+        c17 = request.form['C17']
+        c18 = request.form['C18']
+        c19 = request.form['C19']
+        c20 = request.form['C20']
+        c21 = request.form['C21']
         
     # DB에 발주기관 자료 입력
     sql = """
-        INSERT INTO constructionList(contractNum, title, department, company,supervisor,s_contact,contractAmount,deposit_rate,fault_rate,progress,s_position,s_email)
-        values(?,?,?,?,?,?,?,?,?,?,?,?)
+        INSERT INTO constructionList(contractNum, title, department, company,supervisor,s_contact,contractAmount,deposit_rate,fault_rate,progress,s_position,s_email,class_code,budget_course,start_date,contract_completion,real_completion,summary,company2,company2_amount,company3,company3_amount)
+        values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
     """
     con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
     cur = con.cursor()
-    cur.execute(sql, (c0,c1,c2,c3,c4,c5,c6,c7,c8,0,c10,c11,))
+    cur.execute(sql, (c0,c1,c2,c3,c4,c5,c6,c7,c8,0,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,c21,))
     con.commit()
     flash("공사 생성 완료")
     return redirect(url_for("index"))
