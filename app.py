@@ -221,6 +221,33 @@ def contractTable():
         flash("업체 로그인이 필요합니다")
         return redirect(url_for(f"pre/{contract_data}"))
 # 계약서
+# 1: 간이공사지시서
+@app.route("/contract1")
+def contract1():
+    contract_data = session.get('contractNum')
+    # 업체 입력 데이터 가져오기
+    con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
+    cur = con.cursor()
+    sql = "SELECT * FROM contractList WHERE contractNum=?"
+    cur.execute(sql, (contract_data,))
+    c_data = cur.fetchone()
+
+    if c_data:
+        # 가스공사 데이터 가져오기
+        sql = "SELECT * FROM constructionList WHERE contractNum=?"
+        cur.execute(sql, (contract_data,))
+        k_data = cur.fetchone()
+
+        # 업체 1금액
+        data1 = str(format(k_data[6],',d'))+'원'
+        # 업체 2금액
+        data2 = str(format(k_data[19],',d'))+'원'
+        # 업체 3금액
+        data3 = str(format(k_data[21],',d'))+'원'
+        return render_template('contract1.html', login=session.get('logFlag'), k_data=k_data, c_data=c_data, data1= data1, data2=data2, data3=data3)
+    else:
+        flash("계약단계의 업체 기본정보 입력전입니다.")
+        return redirect(url_for("contractInput"))
 # 2: 계약이행보증금 지급확약서
 @app.route("/contract2")
 def contract2():
