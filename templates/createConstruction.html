@@ -2,9 +2,7 @@
 {% block main %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
 
-<h1 class="mt-4" style="text-align:left;"><b>공사 추가하기</b></h1>
-<ol class="breadcrumb mb-4">
-    <li class="breadcrumb-item active">아래 입력창을 모두 입력해 주세요.</li>
+<h1 class="mt-4" style="text-align:left; margin-bottom: 1.5rem;"><b>공사 추가하기</b></h1>
 </ol>
 <form method="POST" id="createConstruction_proc" action="{{url_for('createConstruction_proc')}}">
     <section>
