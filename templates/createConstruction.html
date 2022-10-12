@@ -7,77 +7,129 @@
     <li class="breadcrumb-item active">아래 입력창을 모두 입력해 주세요.</li>
 </ol>
 <form method="POST" id="createConstruction_proc" action="{{url_for('createConstruction_proc')}}">
-    <div class="card mb-4">
-        <div class="card-header">
-            <b>1. 공사 정보</b>
-        </div>
-        <div class="card-body">
-            <div class="inputBox">
-                <p>계약번호<span>*</span></p>
-                <input type="text" id="C0" name="C0" placeholder="계약번호" required>
+    <section>
+        <div class="card mb-4">
+            <div class="card-header">
+                <b>1. 공사 구분</b>
             </div>
-            <div class="inputBox">
-                <p>공사명<span>*</span></p>
-                <input type="text" id="C1" name="C1" placeholder="공사명" required>
-            </div>
-            <div class="inputBox">
-                <p>사업장<span>*</span></p>
-                <input type="text" id="C2" name="C2" placeholder="사업장" required>
-            </div>
-            <div class="inputBox">
-                <p>업체명<span>*</span></p>
-                <input type="text" id="C3" name="C3" placeholder="업체명" required>
-            </div>
-        </div>
-    </div>
-    <div class="card mb-4">
-        <div class="card-header">
-            <b>2. 감독 정보</b>
-        </div>
-        <div class="card-body">
-            <div class="inputBox">
-                <p>공사감독(명)<span>*</span></p>
-                <input type="text" id="C4" name="C4" placeholder="공사감독(명)" required>
-            </div>
-            <div class="inputBox">
-                <p>감독직위<span>*</span></p>
-                <input type="text" id="C10" name="C10" placeholder="감독직위" required>
-            </div>
-            <div class="inputBox">
-                <p>연락처<span>*</span></p>
-                <input type="text" id="C5" name="C5" placeholder="숫자만 입력" required>
-            </div>
-            <div class="inputBox">
-                <p>감독 이메일<span>*</span></p>
-                <input type="email" id="C11" name="C11" placeholder="ex) honggildong@kogas.or.kr" required>
+            <div class="card-body">
+                <div class="inputBox">
+                    <p>계약번호<span>*</span></p>
+                    <input type="text" id="C0" name="C0" placeholder="계약번호" required>
+                </div>
+                <div class="inputBox">
+                    <p>공사명<span>*</span></p>
+                    <input type="text" id="C1" name="C1" placeholder="공사명" required>
+                </div>
+                <div class="inputBox">
+                    <p>사업장<span>*</span></p>
+                    <input type="text" id="C2" name="C2" placeholder="사업장" required>
+                </div>
+                <div class="inputBox">
+                    <p>업체명<span>*</span></p>
+                    <input type="text" id="C3" name="C3" placeholder="업체명" required>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="card mb-4">
-        <div class="card-header">
-            <b>3. 계약 정보</b>
-        </div>
-        <div class="card-body">
-            <div class="inputBox">
-                <p>계약금액&nbsp;(VAT별도)<span>*</span></p>
-                <section class="moneyInputs">
-                    <input type="number" id="C6" name="C6" placeholder="숫자만 입력" required>
-                </section>
+        <div class="card mb-4">
+            <div class="card-header">
+                <b>2. 감독 정보</b>
             </div>
-            <div class="inputBox">
-                <p>계약보증금율<span>*</span></p>
-                <section class="percentInputs">
-                    <input type="number" step='0.01' id="C7" name="C7" placeholder="숫자만 입력" required>
-                </section>
-            </div>
-            <div class="inputBox">
-                <p>하자보증금율액<span>*</span></p>
-                <section class="moneyInputs">
-                    <input type="number" step='0.01' id="C8" name="C8" placeholder="숫자만 입력" required>
-                </section>
+            <div class="card-body">
+                <div class="inputBox">
+                    <p>공사감독(명)<span>*</span></p>
+                    <input type="text" id="C4" name="C4" placeholder="공사감독(명)" required>
+                </div>
+                <div class="inputBox">
+                    <p>감독직위<span>*</span></p>
+                    <input type="text" id="C10" name="C10" placeholder="감독직위" required>
+                </div>
+                <div class="inputBox">
+                    <p>연락처<span>*</span></p>
+                    <input type="text" id="C5" name="C5" placeholder="숫자만 입력" required>
+                </div>
+                <div class="inputBox">
+                    <p>감독 이메일<span>*</span></p>
+                    <input type="email" id="C11" name="C11" placeholder="ex) honggildong@kogas.or.kr" required>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <section>
+        <div class="card mb-4">
+            <div class="card-header">
+                <b>3. 공사 내용</b>
+            </div>
+            <div class="card-body">
+                <div class="inputBox">
+                    <p>분류기호<span>*</span></p>
+                    <input type="text" id="C4" name="C4" placeholder="분류기호" required>
+                </div>
+                <div class="inputBox">
+                    <p>예산과목<span>*</span></p>
+                    <input type="text" id="C10" name="C10" placeholder="예산과목" required>
+                </div>
+                <div class="inputBox">
+                    <p>착공일<span>*</span></p>
+                    <input type="text" id="C5" name="C5" placeholder="착공일" required>
+                </div>
+                <div class="inputBox">
+                    <p>계약 준공일<span>*</span></p>
+                    <input type="email" id="C11" name="C11" placeholder="ex) 계약 준공일" required>
+                </div>
+                <div class="inputBox">
+                    <p>실 준공일<span>*</span></p>
+                    <input type="email" id="C11" name="C11" placeholder="ex) 실 준공일" required>
+                </div>
+                <div class="inputBox">
+                    <p>공사 개요 및 시방<span>*</span></p>
+                    <textarea id="C11" name="C11" required></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <div class="card-header">
+                <b>4. 계약 정보</b>
+            </div>
+            <div class="card-body">
+                <div class="inputBox">
+                    <p>계약금액&nbsp;(VAT별도)<span>*</span></p>
+                    <input type="email" id="C11" name="C11" placeholder="업체명" class="temp" required>
+                    <section class="moneyInputs">
+                        <input type="number" id="C6" name="C6" placeholder="숫자만 입력" required>
+                    </section>
+                </div>
+                <div class="inputBox">
+                    <p>계약금액&nbsp;(VAT별도)<span>*</span></p>
+                    <input type="email" id="C11" name="C11" placeholder="업체명" class="temp" required>
+                    <section class="moneyInputs">
+                        <input type="number" id="C6" name="C6" placeholder="숫자만 입력" required>
+                    </section>
+                </div>
+                <div class="inputBox">
+                    <p>계약금액&nbsp;(VAT별도)<span>*</span></p>
+                    <input type="email" id="C11" name="C11" placeholder="업체명" class="temp" required>
+                    <section class="moneyInputs">
+                        <input type="number" id="C6" name="C6" placeholder="숫자만 입력" required>
+                    </section>
+                </div>
+                <div class="inputBox">
+                    <p>계약보증금율<span>*</span></p>
+                    <section class="percentInputs">
+                        <input type="number" step='0.01' id="C7" name="C7" placeholder="숫자만 입력" required>
+                    </section>
+                </div>
+                <div class="inputBox">
+                    <p>하자보증금율액<span>*</span></p>
+                    <section class="moneyInputs">
+                        <input type="number" step='0.01' id="C8" name="C8" placeholder="숫자만 입력" required>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <button type="submit" class="formBtn">공사 추가하기</button>
 </form>
 {% endblock %}
