@@ -63,12 +63,19 @@ def serviceStatus():
         # DB에서 k_data 가져오기
         con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
         cur = con.cursor()
-        k_data = [ [] for i in range(4)]
-        for i in range(4):
-            sql = f"SELECT * FROM constructionList WHERE progress=?"
-            cur.execute(sql, (i,))
-            k_data[i] = cur.fetchall()
-        return render_template('serviceStatus.html', login=session.get('logFlag'), k_data0=k_data[0],k_data1=k_data[1],k_data2=k_data[2],k_data3=k_data[3])
+        userName = session.get('userName')
+        print(userName)
+        sql = f"SELECT * FROM constructionList WHERE start_date=? AND progress!=1"
+        cur.execute(sql, (userName,))
+        A_data = cur.fetchall()
+
+        sql = f"SELECT * FROM constructionList WHERE start_date=? AND progress=1"
+        cur.execute(sql, (userName,))
+        R_data = cur.fetchall()
+        
+        process = ['신규 생성','계약 입력 완료','계약 승인 완료','계약서류 업로드 완료','착공 입력 완료','착공 승인 완료','착공서류 업로드 완료','준공 입력 완료','준공 승인 완료','준공 서류 업로드 완료']
+
+        return render_template('serviceStatus.html', login=session.get('logFlag'), A_data=A_data, R_data=R_data,process=process)
     # 로그인 하지 않으면 로그인 페이지로 이동
     else:
         flash("해당 페이지는 관리자 로그인이 필요합니다.")
@@ -523,7 +530,7 @@ def login_proc():
         for rs in rows:
             # 로그인 성공
             if loginId == rs[1] and loginPw == rs[3]:
-                session['userName'] = rs[2]
+                session['userName'] = loginId
                 session['logFlag'] = True
                 return redirect(url_for("index"))
             else:
@@ -554,10 +561,10 @@ def createConstruction_proc():
         c8 = request.form['C8']
         c10 = request.form['C10']
         c11 = request.form['C11']
-        # c12 = request.form['C12']
+        c12 = request.form['C12']   # 공사 구분
         c13 = request.form['C13']
         # c14 = request.form['C14']
-        c15 = request.form['C15']
+        # c15 = request.form['C15']
         # c16 = request.form['C16']
         c17 = request.form['C17']
         c18 = request.form['C18']
@@ -565,6 +572,9 @@ def createConstruction_proc():
         c20 = request.form['C20']
         c21 = request.form['C21']
         
+        # 관리자 추가
+        c14=session.get('userName')
+
         # DB 연결
         con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
         cur = con.cursor()
@@ -588,7 +598,7 @@ def createConstruction_proc():
         INSERT INTO constructionList(contractNum, title, department, company,supervisor,s_contact,contractAmount,deposit_rate,fault_rate,progress,s_position,s_email,class_code,budget_course,start_date,contract_completion,real_completion,summary,company2,company2_amount,company3,company3_amount)
         values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
     """
-    cur.execute(sql, (c0,c1,code_dic[c2],c3,c4,c5,c6,c7,c8,0,c10,c11,'none',c13,'none',c15,'none',c17,c18,c19,c20,c21,))
+    cur.execute(sql, (c0,c1,code_dic[c2],c3,c4,c5,c6,c7,c8,0,c10,c11,c12,c13,c14,'none','none',c17,c18,c19,c20,c21,))
     con.commit()
     flash("공사 생성 완료")
     return redirect(url_for("index"))

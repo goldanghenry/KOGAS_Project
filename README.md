@@ -130,8 +130,3 @@
 
 ### 메모
 : 가스 공사에서 작성한 내용은 업체에서 수정할 수 없도록! 확인만 가능
-<!-- redirect version
-            <form action="{{url_for('fileupload', id ='contract1')}}" method = "POST" enctype="multipart/form-data">
-            <input type="file" name="file">
-            <input type="submit">
-          </form> -->

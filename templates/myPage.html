@@ -25,6 +25,10 @@
     <nav class="sb-sidenav-menu-nested nav">
         <a class="nav-link" href="{{ url_for('contractTable') }}"> - 필요 서류</a>
     </nav>
+    {% else %}
+    <nav class="sb-sidenav-menu-nested nav">
+        <li class="nav-link"> - 필요 서류</li>
+    </nav>
     {% endif %}
 </div>
 <!-- 계약단계의 서류를 업로드 완료 후 메뉴 활성화 -->

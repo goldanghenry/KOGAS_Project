@@ -3,80 +3,48 @@
 <h1 class="mt-4" style="text-align:left;"><b>공사 리스트 관리</b></h1>
 <ol class="breadcrumb mb-4"><li class="breadcrumb-item active">승인 처리후 업체에서 관련 서류 출력이 가능합니다.</li></ol>
 
-<!-- 공사 등록 리스트 -->
+<!-- 승인 요청 리스트 -->
 <div class="card mb-4">
     <div class="card-header">
         <i class="fas fa-table me-1"></i>
-        <b>0. 신규 생성 리스트</b>
+        <b>승인요청 리스트</b>
     </div>
     <div class="card-body">
-        <table id="datatablesSimple3">
+        <table id="datatablesSimple1">
             <thead>
                 <tr>
-                    <th>계약번호</th>
+                    <th>구분</th>
+                    <th>관리번호</th>
                     <th>계약건명</th>
                     <th>사업장</th>
                     <th>업체명</th>
-                </tr>
-            </thead>
-            <tfoot>
-                <tr>
-                    <th>계약번호</th>
-                    <th>계약건명</th>
-                    <th>사업장</th>
-                    <th>업체명</th>
-                </tr>
-            </tfoot>
-            <tbody>
-                {% for k in k_data0 %}
-                <!-- 해당 공사 상세페이지로 이동 -->
-                <tr>
-                    <td onclick="location.href='/pre/{{k[0]}}';" style="cursor:pointer;">{{k[0]}}</td>
-                    <td onclick="location.href='/pre/{{k[0]}}';" style="cursor:pointer;">{{k[1]}}</td>
-                    <td onclick="location.href='/pre/{{k[0]}}';" style="cursor:pointer;">{{k[2]}}</td>
-                    <td onclick="location.href='/pre/{{k[0]}}';" style="cursor:pointer;">{{k[3]}}</td>                                   
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<div class="card mb-4">
-    <div class="card-header">
-        <i class="fas fa-table me-1"></i>
-        <b>1. 계약 단계 승인 요청</b>
-    </div>
-    <div class="card-body">
-        <table id="datatablesSimple4">
-            <thead>
-                <tr>
-                    <th>계약번호</th>
-                    <th>계약건명</th>
-                    <th>사업장</th>
-                    <th>업체명</th>
+                    <th>진행상황</th>
                     <th>승인처리</th>
                 </tr>
             </thead>
             <tfoot>
                 <tr>
-                    <th>계약번호</th>
+                    <th>구분</th>
+                    <th>관리번호</th>
                     <th>계약건명</th>
                     <th>사업장</th>
                     <th>업체명</th>
+                    <th>진행상황</th>
                     <th>승인처리</th>
                 </tr>
             </tfoot>
             <tbody>
-                {% for k in k_data1 %}
+                {% for R in R_data %}
                 <!-- 해당 공사 상세페이지로 이동 -->
                 <tr>
-                    <td onclick="location.href='/goto/{{k[0]}}';" style="cursor:pointer;">{{k[0]}}</td>
-                    <td onclick="location.href='/goto/{{k[0]}}';" style="cursor:pointer;">{{k[1]}}</td>
-                    <td onclick="location.href='/goto/{{k[0]}}';" style="cursor:pointer;">{{k[2]}}</td>
-                    <td onclick="location.href='/goto/{{k[0]}}';" style="cursor:pointer;">{{k[3]}}</td>                                   
+                    <td onclick="location.href='/goto/{{R[0]}}';" style="cursor:pointer;">{{R[12]}}</td>
+                    <td onclick="location.href='/goto/{{R[0]}}';" style="cursor:pointer;">{{R[0]}}</td>
+                    <td onclick="location.href='/goto/{{R[0]}}';" style="cursor:pointer;">{{R[1]}}</td>
+                    <td onclick="location.href='/goto/{{R[0]}}';" style="cursor:pointer;">{{R[2]}}</td>
+                    <td onclick="location.href='/goto/{{R[0]}}';" style="cursor:pointer;">{{R[3]}}</td>
+                    <td onclick="location.href='/goto/{{R[0]}}';" style="cursor:pointer;">{{process[R[9]]}}</td>
                     <td>
-                        <button onclick="location.href='/approval_proc/{{k[0]}}';" style="cursor:pointer;">승인</button>
+                        <button onclick="location.href='/approval_proc/{{R[0]}}';" style="cursor:pointer;">승인</button>
                     </td>
                 </tr>
                 {% endfor %}
@@ -85,81 +53,48 @@
     </div>
 </div>
 
-<!-- 공사 등록 리스트 -->
+<!-- 담당 공사 리스트 -->
 <div class="card mb-4">
     <div class="card-header">
         <i class="fas fa-table me-1"></i>
-        <b>2. 업체 계약 서류 제출 전</b>
+        <b>담당 공사 리스트</b>
     </div>
     <div class="card-body">
-        <table id="datatablesSimple5">
+        <table id="datatablesSimple2">
             <thead>
                 <tr>
-                    <th>계약번호</th>
+                    <th>구분</th>
+                    <th>관리번호</th>
                     <th>계약건명</th>
                     <th>사업장</th>
                     <th>업체명</th>
+                    <th>진행상황</th>
                 </tr>
             </thead>
             <tfoot>
                 <tr>
-                    <th>계약번호</th>
+                    <th>구분</th>
+                    <th>관리번호</th>
                     <th>계약건명</th>
                     <th>사업장</th>
                     <th>업체명</th>
+                    <th>진행상황</th>
                 </tr>
             </tfoot>
             <tbody>
-                {% for k in k_data2 %}
-                <!-- 해당 공사 상세페이지로 이동 -->
+                {% for A in A_data %}
                 <tr>
-                    <td onclick="location.href='/pre/{{k[0]}}';" style="cursor:pointer;">{{k[0]}}</td>
-                    <td onclick="location.href='/pre/{{k[0]}}';" style="cursor:pointer;">{{k[1]}}</td>
-                    <td onclick="location.href='/pre/{{k[0]}}';" style="cursor:pointer;">{{k[2]}}</td>
-                    <td onclick="location.href='/pre/{{k[0]}}';" style="cursor:pointer;">{{k[3]}}</td>                                      
+                    <td onclick="location.href='/goto/{{A[0]}}';" style="cursor:pointer;">{{A[12]}}</td>
+                    <td onclick="location.href='/goto/{{A[0]}}';" style="cursor:pointer;">{{A[0]}}</td>
+                    <td onclick="location.href='/goto/{{A[0]}}';" style="cursor:pointer;">{{A[1]}}</td>
+                    <td onclick="location.href='/goto/{{A[0]}}';" style="cursor:pointer;">{{A[2]}}</td>
+                    <td onclick="location.href='/goto/{{A[0]}}';" style="cursor:pointer;">{{A[3]}}</td>
+                    <td onclick="location.href='/goto/{{A[0]}}';" style="cursor:pointer;">{{process[A[9]]}}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
-</div>
-
-<div class="card mb-4">
-    <div class="card-header">
-        <i class="fas fa-table me-1"></i>
-        <b>3. 계약 단계 서류 업로드 완료</b>
-    </div>
-    <div class="card-body">
-        <table id="datatablesSimple6">
-            <thead>
-                <tr>
-                    <th>계약번호</th>
-                    <th>계약건명</th>
-                    <th>사업장</th>
-                    <th>업체명</th>
-                </tr>
-            </thead>
-            <tfoot>
-                <tr>
-                    <th>계약번호</th>
-                    <th>계약건명</th>
-                    <th>사업장</th>
-                    <th>업체명</th>
-                </tr>
-            </tfoot>
-            <tbody>
-                {% for k in k_data3 %}
-                <!-- 해당 공사 상세페이지로 이동 -->
-                <tr>
-                    <td onclick="location.href='/pre/{{k[0]}}';" style="cursor:pointer;">{{k[0]}}</td>
-                    <td onclick="location.href='/pre/{{k[0]}}';" style="cursor:pointer;">{{k[1]}}</td>
-                    <td onclick="location.href='/pre/{{k[0]}}';" style="cursor:pointer;">{{k[2]}}</td>
-                    <td onclick="location.href='/pre/{{k[0]}}';" style="cursor:pointer;">{{k[3]}}</td>                                    
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
+</div> 
 
 {% endblock %}
