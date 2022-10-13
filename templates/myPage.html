@@ -1,20 +1,19 @@
 {% extends "index.html" %}
-
 {% block MyMenu %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/myPage.css') }}">
+
 <!-- MY MENU -->
 <div class="sb-sidenav-menu-heading">MY MENU</div>
 <a class="nav-link" href="{{ url_for('myPage') }}">
-    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
     현황 한 눈에 보기
 </a>
 <!-- 계약 단계 -->
-<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-    data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapseLayouts">
+<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="false"
+    aria-controls="collapseLayouts">
     1. 계약 단계
     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
 </a>
-<div class="collapse" id="collapse1" aria-labelledby="heading1"
-    data-bs-parent="#sidenavAccordion">
+<div class="collapse" id="collapse1" aria-labelledby="heading1" data-bs-parent="#sidenavAccordion">
     <nav class="sb-sidenav-menu-nested nav">
         <a class="nav-link" href="{{ url_for('contractPhase') }}"> - 계약 개요</a>
     </nav>
@@ -31,13 +30,12 @@
 <!-- 계약단계의 서류를 업로드 완료 후 메뉴 활성화 -->
 {% if progress >= 3 or login==True %}
 <!-- 착공 단계 -->
-<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-    data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapseLayouts">
+<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false"
+    aria-controls="collapseLayouts">
     2. 착공 단계
     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
 </a>
-<div class="collapse" id="collapse2" aria-labelledby="heading2"
-    data-bs-parent="#sidenavAccordion">
+<div class="collapse" id="collapse2" aria-labelledby="heading2" data-bs-parent="#sidenavAccordion">
     <nav class="sb-sidenav-menu-nested nav">
         <a class="nav-link" href="{{ url_for('startPhase') }}"> - 착공 개요</a>
     </nav>
@@ -55,13 +53,12 @@
 
 {% if progress >= 6 or login == True %}
 <!-- 준공 단계 -->
-<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-    data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapseLayouts">
+<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false"
+    aria-controls="collapseLayouts">
     3. 준공 단계
     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
 </a>
-<div class="collapse" id="collapse3" aria-labelledby="heading3"
-    data-bs-parent="#sidenavAccordion">
+<div class="collapse" id="collapse3" aria-labelledby="heading3" data-bs-parent="#sidenavAccordion">
     <nav class="sb-sidenav-menu-nested nav">
         <a class="nav-link" href="{{ url_for('completionPhase') }}"> - 준공 개요</a>
     </nav>
@@ -80,36 +77,129 @@
 
 
 {% block main %}
-    <h3><b>{{data[1]}}</b> 계약 건 상세 페이지</h3><br>
-    관리번호 : {{data[0]}}<br>
-    공사명 : {{data[1]}}<br>
-    사업장 : {{data[2]}}<br>
-    업체명 : {{data[3]}}<br>
-    공사 감독 : {{data[4]}}<br>
-    감독 연락처 : {{data[5]}}<br><br>
 
-    {% if progress == 0%}
-    <h4>현재 진행 단계 : <b>계약 기본정보 입력</b> 단계입니다.</h4><h5>업체의 기본 계약 정보를 입력해주세요</h5>
-    {% elif progress == 1%}
-    <h4>현재 진행 단계 : <b>계약 승인 대기</b> 중입니다.</h4><h5>가스공사에서 계약 단계 서류 검토 중입니다.</h5>
-    {% elif progress == 2%}
-    <h4>현재 진행 단계 : <b>계약 서류 업로드</b> 단계입니다.</h4><h5>계약 단계 필요 서류를 출력 후 직인을 찍고 업로드 해주세요.</h5>
-    
-    {% elif progress == 3%}
-    <h4>현재 진행 단계 : <b>착공 정보 입력</b> 단계입니다.</h4><h5>업체의 착공 단계 정보를 입력해주세요.</h5>
-    {% elif progress == 4%}
-    <h4>현재 진행 단계 : <b>착공 승인 대기</b> 중입니다.</h4><h5>가스공사에서 착공 단계 서류 검토 중입니다.</h5>    
-    {% elif progress == 5%}
-    <h4>현재 진행 단계 : <b>착공 서류 업로드</b> 단계입니다.</h4><h5>착공 단계 필요 서류를 출력 후 직인을 찍고 업로드 해주세요.</h5>
-    
-    {% elif progress == 6%}
-    <h4>현재 진행 단계 : <b>준공 정보 입력</b> 단계입니다.</h4><h5>업체의 준공 단계 정보를 입력해주세요.</h5>
-    {% elif progress == 7%}
-    <h4>현재 진행 단계 : <b>준공 승인 대기</b> 중입니다.</h4><h5>가스공사에서 준공 단계 서류 검토 중입니다.</h5>    
-    {% elif progress == 8%}
-    <h4>현재 진행 단계 : <b>준공 승인 대기</b> 중입니다.</h4><h5>준공 단계 필요 서류를 출력 후 직인을 찍고 업로드 해주세요.</h5>
-    
-    {% elif progress == 9%}
-    <h4>현재 진행 단계 : <b>준공 승인 완료</b>되었습니다.</h4>
-    {% endif %}
+<head>
+    <script>
+        const processes = [
+            {
+                progress: 0,
+                title: '계약 기본정보 입력',
+                content: "업체의 기본 계약 정보를 입력해 주세요."
+            },
+            {
+                progress: 1,
+                title: '계약 승인 대기',
+                content: "가스공사에서 계약 단계 서류 검토 중입니다."
+            },
+            {
+                progress: 2,
+                title: '계약 서류 업로드',
+                content: "계약 단계 필요 서류를 출력 후 직인을 찍고 업로드 해주세요."
+            },
+            {
+                progress: 3,
+                title: '착공 정보 입력',
+                content: "업체의 착공 단계 정보를 입력해 주세요.."
+            },
+            {
+                progress: 4,
+                title: '착공 승인 대기',
+                content: "가스공사에서 착공 단계 서류 검토 중입니다."
+            },
+            {
+                progress: 5,
+                title: '착공 서류 업로드',
+                content: "착공 단계 필요 서류를 출력 후 직인을 찍고 업로드 해주세요."
+            },
+            {
+                progress: 6,
+                title: '준공 정보 입력',
+                content: "업체의 준공 단계 정보를 입력해 주세요."
+            },
+            {
+                progress: 7,
+                title: '준공 승인 대기',
+                content: "가스공사에서 준공 단계 서류 검토 중입니다."
+            },
+            {
+                progress: 8,
+                title: '준공 승인 대기',
+                content: "준공 단계 필요 서류를 출력 후 직인을 찍고 업로드 해주세요."
+            },
+            {
+                progress: 9,
+                title: '준공 승인 완료',
+                content: ''
+            },
+        ]
+
+        function setProcesses() {
+            //temp 말고 현재 단계로 넣어주세요
+            let temp = 3
+            const dom = processes.map(process =>
+                `<div class="process">
+                    <div class="info" >
+                        <div class="circle ${process.progress <= temp && 'active'}">${process.progress}</div>
+                        <div class="title">${process.title}</div>
+                    </div >
+                <div class='line idx_${process.progress} ${process.progress < temp && 'active'}'></div>
+                </div >`
+            );
+            document.getElementById("processes").innerHTML = dom.join('')
+        }
+    </script>
+</head>
+
+<body onload="setProcesses()">
+    <main>
+        <header>
+            <h3><span class="name">{{data[1]}}</span>은/는 계약기본정보 입력 단계입니다.</h3>
+            <h3 class="content">업체의 기본 계약 정보를 입력해 주세요.</h3>
+        </header>
+        <section id="processes" class="processes"></section>
+    </main>
+</body>
+
+<!-- 
+<h3><b>{{data[1]}}</b> 계약 건 상세 페이지</h3><br>
+관리번호 : {{data[0]}}<br>
+공사명 : {{data[1]}}<br>
+사업장 : {{data[2]}}<br>
+업체명 : {{data[3]}}<br>
+공사 감독 : {{data[4]}}<br>
+감독 연락처 : {{data[5]}}<br><br> -->
+<!-- 
+{% if progress == 0%}
+<h4>현재 진행 단계 : <b>계약 기본정보 입력</b> 단계입니다.</h4>
+<h5>업체의 기본 계약 정보를 입력해주세요</h5>
+{% elif progress == 1%}
+<h4>현재 진행 단계 : <b>계약 승인 대기</b> 중입니다.</h4>
+<h5>가스공사에서 계약 단계 서류 검토 중입니다.</h5>
+{% elif progress == 2%}
+<h4>현재 진행 단계 : <b>계약 서류 업로드</b> 단계입니다.</h4>
+<h5>계약 단계 필요 서류를 출력 후 직인을 찍고 업로드 해주세요.</h5>
+
+{% elif progress == 3%}
+<h4>현재 진행 단계 : <b>착공 정보 입력</b> 단계입니다.</h4>
+<h5>업체의 착공 단계 정보를 입력해주세요.</h5>
+{% elif progress == 4%}
+<h4>현재 진행 단계 : <b>착공 승인 대기</b> 중입니다.</h4>
+<h5>가스공사에서 착공 단계 서류 검토 중입니다.</h5>
+{% elif progress == 5%}
+<h4>현재 진행 단계 : <b>착공 서류 업로드</b> 단계입니다.</h4>
+<h5>착공 단계 필요 서류를 출력 후 직인을 찍고 업로드 해주세요.</h5>
+
+{% elif progress == 6%}
+<h4>현재 진행 단계 : <b>준공 정보 입력</b> 단계입니다.</h4>
+<h5>업체의 준공 단계 정보를 입력해주세요.</h5>
+{% elif progress == 7%}
+<h4>현재 진행 단계 : <b>준공 승인 대기</b> 중입니다.</h4>
+<h5>가스공사에서 준공 단계 서류 검토 중입니다.</h5>
+{% elif progress == 8%}
+<h4>현재 진행 단계 : <b>준공 승인 대기</b> 중입니다.</h4>
+<h5>준공 단계 필요 서류를 출력 후 직인을 찍고 업로드 해주세요.</h5>
+
+{% elif progress == 9%}
+<h4>현재 진행 단계 : <b>준공 승인 완료</b>되었습니다.</h4>
+{% endif %} -->
 {% endblock %}

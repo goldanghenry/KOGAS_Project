@@ -10,75 +10,89 @@
 <button onclick="location.href='/approval_proc/{{k_data[0]}}';" style="cursor:pointer;">승인</button>
 {% endif %}
 <table>
-    <thead>
-      <tr>
-        <th>단계</th>
-        <th>필요서류</th>
-        <th>첨부파일</th>
-        <th>제출서류 확인하기</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td rowspan='7'><b>공사계약</b></td>
-        <td onclick="window.open('/contract1')" style="cursor:pointer;">1. 간이공사 지시서</td>
-        <td>
-          <input type="file" id="multiFiles1" name="files[]" multiple="multiple"/>
-			    <button id="upload1">Upload1</button><p id="msg1"></p>
-        </td>
-        <td> <img src="/static/contract_dir/{{c_data[0]}}/{{c_data[13]}}" alt="" onclick="window.open(this.src, 'width=100,height=100');" style="cursor:pointer; width: 50px"></td>
-      </tr>
-      <tr>
-        <td onclick="window.open('/contract2')" style="cursor:pointer;">2. 계약이행보증금 지급확약서</td>
-        <td>
-          <input type="file" id="multiFiles2" name="files[]" multiple="multiple"/>
-			    <button id="upload2">Upload2</button><p id="msg2"></p>
-        </td>
-        <td><img src="/static/contract_dir/{{c_data[0]}}/{{c_data[14]}}" alt="" onclick="window.open(this.src, 'width=100,height=100');" style="cursor:pointer; width: 50px"></td>
-      </tr>
-      <tr>
-        <td onclick="window.open('/contract3')" style="cursor:pointer;">3. 하자보증이행각서서</td>
-        <td>
-          <input type="file" id="multiFiles3" name="files[]" multiple="multiple"/>
-			    <button id="upload3">Upload3</button><p id="msg3"></p>
-        </td>
-        <td><img src="/static/contract_dir/{{c_data[0]}}/{{c_data[15]}}" alt="" onclick="window.open(this.src, 'width=100,height=100');" style="cursor:pointer; width: 50px"></td>
-      </tr>
-      <tr>
-        <td onclick="window.open('/contract4')" style="cursor:pointer;">4. 사용인감계</td>
-        <td>
-          <input type="file" id="multiFiles4" name="files[]" multiple="multiple"/>
-			    <button id="upload4">Upload4</button><p id="msg4"></p>
-        </td>
-        <td><img src="/static/contract_dir/{{c_data[0]}}/{{c_data[16]}}" alt="" onclick="window.open(this.src, 'width=100,height=100');" style="cursor:pointer; width: 50px"></td>
-      </tr>
-      <tr>
-        <td onclick="window.open('/contract5')" style="cursor:pointer;">5. 청렴계약이행서약서(업체용)</td>
-        <td>
-          <input type="file" id="multiFiles5" name="files[]" multiple="multiple"/>
-			    <button id="upload5">Upload5</button><p id="msg5"></p>
-        </td>
-        <td><img src="/static/contract_dir/{{c_data[0]}}/{{c_data[17]}}" alt="" onclick="window.open(this.src, 'width=100,height=100');" style="cursor:pointer; width: 50px"></td>
-      </tr>
-      <tr>
-        <td onclick="window.open('/contract6')" style="cursor:pointer;">6. 청렴계약이행서약서(교부용)</td>
-        <td>
-          <input type="file" id="multiFiles6" name="files[]" multiple="multiple"/>
-			    <button id="upload6">Upload6</button><p id="msg6"></p>
-        </td>
-        <td><img src="/static/contract_dir/{{c_data[0]}}/{{c_data[18]}}" alt="" onclick="window.open(this.src, 'width=100,height=100');" style="cursor:pointer; width: 50px"></td>
-      </tr>
-      <tr>
-        <td onclick="window.open('/contract7')" style="cursor:pointer;">7. 청렴계약준수서약서(직원용)</td>
-        <td>
-          <input type="file" id="multiFiles7" name="files[]" multiple="multiple"/>
-			    <button id="upload7">Upload7</button><p id="msg7"></p>
-        </td>
-        <td><img src="/static/contract_dir/{{c_data[0]}}/{{c_data[19]}}" alt="" onclick="window.open(this.src, 'width=100,height=100');" style="cursor:pointer; width: 50px"></td>
-      </tr>
-    </tbody>
-  </table>
-  
+  <thead>
+    <tr>
+      <th>단계</th>
+      <th>필요서류</th>
+      <th>첨부파일</th>
+      <th>제출서류 확인하기</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan='7'><b>공사계약</b></td>
+      <td onclick="window.open('/contract1')" style="cursor:pointer;">1. 간이공사 지시서</td>
+      <td>
+        <input type="file" id="multiFiles1" name="files[]" multiple="multiple" />
+        <button id="upload1" class="cBtn">Upload1</button>
+        <p id="msg1"></p>
+      </td>
+      <td> <img src="/static/contract_dir/{{c_data[0]}}/{{c_data[13]}}" alt=""
+          onclick="window.open(this.src, 'width=100,height=100');" style="cursor:pointer; width: 50px"></td>
+    </tr>
+    <tr>
+      <td onclick="window.open('/contract2')" style="cursor:pointer;">2. 계약이행보증금 지급확약서</td>
+      <td>
+        <input type="file" id="multiFiles2" name="files[]" multiple="multiple" />
+        <button id="upload2" class="cBtn">Upload2</button>
+        <p id="msg2"></p>
+      </td>
+      <td><img src="/static/contract_dir/{{c_data[0]}}/{{c_data[14]}}" alt=""
+          onclick="window.open(this.src, 'width=100,height=100');" style="cursor:pointer; width: 50px"></td>
+    </tr>
+    <tr>
+      <td onclick="window.open('/contract3')" style="cursor:pointer;">3. 하자보증이행각서서</td>
+      <td>
+        <input type="file" id="multiFiles3" name="files[]" multiple="multiple" />
+        <button id="upload3" class="cBtn">Upload3</button>
+        <p id="msg3"></p>
+      </td>
+      <td><img src="/static/contract_dir/{{c_data[0]}}/{{c_data[15]}}" alt=""
+          onclick="window.open(this.src, 'width=100,height=100');" style="cursor:pointer; width: 50px"></td>
+    </tr>
+    <tr>
+      <td onclick="window.open('/contract4')" style="cursor:pointer;">4. 사용인감계</td>
+      <td>
+        <input type="file" id="multiFiles4" name="files[]" multiple="multiple" />
+        <button id="upload4" class="cBtn">Upload4</button>
+        <p id="msg4"></p>
+      </td>
+      <td><img src="/static/contract_dir/{{c_data[0]}}/{{c_data[16]}}" alt=""
+          onclick="window.open(this.src, 'width=100,height=100');" style="cursor:pointer; width: 50px"></td>
+    </tr>
+    <tr>
+      <td onclick="window.open('/contract5')" style="cursor:pointer;">5. 청렴계약이행서약서(업체용)</td>
+      <td>
+        <input type="file" id="multiFiles5" name="files[]" multiple="multiple" />
+        <button id="upload5" class="cBtn">Upload5</button>
+        <p id="msg5"></p>
+      </td>
+      <td><img src="/static/contract_dir/{{c_data[0]}}/{{c_data[17]}}" alt=""
+          onclick="window.open(this.src, 'width=100,height=100');" style="cursor:pointer; width: 50px"></td>
+    </tr>
+    <tr>
+      <td onclick="window.open('/contract6')" style="cursor:pointer;">6. 청렴계약이행서약서(교부용)</td>
+      <td>
+        <input type="file" id="multiFiles6" name="files[]" multiple="multiple" />
+        <button id="upload6" class="cBtn">Upload6</button>
+        <p id="msg6"></p>
+      </td>
+      <td><img src="/static/contract_dir/{{c_data[0]}}/{{c_data[18]}}" alt=""
+          onclick="window.open(this.src, 'width=100,height=100');" style="cursor:pointer; width: 50px"></td>
+    </tr>
+    <tr>
+      <td onclick="window.open('/contract7')" style="cursor:pointer;">7. 청렴계약준수서약서(직원용)</td>
+      <td>
+        <input type="file" id="multiFiles7" name="files[]" multiple="multiple" />
+        <button id="upload7" class="cBtn">Upload7</button>
+        <p id="msg7"></p>
+      </td>
+      <td><img src="/static/contract_dir/{{c_data[0]}}/{{c_data[19]}}" alt=""
+          onclick="window.open(this.src, 'width=100,height=100');" style="cursor:pointer; width: 50px"></td>
+    </tr>
+  </tbody>
+</table>
+
 {% endblock %}
 {% block js %}
 
