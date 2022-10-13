@@ -5,8 +5,9 @@ import sqlite3
 from os import path
 import os
 from werkzeug.utils import secure_filename
-load_dotenv()
+from datetime import datetime as dt
 
+load_dotenv()
 ROOT = path.dirname(path.realpath(__file__))
 app = Flask(__name__)
 GOOGLE_GMAIL_ADDR = os.getenv("GOOGLE_GMAIL_ADDR")
@@ -27,7 +28,6 @@ app.config["MAIL_PASSWORD"] = GOOGLE_GMAIL_PW
 app.config["MAIL_USE_TLS"] = False
 app.config["MAIL_USE_SSL"] = True
 mail = Mail(app)
-
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 # ------------------------------------------ Page route ------------------------------------------
@@ -544,7 +544,6 @@ def logout():
 def createConstruction_proc():
     # 폼에서 가져오기 
     if request.method == 'POST':
-        c0 = request.form['C0']
         c1 = request.form['C1']
         c2 = request.form['C2']
         c3 = request.form['C3']
@@ -555,25 +554,41 @@ def createConstruction_proc():
         c8 = request.form['C8']
         c10 = request.form['C10']
         c11 = request.form['C11']
-        c12 = request.form['C12']
+        # c12 = request.form['C12']
         c13 = request.form['C13']
-        c14 = request.form['C14']
+        # c14 = request.form['C14']
         c15 = request.form['C15']
-        c16 = request.form['C16']
+        # c16 = request.form['C16']
         c17 = request.form['C17']
         c18 = request.form['C18']
         c19 = request.form['C19']
         c20 = request.form['C20']
         c21 = request.form['C21']
         
+        # DB 연결
+        con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
+        cur = con.cursor()
+        sql = "SELECT contractNum FROM constructionList"
+        cur.execute(sql)
+        result = cur.fetchall() 
+
+        # 관리 번호 생성
+        today = dt.today()      # 오늘 날짜
+        num = len(result)+1
+        num_str = str(num)
+        num_str = num_str.zfill(4)    
+        c0 = str(today.year)+str(c2)+num_str
+
+        # 사업장 코드 dictionary
+        code_dic = {'none':'선택','AZ':'본사','BZ':'가스연구원','CZ':'평택기지본부','HZ':'인천기지본부','RZ':'통영기지본부','SZ':'삼척기지본부','PZ':'제주LNG본부','EZ':'서울지역본부','DZ':'경기지역본부','FZ':'대전충청지역본부','KZ':'대구경북지역본부','IZ':'광주전남지역본부','JZ':'부산경남지역본부','VZ':'강원지역본부','XZ':'전북지역본부','LZ':'인천지역본부','WZ':'중부안전건설단','YZ':'남부안전건설단','ZZ':'당진기지안전건설단'}
+
+
     # DB에 발주기관 자료 입력
     sql = """
         INSERT INTO constructionList(contractNum, title, department, company,supervisor,s_contact,contractAmount,deposit_rate,fault_rate,progress,s_position,s_email,class_code,budget_course,start_date,contract_completion,real_completion,summary,company2,company2_amount,company3,company3_amount)
         values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
     """
-    con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
-    cur = con.cursor()
-    cur.execute(sql, (c0,c1,c2,c3,c4,c5,c6,c7,c8,0,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,c21,))
+    cur.execute(sql, (c0,c1,code_dic[c2],c3,c4,c5,c6,c7,c8,0,c10,c11,'none',c13,'none',c15,'none',c17,c18,c19,c20,c21,))
     con.commit()
     flash("공사 생성 완료")
     return redirect(url_for("index"))

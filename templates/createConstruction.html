@@ -10,21 +10,42 @@
                 <b>1. 공사 구분</b>
             </div>
             <div class="card-body">
-                <div class="inputBox">
-                    <p>계약번호<span>*</span></p>
+                <!-- <div class="inputBox">
+                    <p>사업장코드</p> <span>*</span></p>
                     <input type="text" id="C0" name="C0" placeholder="계약번호" required>
-                </div>
+                </div> -->
                 <div class="inputBox">
                     <p>공사명<span>*</span></p>
                     <input type="text" id="C1" name="C1" placeholder="공사명" required>
                 </div>
                 <div class="inputBox">
-                    <p>사업장<span>*</span></p>
-                    <input type="text" id="C2" name="C2" placeholder="사업장" required>
-                </div>
-                <div class="inputBox">
                     <p>업체명<span>*</span></p>
                     <input type="text" id="C3" name="C3" placeholder="업체명" required>
+                </div>
+                <div class="inputBox">
+                    <p>사업장<span>*</span></p>
+                    <select name="C2" id="C2">
+                        <option value="none">=== 선택 ===</option>
+                        <option value="AZ">본사</option>
+                        <option value="BZ">가스연구원</option>
+                        <option value="CZ">평택기지본부</option>
+                        <option value="HZ">인천기지본부</option>
+                        <option value="RZ">통영기지본부</option>
+                        <option value="SZ">삼척기지본부</option>
+                        <option value="PZ">제주LNG본부</option>
+                        <option value="EZ">서울지역본부</option>
+                        <option value="DZ">경기지역본부</option>
+                        <option value="FZ">대전충청지역본부</option>
+                        <option value="KZ">대구경북지역본부</option>
+                        <option value="IZ">광주전남지역본부</option>
+                        <option value="JZ">부산경남지역본부</option>
+                        <option value="VZ">강원지역본부</option>
+                        <option value="XZ">전북지역본부</option>
+                        <option value="LZ">인천지역본부</option>
+                        <option value="WZ">중부안전건설단</option>
+                        <option value="YZ">남부안전건설단</option>
+                        <option value="ZZ">당진기지안전건설단</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -59,26 +80,26 @@
                 <b>3. 공사 내용</b>
             </div>
             <div class="card-body">
-                <div class="inputBox">
+                <!-- <div class="inputBox">
                     <p>분류기호<span>*</span></p>
                     <input type="text" id="C12" name="C12" placeholder="분류기호" required>
-                </div>
+                </div> -->
                 <div class="inputBox">
                     <p>예산과목<span>*</span></p>
                     <input type="text" id="C13" name="C13" placeholder="예산과목" required>
                 </div>
-                <div class="inputBox">
+                <!-- <div class="inputBox">
                     <p>착공일<span>*</span></p>
                     <input type="text" id="C14" name="C14" placeholder="착공일" required>
-                </div>
+                </div> -->
                 <div class="inputBox">
                     <p>계약 준공일<span>*</span></p>
                     <input type="text" id="C15" name="C15" placeholder="ex) 2022-10-12" required>
                 </div>
-                <div class="inputBox">
+                <!-- <div class="inputBox">
                     <p>실 준공일<span>*</span></p>
                     <input type="text" id="C16" name="C16" placeholder="ex) 2022-12-12" required>
-                </div>
+                </div> -->
                 <div class="inputBox">
                     <p>공사 개요 및 시방<span>*</span></p>
                     <textarea id="C17" name="C17" required></textarea>
@@ -91,21 +112,21 @@
             </div>
             <div class="card-body">
                 <div class="inputBox">
-                    <p>계약금액&nbsp;(VAT별도)<span>*</span></p>
+                    <p>견적금액&nbsp;(VAT별도)<span>*</span></p>
                     <input type="text" id="C22" name="C22" placeholder="업체명1" class="temp" required>
                     <section class="moneyInputs">
                         <input type="number" id="C6" name="C6" placeholder="숫자만 입력" required>
                     </section>
                 </div>
                 <div class="inputBox">
-                    <p>계약금액&nbsp;(VAT별도)<span>*</span></p>
+                    <p>견적금액&nbsp;(VAT별도)<span>*</span></p>
                     <input type="text" id="C18" name="C18" placeholder="업체명2" class="temp" required>
                     <section class="moneyInputs">
                         <input type="number" id="C19" name="C19" placeholder="숫자만 입력" required>
                     </section>
                 </div>
                 <div class="inputBox">
-                    <p>계약금액&nbsp;(VAT별도)<span>*</span></p>
+                    <p>견적금액&nbsp;(VAT별도)<span>*</span></p>
                     <input type="text" id="C20" name="C20" placeholder="업체명3" class="temp" required>
                     <section class="moneyInputs">
                         <input type="number" id="C21" name="C21" placeholder="숫자만 입력" required>
