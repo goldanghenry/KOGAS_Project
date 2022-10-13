@@ -6,9 +6,6 @@
 
 {% block main %}
 <h4><b>필요서류 확인 및 업로드</b></h4><br>
-{% if login == True and k_data[0][9]==1%}
-<button onclick="location.href='/approval_proc/{{k_data[0]}}';" style="cursor:pointer;">승인</button>
-{% endif %}
 <table>
   <thead>
     <tr>
@@ -92,7 +89,11 @@
     </tr>
   </tbody>
 </table>
-
+{% if login == True and progress==1%}
+<div style="margin: 10px ;text-align : right;">
+  <button class="cBtn"  onclick="location.href='/approval_proc/{{k_data[0]}}';" style="cursor:pointer;">승인</button>
+</div>
+{% endif %}
 {% endblock %}
 {% block js %}
 
