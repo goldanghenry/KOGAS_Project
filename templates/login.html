@@ -32,16 +32,14 @@
                     <button type="button" class="togglebtn" onclick="login()">LOG IN</button>
                     <button type="button" class="togglebtn" onclick="register()">REGISTER</button>
                 </div>
-                <div class="social-icons">
-                    <img src="/static/img/fb.png" alt="facebook">
-                    <img src="/static/img/tw.png" alt="twitter">
-                    <img src="/static/img/gl.png" alt="google">
-                </div>
+                    <div style="text-align : center;">
+                        <img src="/static/img/cip_05_09.jpg" alt="KOGAS" style="padding-bottom: 150px;"/>
+                   </div>
                 <form method = "POST" id="login_proc" action="{{url_for('login_proc')}}" class="input-group">
                     <input type="text" id="loginId" name="loginId"class="input-field" placeholder="Enter ID">
                     <input type="password" id="loginPw" name="loginPw" class="input-field" placeholder="Enter Password">
                     <input type="checkbox" class="checkbox"><span>Remember Password</span>
-                    <button type="submit" class="submit">Login</button>
+                    <button type="submit" class="submit"><b>Login</b></button>
                 </form>
 
                 <form method= "POST" id="register" action="{{url_for('register')}}" class="input-group">
@@ -50,7 +48,7 @@
                     <input type="password" id="registerPw" name="registerPw" class="input-field" placeholder="Enter Password">
                     <input type="password" id="registerCPw" name="registerCPw" class="input-field" placeholder="Confirm Password">
                     <input type="text" id="managementKEY" name="managementKEY" class="input-field" placeholder="Enter management KEY">
-                    <button type="submit" class="submit">REGISTER</button>
+                    <button type="submit" class="submit"><b>REGISTER</b></button>
                 </form>
             </div>
         </div>

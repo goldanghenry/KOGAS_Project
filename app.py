@@ -106,6 +106,20 @@ def goto(id):
         session['contractNum'] = id
         return render_template('pre.html')
 
+# 7. 업체 로그인
+@app.route("/go/<id>")
+def go(id):
+    # 관리자 로그인이 되어 있으면 myPage로 이동
+    if 'userName' in session:
+        # 세션에 contractNum 추가
+        session['contractNum'] = id
+        return redirect(url_for("myPage") )
+    
+    # 관리자 로그인이 되어있지 않으면 업체 로그인 페이지로 이동
+    else:
+        session['contractNum'] = id
+        return render_template('pre.html')
+
 # 5. 공사생성
 @app.route('/createConstruction')
 def createConstruction():
@@ -122,9 +136,8 @@ def createConstruction():
 def login():
     return render_template('login.html')
 
-# 7. 업체 로그인
-@app.route("/pre/<id>")
-def pre(id):
+@app.route("/pr/<id>")
+def pr(id):
     # 관리자 로그인이 되어 있으면 myPage로 이동
     if 'userName' in session:
         # 세션에 contractNum 추가
@@ -134,7 +147,13 @@ def pre(id):
     # 관리자 로그인이 되어있지 않으면 업체 로그인 페이지로 이동
     else:
         session['contractNum'] = id
-        return render_template('pre.html')
+        return redirect(url_for("pre"))
+
+
+# 7. 업체 로그인
+@app.route("/pre")
+def pre():
+    return render_template('pre.html')
 
 # 8. 업체 메인 페이지
 @app.route('/myPage')

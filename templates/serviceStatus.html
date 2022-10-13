@@ -44,7 +44,7 @@
                     <td onclick="location.href='/goto/{{R[0]}}';" style="cursor:pointer;">{{R[3]}}</td>
                     <td onclick="location.href='/goto/{{R[0]}}';" style="cursor:pointer;">{{process[R[9]]}}</td>
                     <td>
-                        <button onclick="location.href='/approval_proc/{{R[0]}}';" style="cursor:pointer;">승인</button>
+                        <button class="cBtn" onclick="location.href='/approval_proc/{{R[0]}}';" style="cursor:pointer;">승인</button>
                     </td>
                 </tr>
                 {% endfor %}
@@ -84,12 +84,12 @@
             <tbody>
                 {% for A in A_data %}
                 <tr>
-                    <td onclick="location.href='/goto/{{A[0]}}';" style="cursor:pointer;">{{A[12]}}</td>
-                    <td onclick="location.href='/goto/{{A[0]}}';" style="cursor:pointer;">{{A[0]}}</td>
-                    <td onclick="location.href='/goto/{{A[0]}}';" style="cursor:pointer;">{{A[1]}}</td>
-                    <td onclick="location.href='/goto/{{A[0]}}';" style="cursor:pointer;">{{A[2]}}</td>
-                    <td onclick="location.href='/goto/{{A[0]}}';" style="cursor:pointer;">{{A[3]}}</td>
-                    <td onclick="location.href='/goto/{{A[0]}}';" style="cursor:pointer;">{{process[A[9]]}}</td>
+                    <td onclick="location.href='/go/{{A[0]}}';" style="cursor:pointer;">{{A[12]}}</td>
+                    <td onclick="location.href='/go/{{A[0]}}';" style="cursor:pointer;">{{A[0]}}</td>
+                    <td onclick="location.href='/go/{{A[0]}}';" style="cursor:pointer;">{{A[1]}}</td>
+                    <td onclick="location.href='/go/{{A[0]}}';" style="cursor:pointer;">{{A[2]}}</td>
+                    <td onclick="location.href='/go/{{A[0]}}';" style="cursor:pointer;">{{A[3]}}</td>
+                    <td onclick="location.href='/go/{{A[0]}}';" style="cursor:pointer;">{{process[A[9]]}}</td>
                 </tr>
                 {% endfor %}
             </tbody>
