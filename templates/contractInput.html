@@ -7,7 +7,7 @@
 <ol class="breadcrumb mb-4">
     <li>계약 단계에 필요한 정보를 채워주세요!</li>
 </ol>
-<form>
+<form method="POST" id="contractInput_proc" action="{{url_for('contractInput_proc')}}">
     <section>
         <div class="card mb-4">
             <div class="card-header">
@@ -39,41 +39,41 @@
             <div class="card-body">
                 <div class="inputBox">
                     <p>계약일</p>
-                    <input value={{c_data[1]}}>
+                    <input name="d1" value="{{c_data[1]}}" required>
                 </div>
                 <div class="inputBox">
                     <p>공사 시작일</p>
-                    <input value={{c_data[2]}}>
+                    <input name="d2" value="{{c_data[2]}}" required>
                 </div>
                 <div class="inputBox">
                     <p>공사 종료일</p>
-                    <input value={{c_data[3]}}>
+                    <input name="d3" value="{{c_data[3]}}" required>
                 </div>
                 <div class="inputBox">
                     <p>대표자 성명</p>
-                    <input value={{c_data[4]}}>
+                    <input name="d4" value="{{c_data[4]}}" required>
                 </div>
                 <div class="inputBox">
                     <p>사업자등록번호</p>
-                    <input value={{c_data[5]}}>
+                    <input name="d5" value="{{c_data[5]}}" required>
                 </div>
                 <div class="inputBox">
                     <p>법인등록번호</p>
-                    <input value={{c_data[6]}}>
+                    <input name="d6" value="{{c_data[6]}}" required>
                 </div>
                 <div class="inputBox">
                     <p>업체 연락처</p>
-                    <input value={{c_data[7]}}>
+                    <input name="d7" value="{{c_data[7]}}" required>
                 </div>
                 <div class="inputBox">
                     <p>팩스번호</p>
-                    <input value={{c_data[8]}}>
+                    <input name="d8" value="{{c_data[8]}}" required>
                 </div>
                 <div class="inputBox">
                     <p>업체 주소</p>
-                    <input value={{c_data[9]}}>
+                    <input name="d9" value="{{c_data[9]}}" required>
                 </div>
-                <div class="inputBox">
+                <!-- <div class="inputBox">
                     <p>은행명</p>
                     <input value={{c_data[10]}}>
                 </div>
@@ -84,12 +84,11 @@
                 <div class="inputBox">
                     <p>계좌번호</p>
                     <input value={{c_data[12]}}>
-                </div>
+                </div> -->
             </div>
         </div>
     </section>
-    <a href="{{url_for('contractPhase')}}" style="margin: 0 auto;"><button type="button" onclick="saveContractInput()"
-            class="formBtn">저장하기</button></a>
+    <button type="submit" class="formBtn" style="margin: 0 auto";>저장하기</button>
 </form>
 
 <!-- 업체 정보 입력 -->

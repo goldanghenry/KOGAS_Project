@@ -624,9 +624,9 @@ def contractInput_proc():
         d7 = request.form['d7']
         d8 = request.form['d8']
         d9 = request.form['d9']
-        d10 = request.form['d10']
-        d11 = request.form['d11']
-        d12 = request.form['d12']
+        # d10 = request.form['d10']
+        # d11 = request.form['d11']
+        # d12 = request.form['d12']
 
     contract_data = session.get('contractNum')
     con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
@@ -639,7 +639,7 @@ def contractInput_proc():
         sql = """
             UPDATE contractList SET date=?,start=?,end=?,name=?,businessNum=?,corporationNum=?,c_contact=?,fax=?,addr=?,bankName=?,accountHolder=?,accountNum=? WHERE contractNum=?
         """
-        cur.execute(sql, (d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,contract_data,))
+        cur.execute(sql, (d1,d2,d3,d4,d5,d6,d7,d8,d9,'none','none','none',contract_data,))
         con.commit()
         sql = "UPDATE constructionList SET progress=? WHERE contractNum=?"
         cur.execute(sql, (1, contract_data,))
@@ -658,7 +658,7 @@ def contractInput_proc():
         링크 : https://kogasonestop.pythonanywhere.com/serviceStatus
         """
         mail.send(msg)
-        return redirect(url_for("contractPhase"))
+        return redirect(url_for("myPage"))
 
     else:
         # 없다면 insert
@@ -666,7 +666,7 @@ def contractInput_proc():
             INSERT INTO contractList(contractNum, date, start, end, name, businessNum,corporationNum,c_contact,fax,addr,bankName,accountHolder,accountNum )
             values(?,?,?,?,?, ?,?,?,?,?, ?,?,?)
         """
-        cur.execute(sql, (contract_data,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,))
+        cur.execute(sql, (contract_data,d1,d2,d3,d4,d5,d6,d7,d8,d9,'none','none','none',))
         con.commit()
 
         # pregress update
@@ -687,7 +687,7 @@ def contractInput_proc():
         링크 : https://kogasonestop.pythonanywhere.com/serviceStatus
         """
         mail.send(msg)
-        return redirect(url_for("contractPhase"))
+        return redirect(url_for("myPage"))
 
 
 # 7. 계약서 수정시 DB에 입력 처리
