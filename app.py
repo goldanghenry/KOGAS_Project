@@ -43,7 +43,7 @@ def index():
     list = sorted(list, key=lambda x : x[0], reverse=True)
     session['logFlag_b'] = False
     session['contractNum'] = False
-    return render_template('index.html', login=session.get('logFlag'), constructionList=list)
+    return render_template('index.html',supervisor=session.get('supervisor'), login=session.get('logFlag'), constructionList=list)
 
 # 2. 개요
 @app.route('/summary')
@@ -75,7 +75,7 @@ def serviceStatus():
         
         process = ['신규 생성','계약 입력 완료','계약 승인 완료','계약서류 업로드 완료','착공 입력 완료','착공 승인 완료','착공서류 업로드 완료','준공 입력 완료','준공 승인 완료','준공 서류 업로드 완료']
 
-        return render_template('serviceStatus.html', login=session.get('logFlag'), A_data=A_data, R_data=R_data,process=process)
+        return render_template('serviceStatus.html',supervisor=session.get('supervisor'), login=session.get('logFlag'), A_data=A_data, R_data=R_data,process=process)
     # 로그인 하지 않으면 로그인 페이지로 이동
     else:
         flash("해당 페이지는 관리자 로그인이 필요합니다.")
@@ -125,7 +125,7 @@ def go(id):
 def createConstruction():
     # 로그인체크
     if 'userName' in session:
-        return render_template('createConstruction.html', login=session.get('logFlag'))
+        return render_template('createConstruction.html', login=session.get('logFlag'), supervisor=session.get('supervisor'))
     # 로그인 하지 않으면 로그인 페이지로 이동
     else:
         flash("해당 페이지는 관리자 로그인이 필요합니다.")
@@ -167,19 +167,11 @@ def myPage():
         cur1.execute(sql1, (session.get('contractNum'),))
         data_ = cur1.fetchone()
         session['progress'] = data_[9]
-        return render_template('myPage.html', login=session.get('logFlag'), data=data_, progress = session.get('progress'))
+        return render_template('myPage.html', login=session.get('logFlag'), data=data_, progress = session.get('progress'), supervisor=session.get('supervisor'))
     else:
         flash("업체 로그인이 필요합니다")
         return render_template('pre.html')
 # 9. 계약 단계
-# 개요
-@app.route('/contractPhase')
-def contractPhase():
-    if 'userName' in session or session.get('logFlag_b'):
-        return render_template('contractPhase.html', login=session.get('logFlag'), progress = session.get('progress'))
-    else:
-        flash("업체 로그인이 필요합니다")
-        return redirect(url_for("pre"))
 # 기본 정보 입력
 @app.route('/contractInput')
 def contractInput():
@@ -201,11 +193,15 @@ def contractInput():
         # DB에서 현재 상태 출력
         if c_data and k_data[9] >2:
             flash('계약 정보를 수정하면, 가스공사에 변경 승인을 재요청합니다.')
-        return render_template('contractInput.html', login=session.get('logFlag'), c_data=c_data, k_data=k_data, progress = session.get('progress'),data1=data1 )
+        return render_template('contractInput.html', login=session.get('logFlag'), c_data=c_data, k_data=k_data, progress = session.get('progress'),data=data1, supervisor=session.get('supervisor') )
     else:
         flash("업체 로그인이 필요합니다")
         return redirect(url_for("pre"))
 
+@app.route('/forbidden')
+def forbidden():
+    flash('감독 승인 전입니다.')
+    return redirect(url_for("myPage"))
         
 # 필요 서류 다운 및 업로드
 @app.route('/contractTable')
@@ -234,13 +230,13 @@ def contractTable():
             else: 
                 session['progress'] = k_data[9]
             
-            return render_template('contractTable.html',login=session.get('logFlag'), progress = session.get('progress'), c_data=c_data, k_data=k_data)
+            return render_template('contractTable.html',login=session.get('logFlag'), progress = session.get('progress'), c_data=c_data, k_data=k_data, data=k_data,supervisor=session.get('supervisor'))
         elif 'userName' in session:
             sql = "SELECT * FROM constructionList where contractNum =?"
             cur.execute(sql, (contract_data,))
             k_data = cur.fetchone()
             flash("주의!! 업체 기본정보 입력전입니다!")
-            return render_template('contractTable.html',login=session.get('logFlag'), progress = session.get('progress'), c_data=c_data, k_data=k_data, data=k_data)
+            return render_template('contractTable.html',login=session.get('logFlag'), progress = session.get('progress'), c_data=c_data, k_data=k_data, data=k_data, supervisor=session.get('supervisor'))
         else:
             flash("계약단계의 업체 기본정보를 먼저 입력해주세요!")
             return redirect(url_for("contractInput"))
@@ -409,60 +405,6 @@ def contract7():
         flash("계약단계의 업체 기본정보 입력전입니다.")
         return redirect(url_for("contractInput"))
 
-# 10. 착공 단계
-# 개요
-@app.route('/startPhase')
-def startPhase():
-    if 'userName' in session or session.get('logFlag_b'):
-        return render_template('startPhase.html',login=session.get('logFlag'), progress = session.get('progress'))
-    else:
-        flash("업체 로그인이 필요합니다")
-        return redirect(url_for("pre"))
-# 기본 정보 입력
-@app.route('/startPhaseInput')
-def startPhaseInput():
-    if 'userName' in session or session.get('logFlag_b'):
-        return render_template('startPhaseInput.html',login=session.get('logFlag'), progress = session.get('progress'))
-    else:
-        flash("업체 로그인이 필요합니다")
-        return redirect(url_for("pre"))
-# 필요 서류 다운 및 업로드
-@app.route('/startPhaseTable')
-def startPhaseTable():
-    if 'userName' in session or session.get('logFlag_b'):
-        return render_template('startPhaseTable.html',login=session.get('logFlag'), progress = session.get('progress'))
-    else:
-        flash("업체 로그인이 필요합니다")
-        return redirect(url_for("pre"))
-# 계약서
-
-# 11. 준공 단계
-# 개요
-@app.route('/completionPhase')
-def completionPhase():
-    if 'userName' in session or session.get('logFlag_b'):
-        return render_template('completionPhase.html',login=session.get('logFlag'), progress = session.get('progress'))
-    else:
-        flash("업체 로그인이 필요합니다")
-        return redirect(url_for("pre"))
-# 기본 정보 입력
-@app.route('/completionInput')
-def completionInput():
-    if 'userName' in session or session.get('logFlag_b'):
-        return render_template('completionInput.html',login=session.get('logFlag'), progress = session.get('progress'))
-    else:
-        flash("업체 로그인이 필요합니다")
-        return redirect(url_for("pre"))
-# 필요 서류 다운 및 업로드
-@app.route('/completionTable')
-def completionTable():
-    if 'userName' in session or session.get('logFlag_b'):
-        return render_template('completionTable.html',login=session.get('logFlag'), progress = session.get('progress'))
-    else:
-        flash("업체 로그인이 필요합니다")
-        return redirect(url_for("pre"))
-# 계약서
-
 # ------------------------------------------ function ------------------------------------------
 # 관리자 회원가입 처리
 @app.route('/register', methods=['GET', 'POST'])
@@ -551,6 +493,11 @@ def login_proc():
         for rs in rows:
             # 로그인 성공
             if loginId == rs[1] and loginPw == rs[3]:
+
+                sql = "SELECT supervisor FROM constructionList where start_date=?"
+                cur.execute(sql, (loginId,))
+                supervisor = cur.fetchone()
+                session['supervisor'] = supervisor+"님"
                 session['userName'] = loginId
                 session['logFlag'] = True
                 return redirect(url_for("serviceStatus"))
@@ -737,9 +684,9 @@ def postmethod():
 def allowed_file(filename):
 	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 	
-@app.route('/')
-def upload_form():
-	return render_template('file-upload.html')
+# @app.route('/')
+# def upload_form():
+# 	return render_template('file-upload.html')
 
 @app.route('/python-flask-files-upload', methods=['POST'])
 def upload_file():
@@ -785,32 +732,3 @@ def upload_file():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-# 메인에서 로그인 체크하는 부분
-# if 'userName' in session:
-#         # 공사리스트 가져오기
-#         con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
-#         cur = con.cursor()
-#         sql = f"SELECT * FROM constructionList"
-#         cur.execute(sql)
-#         list = cur.fetchall()
-#         list = sorted(list, key=lambda x : x[0], reverse=True)
-#         return render_template('index.html', login=session.get('logFlag'), constructionList=list, lightMode = session.get('light'))
-
-#     # 로그인 하지 않으면 로그인 페이지로 이동
-#     else:
-#         flash("해당 페이지는 관리자 로그인이 필요합니다.")
-#         return redirect(url_for("login"))
-
-
-# # 사이드바 테마 변경 처리
-# @app.route('/layout-sidenav-light')
-# def light():
-#     if 'light' in session:
-#         if session['light'] == True:
-#             session['light'] = False
-#         else:
-#             session['light'] = True
-#     else:
-#         session['light'] = True
-#     return redirect(url_for("index"))

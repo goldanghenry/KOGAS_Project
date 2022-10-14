@@ -102,7 +102,11 @@
 
 9)progress(진행관리)
 
-
+3. 계약 단계 : contractList
+0)contractNum(계약번호)    1)date(계약일)    2)strat(공사시작)    3)end(공사끝)    4)name(대표자 성명)
+5)businessNum(사업자등록번호)    6)corporationNum(법인등록번호)    7)c_contact(업체 연락처)
+8)fax(팩스번호)    9)addr(업체 주소)    10)bankName(은행명)    11)accountHolder(예금주명)		
+12)accountNum(계좌번호)    13)Upload1 14)Upload2  15)Upload3  16)Upload4  17)Upload5  18)Upload6  17)Upload7
 
 // progress 단계
 0-계약준비 : 가스공사에서 신규생성
@@ -119,11 +123,7 @@
 8-준공 승인 완료 : 가스공사에서 착공 서류 확인 및 승인(7->8)<br>
 9-준공 서류 업로드 완료(8->9)<br><br>
 
-3. 계약 단계 : contractList
-0)contractNum(계약번호)    1)date(계약일)    2)strat(공사시작)    3)end(공사끝)    4)name(대표자 성명)
-5)businessNum(사업자등록번호)    6)corporationNum(법인등록번호)    7)c_contact(업체 연락처)
-8)fax(팩스번호)    9)addr(업체 주소)    10)bankName(은행명)    11)accountHolder(예금주명)		
-12)accountNum(계좌번호)    13)Upload1 14)Upload2  15)Upload3  16)Upload4  17)Upload5  18)Upload6  17)Upload7
+
 
 4. 착공 단계
 5. 준공 단계

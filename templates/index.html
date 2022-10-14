@@ -38,8 +38,17 @@
         <a class="navbar-brand ps-3" href="{{ url_for('index') }}">
             간이공사 원스톱 서비스 </a>
         <!-- Navbar Search-->
-        
         <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+
+            <!-- 유저 아이디  -->
+            {% if login == True %}
+            <a href="{{ url_for('serviceStatus') }}" class="cBtn" style="background-color:cadetblue ;">{{supervisor}}</a>
+            {% endif %}
+
+            <!-- My Page 이동 링크 -->
+
+
+
             {% if login == True %}
             <a href="{{ url_for('logout') }}"><button class="cBtn">로그아웃</button></a>
             {% else %}
@@ -73,7 +82,7 @@
                     <div class="nav">
 
                         <!-- HOME -->
-                        <div class="sb-sidenav-menu-heading">Home</div>
+                        <!-- <div class="sb-sidenav-menu-heading">Home</div> -->
                         <a class="nav-link" href="#">공지사항</a>
                         <!-- <a class="nav-link" href="{{ url_for('index') }}">공지사항항</a> -->
                         <a class="nav-link" href="{{ url_for('summary') }}">개요</a>
