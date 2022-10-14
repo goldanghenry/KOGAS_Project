@@ -36,6 +36,7 @@
             <tbody>
                 {% for R in R_data %}
                 <!-- 해당 공사 상세페이지로 이동 -->
+                {% if R[9] == 1%}
                 <tr>
                     <td onclick="location.href='/goto/{{R[0]}}';" style="cursor:pointer;">{{R[12]}}</td>
                     <td onclick="location.href='/goto/{{R[0]}}';" style="cursor:pointer;">{{R[0]}}</td>
@@ -47,6 +48,19 @@
                         <button class="cBtn" onclick="location.href='/approval_proc/{{R[0]}}';" style="cursor:pointer;">승인</button>
                     </td>
                 </tr>
+                {% else %}
+                <tr>
+                    <td onclick="location.href='/go1/{{R[0]}}';" style="cursor:pointer;">{{R[12]}}</td>
+                    <td onclick="location.href='/go1/{{R[0]}}';" style="cursor:pointer;">{{R[0]}}</td>
+                    <td onclick="location.href='/go1/{{R[0]}}';" style="cursor:pointer;">{{R[1]}}</td>
+                    <td onclick="location.href='/go1/{{R[0]}}';" style="cursor:pointer;">{{R[2]}}</td>
+                    <td onclick="location.href='/go1/{{R[0]}}';" style="cursor:pointer;">{{R[3]}}</td>
+                    <td onclick="location.href='/go1/{{R[0]}}';" style="cursor:pointer;">{{process[R[9]]}}</td>
+                    <td>
+                        <button class="cBtn" onclick="location.href='/approval_proc/{{R[0]}}';" style="cursor:pointer;">승인</button>
+                    </td>
+                </tr>
+                {% endif %}
                 {% endfor %}
             </tbody>
         </table>

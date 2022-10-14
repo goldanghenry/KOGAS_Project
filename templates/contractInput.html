@@ -1,8 +1,8 @@
 {% extends "myPage.html" %}
-{% block main %}
+{% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
-
-
+{% endblock %}
+{% block main %}
 <h1 class="mt-4" style="text-align:left;"><b>기본정보 입력하기</b></h1>
 <ol class="breadcrumb mb-4">
     <li>계약 단계에 필요한 정보를 채워주세요!</li>
@@ -19,8 +19,12 @@
                     <input value="{{k_data[0]}}" disabled>
                 </div>
                 <div class="inputBox">
-                    <p>공사명</p>
+                    <p>계약명</p>
                     <input value="{{k_data[1]}}" disabled>
+                </div>
+                <div class="inputBox">
+                    <p>개요 및 시방</p>
+                    <textarea disabled>{{k_data[17]}}</textarea>
                 </div>
                 <div class="inputBox">
                     <p>업체명</p>
@@ -29,6 +33,22 @@
                 <div class="inputBox">
                     <p>계약금액(VAT 제외)</p>
                     <input value="{{data1}}" disabled>
+                </div>
+                <div class="inputBox">
+                    <p>감독(명)</p>
+                    <input value="{{k_data[4]}}" disabled>
+                </div>
+                <div class="inputBox">
+                    <p>감독직위</p>
+                    <input value="{{k_data[10]}}" disabled>
+                </div>
+                <div class="inputBox">
+                    <p>연락처</p>
+                    <input value="{{k_data[5]}}" disabled>
+                </div>
+                <div class="inputBox">
+                    <p>감독 이메일</p>
+                    <input value="{{k_data[11]}}" disabled>
                 </div>
             </div>
         </div>
@@ -88,94 +108,15 @@
             </div>
         </div>
     </section>
+    {% if update == True %}
+    <button type="submit" class="formBtn" style="margin: 0 auto";>수정하기</button>
+    {% else %}
     <button type="submit" class="formBtn" style="margin: 0 auto";>저장하기</button>
+    {% endif %}
 </form>
 
 {% endblock %}
 {% block js %}
-<script type="text/javascript">
-    // @breif contenteditable 속성을 가진경우
-    contents = document.getElementsByClassName("rowColumn");
-    document.addEventListener("DOMContentLoaded", function () {
-        // @breif rowColumn 클래스의 갯수 만큼 반복문을 실행한다.
-        Array.from(contents).forEach(function (content) {
-            // @breif 마우스로 해당영역을 더블클릭 한경우
-            content.addEventListener("dblclick", function (event) {
-                // @breif 전체 테이블 컬럼( td > p )에서 현재 사용중인 값의 존재여부를 확인한다.
-                Array.from(contents).forEach(function (defaultVal) {
-                    // @details 빈값( null )이 존재하는지 체크한다.
-                    if (
-                        defaultVal.textContent == ""
-                        || defaultVal.textContent == null
-                        || defaultVal.textContent == undefined
-                        || (defaultVal.textContent != null
-                            && typeof defaultVal.textContent == "object"
-                            && !Object.keys(defaultVal.textContent).length == "")) {
-                        // @details 내용이 존재하지 않다면 data 태그의 기본값으로 되돌린다.
-                        defaultVal.textContent = defaultVal.dataset.default;
-                    }
-                    // @details 저장하지 않은 내용이라고 판단하여 data 태그의 기본값으로 되돌린다.
-                    defaultVal.textContent = defaultVal.dataset.default;
-                    // @breif 수정 불가 상태로 되돌린다.
-                    defaultVal.contentEditable = false;
-                    defaultVal.style.border = "0px";
-                });
-                if (content.isContentEditable == false) {
-                    // @details 편집 가능 상태로 변경
-                    content.contentEditable = true;
-                    // @details 텍스트 문구 변경
-                    // content.textContent = "";
-                    // @details CSS 효과 추가
-                    content.style.border = "1px solid #FFB6C1";
-                    // @details 포커스 지정
-                    content.focus();
-                }
-            });
-            // @breif 키보드 입력이 방생한 경우 실행
-            content.addEventListener("keypress", function (event) {
-                // @breif Enter키 입력시 실행
-                if (event.key === "Enter") {
-                    // @details 입력된 값이 빈값( null )인지 체크한다.
-                    if (
-                        content.textContent == ""
-                        || content.textContent == null
-                        || content.textContent == undefined
-                        || (content.textContent != null
-                            && typeof content.textContent == "object"
-                            && !Object.keys(content.textContent).length == "")) {
-                        // @details 내용이 존재하지 않다면 data 태그의 기본값으로 되돌린다.
-                        content.textContent = content.dataset.default;
-                    } else {
-                        // @details 내용의 수정이 완료되었다면 data 태그의 기본값도 바꿔준다.
-                        content.dataset.default = content.textContent;
-                    }
-                    // @breif 수정 불가 상태로 되돌린다.
-                    content.contentEditable = false;
-                    content.style.border = "0px";
-                }
-            });
-        });
-    });
-
-    function saveContractInput() {
-        $.post("/contractInput_proc", {
-            d1: document.getElementById("d1").textContent,
-            d2: document.getElementById("d2").textContent,
-            d3: document.getElementById("d3").textContent,
-            d4: document.getElementById("d4").textContent,
-            d5: document.getElementById("d5").textContent,
-            d6: document.getElementById("d6").textContent,
-            d7: document.getElementById("d7").textContent,
-            d8: document.getElementById("d8").textContent,
-            d9: document.getElementById("d9").textContent,
-            d10: document.getElementById("d10").textContent,
-            d11: document.getElementById("d11").textContent,
-            d12: document.getElementById("d12").textContent,
-        });
-    }
-/* 저장하기 버튼 */
-    /* 보낼 수 있는 형식 확인하기. 리턴받는 타입 확인 */
-    /* document.getElementsByClassName("rowColumn").style.size() */
 </script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 {% endblock %}

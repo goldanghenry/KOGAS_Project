@@ -1,9 +1,11 @@
 {% extends "index.html" %}
-{% block MyMenu %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/myPage.css') }}">
-
+{% endblock %}
+{% block MyMenu %}
 <!-- MY MENU -->
-<div class="sb-sidenav-menu-heading">{{data[1]}}</div>
+<div class="sb-sidenav-menu-heading">{{k_data[1]}}</div>
 <a class="nav-link" href="{{ url_for('myPage') }}">
     한 눈에 보기
 </a>
@@ -29,7 +31,7 @@
     {% endif %}
 </div>
 <!-- 계약단계의 서류를 업로드 완료 후 메뉴 활성화 -->
-{% if progress >= 3 or login==True %}
+{% if progress >= 4 or login==True %}
 <!-- 착공 단계 -->
 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false"
     aria-controls="collapseLayouts">
@@ -93,17 +95,17 @@
             },
             {
                 progress: 3,
-                title: '착공 정보 입력',
+                title: '서류 승인 대기',
                 content: "업체의 착공 단계 정보를 입력해 주세요.."
             },
             {
                 progress: 4,
-                title: '승인 대기',
-                content: "가스공사에서 착공 단계 서류 검토 중입니다."
+                title: '착공 서류 업로드',
+                content: "착공 단계 필요 서류를 출력 후 직인을 찍고 업로드 해주세요."
             },
             {
                 progress: 5,
-                title: '착공 서류 업로드',
+                title: '서류 승인 대기',
                 content: "착공 단계 필요 서류를 출력 후 직인을 찍고 업로드 해주세요."
             },
             {
@@ -149,40 +151,142 @@
     <main>
         <header>
             {% if progress == 0%}
-            <h3><span class="name">{{data[1]}}</span>은/는 계약 정보 입력 단계입니다.</h3>
+            <h3><span class="name">{{k_data[1]}}</span>은/는 계약 정보 입력 단계입니다.</h3>
             <h3 class="content">계약 정보를 입력해 주세요.</h3>
             {% elif progress == 1%}
-            <h3><span class="name">{{data[1]}}</span>은/는 계약승인 대기중입니다</h3>
-            <h3 class="content">담당 감독이 계약 단계 서류 검토 중입니다.</h3>
+            <h3><span class="name">{{k_data[1]}}</span>은/는 계약승인 대기중입니다</h3>
+            <h3 class="content">담당 감독이 계약 단계 정보를 검토 중입니다.</h3>
             {% elif progress == 2%}
-            <h3><span class="name">{{data[1]}}</span>은/는 계약서류 업로드 단계입니다.</h3>
+            <h3><span class="name">{{k_data[1]}}</span>은/는 계약서류 업로드 단계입니다.</h3>
             <h3 class="content">계약에 필요한 서류를 출력 후, 직인을 찍고 업로드 해주세요.</h3>
 
             {% elif progress == 3%}
-            <h3><span class="name">{{data[1]}}</span>은/는 착공 정보 입력 단계입니다.</h3>
-            <h3 class="content">착공 단계 정보를 입력해주세요.</h3>
+            <h3><span class="name">{{k_data[1]}}</span>은/는 계약서류 승인 대기중입니다.</h3>
+            <h3 class="content">담당 감독이 계약 단계 서류 검토 중입니다.</h3>
             {% elif progress == 4%}
-            <h3><span class="name">{{data[1]}}</span>은/는 착공승인 대기중입니다</h3>
-            <h3 class="content">담당 감독이 착공 단계 서류 검토 중입니다.</h3>
-            {% elif progress == 5%}
-            <h3><span class="name">{{data[1]}}</span>은/는 착공서류 업로드 단계입니다.</h3>
+            <h3><span class="name">{{k_data[1]}}</span>은/는 착공서류 업로드 단계입니다.</h3>
             <h3 class="content">착공에 필요한 서류를 출력 후, 직인을 찍고 업로드 해주세요.</h3>
+            {% elif progress == 5%}
+            <h3><span class="name">{{k_data[1]}}</span>은/는 착공서류 승인 대기중입니다.</h3>
+            <h3 class="content">담당 감독이 계약 단계 서류 검토 중입니다.</h3>
 
             {% elif progress == 6%}
-            <h3><span class="name">{{data[1]}}</span>은/는 준공 정보 입력 단계입니다.</h3>
+            <h3><span class="name">{{k_data[1]}}</span>은/는 준공 정보 입력 단계입니다.</h3>
             <h3 class="content">준공 단계 정보를 입력해주세요.</h3>
             {% elif progress == 7%}
-            <h3><span class="name">{{data[1]}}</span>은/는 준공승인 대기중입니다</h3>
+            <h3><span class="name">{{k_data[1]}}</span>은/는 준공승인 대기중입니다</h3>
             <h3 class="content">담당 감독이 준공 단계 서류 검토 중입니다.</h3>
             {% elif progress == 8%}
-            <h3><span class="name">{{data[1]}}</span>은/는 준공서류 업로드 단계입니다.</h3>
+            <h3><span class="name">{{k_data[1]}}</span>은/는 준공서류 업로드 단계입니다.</h3>
             <h3 class="content">준공 단계 필요 서류를 출력 후 직인을 찍고 업로드 해주세요.</h3>
 
             {% elif progress == 9%}
-            <h3><span class="name">{{data[1]}}</span>은/는 준공 승인이 완료 되었습니다.</h3>
+            <h3><span class="name">{{k_data[1]}}</span>은/는 준공 승인이 완료 되었습니다.</h3>
             {% endif%}
         </header>
         <section id="processes" class="processes"></section>
     </main>
+    <form method="POST" id="contractInput_proc" action="{{url_for('contractInput_proc')}}">
+        <section>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <b>1. 계약 정보 확인</b>
+                </div>
+                <div class="card-body">
+                    <div class="inputBox">
+                        <p>관리번호</p>
+                        <input value="{{k_data[0]}}" disabled>
+                    </div>
+                    <div class="inputBox">
+                        <p>계약명</p>
+                        <input value="{{k_data[1]}}" disabled>
+                    </div>
+                    <div class="inputBox">
+                        <p>개요 및 시방</p>
+                        <textarea disabled>{{k_data[17]}}</textarea>
+                    </div>
+                    <div class="inputBox">
+                        <p>업체명</p>
+                        <input value="{{k_data[3]}}" disabled>
+                    </div>
+                    <div class="inputBox">
+                        <p>계약금액(VAT 제외)</p>
+                        <input value="{{data1}}" disabled>
+                    </div>
+                    <div class="inputBox">
+                        <p>감독(명)</p>
+                        <input value="{{k_data[4]}}" disabled>
+                    </div>
+                    <div class="inputBox">
+                        <p>감독직위</p>
+                        <input value="{{k_data[10]}}" disabled>
+                    </div>
+                    <div class="inputBox">
+                        <p>연락처</p>
+                        <input value="{{k_data[5]}}" disabled>
+                    </div>
+                    <div class="inputBox">
+                        <p>감독 이메일</p>
+                        <input value="{{k_data[11]}}" disabled>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <b>2. 업체 정보 입력</b>
+                </div>
+                <div class="card-body">
+                    <div class="inputBox">
+                        <p>계약일</p>
+                        <input value="{{c_data[1]}}" disabled>
+                    </div>
+                    <div class="inputBox">
+                        <p>공사 시작일</p>
+                        <input value="{{c_data[2]}}" disabled>
+                    </div>
+                    <div class="inputBox">
+                        <p>공사 종료일</p>
+                        <input value="{{c_data[3]}}" disabled>
+                    </div>
+                    <div class="inputBox">
+                        <p>대표자 성명</p>
+                        <input value="{{c_data[4]}}" disabled>
+                    </div>
+                    <div class="inputBox">
+                        <p>사업자등록번호</p>
+                        <input value="{{c_data[5]}}" disabled>
+                    </div>
+                    <div class="inputBox">
+                        <p>법인등록번호</p>
+                        <input value="{{c_data[6]}}" disabled>
+                    </div>
+                    <div class="inputBox">
+                        <p>업체 연락처</p>
+                        <input value="{{c_data[7]}}" disabled>
+                    </div>
+                    <div class="inputBox">
+                        <p>팩스번호</p>
+                        <input value="{{c_data[8]}}" disabled>
+                    </div>
+                    <div class="inputBox">
+                        <p>업체 주소</p>
+                        <input value="{{c_data[9]}}" disabled>
+                    </div>
+                    <!-- <div class="inputBox">
+                        <p>은행명</p>
+                        <input value={{c_data[10]}}>
+                    </div>
+                    <div class="inputBox">
+                        <p>예금주명</p>
+                        <input value={{c_data[11]}}>
+                    </div>
+                    <div class="inputBox">
+                        <p>계좌번호</p>
+                        <input value={{c_data[12]}}>
+                    </div> -->
+                </div>
+            </div>
+        </section>
+    </form>
 </body>
 {% endblock %}

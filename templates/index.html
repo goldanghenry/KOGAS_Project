@@ -39,56 +39,30 @@
             간이공사 원스톱 서비스 </a>
         <!-- Navbar Search-->
         <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-
-            <!-- 유저 아이디  -->
+            <!-- 유저 이름 및 관리자페이지 이동 버튼  -->
             {% if login == True %}
-            <a href="{{ url_for('serviceStatus') }}" class="cBtn" style="background-color:cadetblue ;">{{supervisor}}</a>
+            <a href="{{ url_for('serviceStatus') }}"><button class="cBtn" style="background-color:cadetblue ; margin-right: 7px;">{{supervisor}}</button></a>
             {% endif %}
-
-            <!-- My Page 이동 링크 -->
-
-
-
+            <!-- 로그인 -->
             {% if login == True %}
             <a href="{{ url_for('logout') }}"><button class="cBtn">로그아웃</button></a>
             {% else %}
             <a href="{{ url_for('login') }}"><button class="cBtn">로그인</button></a>
             {% endif %}
         </div>
-        <!-- 토글 버튼 -->
-
-        <!-- <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-            <li class="nav-item dropdown">
-                
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    {% if login == True %}
-                    <li><a class="dropdown-item" href="{{ url_for('logout') }}">로그아웃</a></li>
-                    {% else %}
-                    <li><a class="dropdown-item" href="{{ url_for('login') }}">로그인</a></li>
-                    {% endif %}
-
-                </ul>
-            </li>
-        </ul> -->
     </nav>
-
     <!-- 사이드 메뉴 -->
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-
                         <!-- HOME -->
                         <!-- <div class="sb-sidenav-menu-heading">Home</div> -->
                         <a class="nav-link" href="#">공지사항</a>
-                        <!-- <a class="nav-link" href="{{ url_for('index') }}">공지사항항</a> -->
-                        <a class="nav-link" href="{{ url_for('summary') }}">개요</a>
+                        <a class="nav-link" href="#">개요</a>
                         {% if login == True %}
                         <a class="nav-link" href="{{ url_for('serviceStatus') }}">공사/용역 리스트</a>
-                        <!-- <a class="nav-link" href="{{ url_for('createConstruction') }}">공사 추가하기</a> -->
                         {% endif %}
                         {% block MyMenu %}
                         {% endblock %}
@@ -96,26 +70,21 @@
                 </div>
             </nav>
         </div>
-
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-
                     {% block main %}
                     <!-- 제목 -->
                     <!-- <h1 class="mt-4" style="text-align:left;"><b>메인페이지</b></h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item active">One-stop service for simplified construction</li>
                     </ol> -->
-
-                    <!-- 공지사항 -->
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
                             <b>공지사항</b>
                         </div>
                         <div class="card-body">
-
                             <table id="datatablesSimple1">
                                 <thead>
                                     <tr>
@@ -198,7 +167,6 @@
                         </div>
                     </div>
                     {% endblock %}
-
                 </div>
             </main>
             <footer class="py-4 bg-light mt-auto">
@@ -217,9 +185,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-
     {% block js %}
     {% endblock %}
 </body>
-
 </html>
