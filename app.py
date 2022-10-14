@@ -553,7 +553,7 @@ def login_proc():
             if loginId == rs[1] and loginPw == rs[3]:
                 session['userName'] = loginId
                 session['logFlag'] = True
-                return redirect(url_for("index"))
+                return redirect(url_for("serviceStatus"))
             else:
                 flash("Please check your ID or password")
                 return redirect(url_for("login"))   # 팝업 추가!
