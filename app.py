@@ -99,7 +99,7 @@ def goto(id):
     if 'userName' in session:
         # 세션에 contractNum 추가
         session['contractNum'] = id
-        return redirect(url_for("contractTable") )
+        return redirect(url_for("contractInput") )
     
     # 관리자 로그인이 되어있지 않으면 업체 로그인 페이지로 이동
     else:
@@ -205,6 +205,8 @@ def contractInput():
     else:
         flash("업체 로그인이 필요합니다")
         return redirect(url_for("pre"))
+
+        
 # 필요 서류 다운 및 업로드
 @app.route('/contractTable')
 def contractTable():
@@ -290,7 +292,7 @@ def contract2():
         sql = "SELECT * FROM constructionList WHERE contractNum=?"
         cur.execute(sql, (contract_data,))
         k_data = cur.fetchone()
-        data1 = str(format(int(k_data[6] * k_data[7]),',d'))+'원'
+        data1 = str(format(int(k_data[6] * (k_data[7]/100)),',d'))+'원'
         data2 = str(format(k_data[6],',d'))+'원'
         return render_template('contract2.html', login=session.get('logFlag'), k_data=k_data, c_data=c_data, data1= data1, data2=data2)
     else:

@@ -74,7 +74,8 @@
 
                         <!-- HOME -->
                         <div class="sb-sidenav-menu-heading">Home</div>
-                        <a class="nav-link" href="{{ url_for('index') }}">메인페이지</a>
+                        <a class="nav-link" href="#">공지사항</a>
+                        <!-- <a class="nav-link" href="{{ url_for('index') }}">공지사항항</a> -->
                         <a class="nav-link" href="{{ url_for('summary') }}">개요</a>
                         {% if login == True %}
                         <a class="nav-link" href="{{ url_for('serviceStatus') }}">공사/용역 리스트</a>
