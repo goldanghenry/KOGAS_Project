@@ -72,7 +72,7 @@ def serviceStatus():
         cur.execute(sql, (userName,))
         R_data = cur.fetchall()
         
-        process = ['신규 생성','계약 승인 대기','계약 서류 업로드','서류 승인 대기','착공 서류 업로드','서류 승인 대기','준공 정보 입력','준공 승인 대기','준공 서류 업로드','준공 승인 완료']
+        process = ['신규 생성','계약 정보 승인 대기','계약 서류 업로드','계약 서류 승인 대기','착공 서류 업로드','착공 서류 승인 대기','준공 정보 입력','준공 정보 승인 대기','준공 서류 업로드','준공 승인 완료']
 
         return render_template('serviceStatus.html',supervisor=session.get('supervisor'), login=session.get('logFlag'), A_data=A_data, R_data=R_data,process=process)
     # 로그인 하지 않으면 로그인 페이지로 이동
@@ -85,9 +85,15 @@ def serviceStatus():
 def approval_proc(id):
     con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
     cur = con.cursor()
-    sql = "UPDATE constructionList SET progress=? WHERE contractNum=?"
-    flash(f"계약 승인 완료!")
-    cur.execute(sql, (2, id,))
+    
+    if id == 1:
+        sql = "UPDATE constructionList SET progress=? WHERE contractNum=?"
+        cur.execute(sql, (2, id,))
+        flash(f"계약 정보 승인 완료!")
+    elif id == 3:
+        sql = "UPDATE constructionList SET progress=? WHERE contractNum=?"
+        cur.execute(sql, (4, id,))
+        flash(f"서류 업로드 승인 완료!")
     con.commit()
     return redirect(url_for("serviceStatus"))
 
@@ -530,7 +536,7 @@ def login_proc():
                 session['supervisor'] = supervisor[0]+"님"
                 session['userName'] = loginId
                 session['logFlag'] = True
-                return redirect(url_for("serviceStatus"))
+                return redirect(url_for("index"))
             else:
                 flash("Please check your ID or password")
                 return redirect(url_for("login"))   # 팝업 추가!

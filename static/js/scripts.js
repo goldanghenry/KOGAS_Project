@@ -309,3 +309,42 @@ $(document).ready(function (e) {
         });
     });
 });
+
+$(document).ready(function (e) {
+    $('#upload8').on('click', function () {
+        var form_data = new FormData();
+        var ins = document.getElementById('multiFiles8').files.length;
+        
+        if(ins == 0) {
+            $('#msg8').html('<span style="color:red">Select at least one file</span>');
+            return;
+        }
+        
+        for (var x = 0; x < ins; x++) {
+            form_data.append("files[]", document.getElementById('multiFiles8').files[x]);
+        }
+        form_data.append('filename', document.getElementById('upload8').textContent)
+        $.ajax({
+            url: 'python-flask-files-upload', // point to server-side URL
+            dataType: 'json', // what to expect back from server
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            type: 'post',
+            success: function (response) { // display success response
+                $('#msg8').html('');
+                $.each(response, function (key, data) {							
+                    if(key !== 'message') {
+                        $('#msg8').append(key + ' -> ' + data + '<br/>');
+                    } else {
+                        $('#msg8').append(data + '<br/>');
+                    }
+                })
+            },
+            error: function (response) {
+                $('#msg8').html(response.message); // display error response
+            }
+        });
+    });
+});
