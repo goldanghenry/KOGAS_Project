@@ -3,10 +3,10 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
 {% endblock %}
 {% block main %}
-<h1 class="mt-4" style="text-align:left;"><b>기본정보 입력하기</b></h1>
-<ol class="breadcrumb mb-4">
+<h1 class="mt-4" style="text-align:left;"><b>계약 정보 입력</b></h1>
+<!-- <ol class="breadcrumb mb-4">
     <li>계약 단계에 필요한 정보를 채워주세요!</li>
-</ol>
+</ol> -->
 <form method="POST" id="contractInput_proc" action="{{url_for('contractInput_proc')}}">
     <section>
         <div class="card mb-4">
@@ -62,11 +62,11 @@
                     <input type="date" name="d1" placeholder="계약일" value="{{c_data[1]}}" required>
                 </div>
                 <div class="inputBox">
-                    <p>공사 시작일</p>
+                    <p>공사/용역 시작일</p>
                     <input type="date" name="d2" placeholder="공사 시작일" value="{{c_data[2]}}" required>
                 </div>
                 <div class="inputBox">
-                    <p>공사 종료일</p>
+                    <p>공사/용역 종료일</p>
                     <input type="date" name="d3" placeholder="공사 종료일" value="{{c_data[3]}}" required>
                 </div>
                 <div class="inputBox">
