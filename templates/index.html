@@ -46,6 +46,10 @@
             <!-- 로그인 -->
             {% if login == True %}
             <a href="{{ url_for('logout') }}"><button class="cBtn">로그아웃</button></a>
+            <!-- <div class="my-3">
+                <a href="{{ url_for('login') }}" class="cBtn">로그아웃</a>
+
+            </div> -->
             {% else %}
             <a href="{{ url_for('login') }}"><button class="cBtn">로그인</button></a>
             {% endif %}

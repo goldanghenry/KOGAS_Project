@@ -1,6 +1,7 @@
 {% extends "myPage.html" %}
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
 {% endblock %}
 {% block main %}
 <h1><b>필요서류 확인 및 업로드</b></h1><br>
@@ -15,7 +16,7 @@
   </thead>
   <tbody>
     <tr>
-      <td rowspan='7'><b>계약</b></td>
+      <td rowspan='8'><b>계약</b></td>
       <td onclick="window.open('/contract1')" style="cursor:pointer;">1. 간이공사 지시서</td>
       <td>
         <input type="file" id="multiFiles1" name="files[]" multiple="multiple" />
@@ -97,12 +98,16 @@
     </tr>
   </tbody>
 </table>
-{% if login == True and progress==1%}
+<br>
+<form>
+  <button class="formBtn" onclick="location.href='/contractTable_proc';" style="width: 200px; margin: 0 auto";>저장하기</button>
+</form>
+{% if login == True and progress==3%}
 <div style="margin: 10px ;text-align : right;">
   <button class="cBtn"  onclick="location.href='/approval_proc/{{k_data[0]}}';" style="cursor:pointer;">승인</button>
 </div>
 {% endif %}
+
 {% endblock %}
 {% block js %}
-
 {% endblock %}

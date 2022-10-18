@@ -250,8 +250,8 @@ def contractTable():
             cur.execute(sql, (contract_data,))
             k_data = cur.fetchone()
 
-            # 승인 대기 상태(2) -> 업로드 완료시 3으로 변경
-            if k_data[9]==2 and c_data[13] !='#' and c_data[14] !='#' and c_data[15] !='#' and c_data[16] !='#' and c_data[17] !='#':
+            # 승인 대기 상태(3) -> 업로드 완료시 3으로 변경
+            if k_data[9]==2 and c_data[13] !='#' and c_data[14] !='#' and c_data[15] !='#' and c_data[16] !='#' and c_data[17] !='#' and c_data[18] !='#' and c_data[19] !='#' and c_data[20] !='#':
                 sql = "UPDATE constructionList SET progress=? WHERE contractNum=?"
                 cur.execute(sql, (3, contract_data,))
                 con.commit()
@@ -263,10 +263,12 @@ def contractTable():
                 링크 : https://kogasonestop.pythonanywhere.com/serviceStatus
                 """
                 mail.send(msg)
-            else: 
+                flash("공사 감독관에 계약 서류 승인을 요청합니다.")
+            else:
+                flash("모든 파일을 업로드 해주세요.")
                 session['progress'] = k_data[9]
-            
             return render_template('contractTable.html',login=session.get('logFlag'), progress = session.get('progress'), c_data=c_data, k_data=k_data,supervisor=session.get('supervisor'))
+        
         elif 'userName' in session:
             sql = "SELECT * FROM constructionList where contractNum =?"
             cur.execute(sql, (contract_data,))
@@ -280,6 +282,11 @@ def contractTable():
     else:
         flash("업체 로그인이 필요합니다")
         return redirect(url_for(f"pre/{contract_data}"))
+
+@app.route("/contractTable_proc")
+def contractTable_proc():
+    return redirect(url_for("contractTable"))
+
 # 계약서
 # 1: 간이공사지시서
 @app.route("/contract1")
