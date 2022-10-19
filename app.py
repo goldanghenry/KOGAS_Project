@@ -270,13 +270,10 @@ def contractTable():
             return render_template('contractTable.html',login=session.get('logFlag'), progress = session.get('progress'), c_data=c_data, k_data=k_data,supervisor=session.get('supervisor'))
         
         elif 'userName' in session:
-            sql = "SELECT * FROM constructionList where contractNum =?"
-            cur.execute(sql, (contract_data,))
-            k_data = cur.fetchone()
-            flash("주의!! 업체 기본정보 입력전입니다!")
-            return render_template('contractTable.html',login=session.get('logFlag'), progress = session.get('progress'), c_data=c_data, k_data=k_data,supervisor=session.get('supervisor'))
+            flash("업체 계약 정보 승인 전입니다!")
+            return redirect(url_for("myPage"))
         else:
-            flash("계약단계의 업체 기본정보를 먼저 입력해주세요!")
+            flash("계약단계의 기본정보를 먼저 입력해주세요!")
             return redirect(url_for("contractInput"))
 
     else:
