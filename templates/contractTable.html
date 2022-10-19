@@ -148,7 +148,7 @@
 </table>
 <br>
 <form>
-  <button class="formBtn" onclick="location.href='/contractTable_proc';" style="width: 200px; margin: 0 auto";>저장하기</button>
+  <a href="{{ url_for('contractTable_proc') }}"></a><button class="formBtn" style="width: 200px; margin: 0 auto";>저장하기</button>
 </form>
 {% if login == True and progress==3%}
 <div style="margin: 10px ;text-align : right;">

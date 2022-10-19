@@ -83,18 +83,24 @@ def serviceStatus():
 # 관리자 승인 페이지 -> 승인 버튼 처리
 @app.route('/approval_proc/<id>')
 def approval_proc(id):
+    print(id)
     con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
     cur = con.cursor()
     
-    if id == 1:
+    sql = "SELECT progress FROM constructionList WHERE contractNum=? "
+    cur.execute(sql, (id,))
+    progress = cur.fetchone()
+
+    if progress[0] == 1:
         sql = "UPDATE constructionList SET progress=? WHERE contractNum=?"
         cur.execute(sql, (2, id,))
         flash(f"계약 정보 승인 완료!")
-    elif id == 3:
+    elif progress[0] == 3:
         sql = "UPDATE constructionList SET progress=? WHERE contractNum=?"
         cur.execute(sql, (4, id,))
         flash(f"서류 업로드 승인 완료!")
     con.commit()
+
     return redirect(url_for("serviceStatus"))
 
 # contractInput으로 이동
@@ -281,7 +287,7 @@ def contractTable():
 
 @app.route("/contractTable_proc")
 def contractTable_proc():
-    flash("저장 완료!")
+    flash("저장완료!")
     return redirect(url_for("contractTable"))
 
 # 계약서

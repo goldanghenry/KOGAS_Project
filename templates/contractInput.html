@@ -7,6 +7,11 @@
 <!-- <ol class="breadcrumb mb-4">
     <li>계약 단계에 필요한 정보를 채워주세요!</li>
 </ol> -->
+{% if login == True and progress==1%}
+<div style="text-align: right; width: 200px; margin: 10px 84%; ">
+ <button class="cBtn"  onclick="location.href='/approval_proc/{{k_data[0]}}';" style="cursor:pointer;display :inline-block;">승인하기</button>
+</div>
+{% endif %}
 <form method="POST" id="contractInput_proc" action="{{url_for('contractInput_proc')}}">
     <section>
         <div class="card mb-4">
@@ -52,7 +57,9 @@
                 </div>
             </div>
         </div>
+        
         <div class="card mb-4">
+            
             <div class="card-header">
                 <b>2. 업체 정보 입력</b>
             </div>
@@ -113,6 +120,7 @@
     {% else %}
     <button type="submit" class="formBtn" style="margin: 0 auto";>저장하기</button>
     {% endif %}
+    
 </form>
 
 {% endblock %}
