@@ -265,7 +265,6 @@ def contractTable():
                 mail.send(msg)
                 flash("공사 감독관에 계약 서류 승인을 요청합니다.")
             else:
-                flash("모든 파일을 업로드 해주세요.")
                 session['progress'] = k_data[9]
             return render_template('contractTable.html',login=session.get('logFlag'), progress = session.get('progress'), c_data=c_data, k_data=k_data,supervisor=session.get('supervisor'))
         
@@ -282,6 +281,7 @@ def contractTable():
 
 @app.route("/contractTable_proc")
 def contractTable_proc():
+    flash("저장 완료!")
     return redirect(url_for("contractTable"))
 
 # 계약서
