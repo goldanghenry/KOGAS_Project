@@ -552,9 +552,12 @@ def login_proc():
         return redirect(url_for("login"))
 
 # 4. 로그아웃 처리
-@app.route('/logout')
+@app.route('/logout',methods=["POST"])
 def logout():
-    session.clear()
+    if request.method =="POST":
+        userInput = request.form.get("userInput")
+        if userInput=="True":
+            session.clear()
     return redirect(url_for('index'))
 
 # 5. 공사 생성 처리

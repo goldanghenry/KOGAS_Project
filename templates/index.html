@@ -38,21 +38,23 @@
         <a class="navbar-brand ps-3" href="{{ url_for('index') }}">
             간이공사 원스톱 서비스 </a>
         <!-- Navbar Search-->
+        
         <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-            <!-- 유저 이름 및 관리자페이지 이동 버튼  -->
-            {% if login == True %}
-            <a href="{{ url_for('serviceStatus') }}"><button class="cBtn" style="background-color:cadetblue ; margin-right: 7px;">{{supervisor}}</button></a>
-            {% endif %}
-            <!-- 로그인 -->
-            {% if login == True %}
-            <a href="{{ url_for('logout') }}"><button class="cBtn">로그아웃</button></a>
-            <!-- <div class="my-3">
-                <a href="{{ url_for('login') }}" class="cBtn">로그아웃</a>
-
-            </div> -->
-            {% else %}
-            <a href="{{ url_for('login') }}"><button class="cBtn">로그인</button></a>
-            {% endif %}
+            <div style="text-align: center;">
+                <!-- 유저 이름 및 관리자페이지 이동 버튼  -->
+                <!-- 로그인 -->
+                {% if login == True %}
+                <a href="{{ url_for('serviceStatus') }}"><button class="cBtn find-btn1" style="background-color:cadetblue ;">{{supervisor}}</button></a>
+                {% endif %} 
+                {% if login == True %}
+                <form action="{{url_for('logout')}}" method="post" style="display :inline-block;"> 
+                    <input type="hidden" id="userInput" name="userInput"> 
+                    <button type="submit" class="cBtn find-btn1" style="display :inline-block;" name="free_button" value="free_button" onClick="confirmBooking('{{supervisor}}')"> 로그아웃 </button> 
+                </form>
+                {% else %}
+                <a href="{{ url_for('login') }}"><button class="cBtn find-btn1">로그인</button></a>
+                {% endif %}
+            </div>
         </div>
     </nav>
     <!-- 사이드 메뉴 -->
@@ -189,6 +191,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script>
+        function confirmBooking(elem) {
+            if(confirm(elem+', 로그아웃 하시겠습니까?') == true) {
+                document.getElementById("userInput").value = "True";
+            }
+            else { 
+                 document.getElementById("userInput").value = "False";
+                 return 0;
+            }          
+        }
+    </script>
     {% block js %}
     {% endblock %}
 </body>
