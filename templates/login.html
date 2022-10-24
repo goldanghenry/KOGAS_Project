@@ -1,73 +1,86 @@
 <!DOCTYPE html>
 <html lang="ko">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="login page" />
-        <meta name="author" content="Henry_ub" />
-        <title>KOGAS, One-stop service for simplified construction</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">|
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-NVSRNY03C8"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-NVSRNY03C8');
-        </script>
-    </head>
-    <body>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <script>
-            alert("{{messages[0]}}")
-        </script>
-        {% endif %}
-        {% endwith %}
-        <div class="wrap">
-            <div class="form-wrap">
-                <div class="button-wrap">
-                    <div id="btn"></div>
-                    <button type="button" class="togglebtn" onclick="login()">LOG IN</button>
-                    <button type="button" class="togglebtn" onclick="register()">REGISTER</button>
-                </div>
-                    <div style="text-align : center;">
-                        <img src="/static/img/cip_05_09.jpg" alt="KOGAS" style="padding-bottom: 150px;"/>
-                   </div>
-                <form method = "POST" id="login_proc" action="{{url_for('login_proc')}}" class="input-group">
-                    <input type="text" id="loginId" name="loginId"class="input-field" placeholder="Enter ID">
-                    <input type="password" id="loginPw" name="loginPw" class="input-field" placeholder="Enter Password">
-                    <input type="checkbox" class="checkbox"><span>Remember Password</span>
-                    <button type="submit" class="submit"><b>Login</b></button>
-                </form>
 
-                <form method= "POST" id="register" action="{{url_for('register')}}" class="input-group">
-                    <input type="text" id="registerId" name="registerId" class="input-field" placeholder="Your ID">
-                    <input type="text" id="registerUsername" name="registerUsername" class="input-field" placeholder="User name">
-                    <input type="password" id="registerPw" name="registerPw" class="input-field" placeholder="Enter Password">
-                    <input type="password" id="registerCPw" name="registerCPw" class="input-field" placeholder="Confirm Password">
-                    <input type="text" id="managementKEY" name="managementKEY" class="input-field" placeholder="Enter management KEY">
-                    <button type="submit" class="submit"><b>REGISTER</b></button>
-                </form>
-            </div>
-        </div>
-        <script>
-            var x = document.getElementById("login_proc");
-            var y = document.getElementById("register");
-            var z = document.getElementById("btn");
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="login page" />
+    <meta name="author" content="Henry_ub" />
+    <title>KOGAS, One-stop service for simplified construction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NVSRNY03C8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-NVSRNY03C8');
+    </script>
+</head>
 
-            function login(){
-                x.style.left = "50px";
-                y.style.left = "450px";
-                z.style.left = "0";
-            }
+<body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <script>
+        alert("{{messages[0]}}")
+    </script>
+    {% endif %}
+    {% endwith %}
+    <img src="/static/img/cip_05_08.jpg" alt="도시가스공사" class="top-logo" />
+    <main>
+        <!-- <div class="button-wrap">
+            <div id="btn"></div>
+            <button type="button" class="togglebtn" onclick="login()">로그인</button>
+            <button type="button" class="togglebtn" onclick="register()">회원가입</button>
+        </div> -->
+        <form method="POST" id="login_proc" action="{{url_for('login_proc')}}" class="input-group">
+            <h3>로그인</h3>
+            <input type="text" id="loginId" name="loginId" class="input-field" placeholder="아이디">
+            <input type="password" id="loginPw" name="loginPw" class="input-field" placeholder="비밀번호">
+            <button type="submit" class="submit"><b>로그인</b></button>
+            <p onclick="register()" class="subBtn">회원가입</p>
+        </form>
+        <form method="POST" id="register" action="{{url_for('register')}}" class="input-group" style="display: none;">
+            <h3>회원가입</h3>
+            <input type="text" id="registerId" name="registerId" class="input-field" placeholder="아이디">
+            <input type="text" id="registerUsername" name="registerUsername" class="input-field" placeholder="이름">
+            <input type="password" id="registerPw" name="registerPw" class="input-field" placeholder="비밀번호">
+            <input type="password" id="registerCPw" name="registerCPw" class="input-field" placeholder="비밀번호 확인">
+            <input type="text" id="managementKEY" name="managementKEY" class="input-field"
+                placeholder="Enter management KEY">
+            <button type="submit" class="submit"><b>회원가입</b></button>
+            <p onclick="login()" class="subBtn">로그인</p>
 
-            function register(){
-                x.style.left = "-400px";
-                y.style.left = "50px";
-                z.style.left = "110px";
-            }
-        </script>
-    </body>
+        </form>
+    </main>
+    <script>
+        const loginForm = document.getElementById('login_proc')
+        const registerForm = document.getElementById('register')
+        function login() {
+            loginForm.style.display = 'block'
+            registerForm.style.display = 'none'
+        }
+        function register() {
+            registerForm.style.display = 'block'
+            loginForm.style.display = 'none'
+        }
+        // var x = document.getElementById("login_proc");
+        // var y = document.getElementById("register");
+        // var z = document.getElementById("btn");
+
+        // function login() {
+        //     x.style.left = "50px";
+        //     y.style.left = "450px";
+        //     z.style.left = "0";
+        // }
+
+        // function register() {
+        //     x.style.left = "-400px";
+        //     y.style.left = "50px";
+        //     z.style.left = "110px";
+        // }
+    </script>
+</body>
+
 </html>
