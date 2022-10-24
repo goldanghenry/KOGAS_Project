@@ -42,13 +42,14 @@
             <p onclick="register()" class="subBtn">회원가입</p>
         </form>
         <form method="POST" id="register" action="{{url_for('register')}}" class="input-group" style="display: none;">
+            <h3>회원가입</h3>
             <input type="text" id="registerId" name="registerId" class="input-field" placeholder="아이디">
             <input type="text" id="registerUsername" name="registerUsername" class="input-field" placeholder="이름">
             <input type="password" id="registerPw" name="registerPw" class="input-field" placeholder="비밀번호">
             <input type="password" id="registerCPw" name="registerCPw" class="input-field" placeholder="비밀번호 확인">
             <input type="text" id="managementKEY" name="managementKEY" class="input-field"
                 placeholder="Enter management KEY">
-            <button type="submit" class="submit"><b>REGISTER</b></button>
+            <button type="submit" class="submit"><b>회원가입</b></button>
             <p onclick="login()" class="subBtn">로그인</p>
 
         </form>
