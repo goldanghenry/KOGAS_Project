@@ -11,10 +11,13 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #fff;
+  /* background-color: rgb(2, 90, 159,0.2); */
+  background-color: #f1f1f1;
+  border-top: 10px solid #025a9f;
   /* background-image: url(/static/img/412b0c702c1294dea7e40e54331c270d.jpg); */
   /* background-position: center;
     background-size: cover; */
+    /* background-color: #025a9f; */
 }
 
 .top-logo {
@@ -23,9 +26,9 @@ body {
 }
 
 main {
-  width: 380px;
+  width: 400px;
   padding: 30px;
-  background-color: #f9f9f9;
+  background-color: #fff;
   /* border: 1px solid #eee; */
   border-radius: 30px 0 0 0;
 }
@@ -64,7 +67,7 @@ main {
 }
 .input-field {
   width: 100%;
-  height: 40px;
+  height: 45px;
   margin-top: 15px;
   padding: 0 15px;
   /* background: transparent; */
@@ -75,8 +78,8 @@ main {
 
 .submit {
   width: 100%;
-  height: 40px;
-  margin-top: 15px;
+  height: 45px;
+  margin-top: 30px;
   background-color: #025a9f;
   /* background: linear-gradient(to right, #108cff, #63a9d1); */
   color: #fff;
@@ -88,7 +91,6 @@ main {
 
 .subBtn {
   margin-top: 15px;
-  font-size: 0.9rem;
   font-weight: 500;
   text-align: center;
   text-decoration: underline;
@@ -99,10 +101,4 @@ span {
   font-size: 12px;
   bottom: 68px;
   position: absolute;
-}
-#login_proc {
-  left: 50px;
-}
-#register {
-  left: 480px;
 }

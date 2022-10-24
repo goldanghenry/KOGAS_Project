@@ -27,7 +27,7 @@
     </script>
     {% endif %}
     {% endwith %}
-    <img src="/static/img/cip_05_08.jpg" alt="도시가스공사" class="top-logo" />
+    <img src="/static/img/logo.png" alt="도시가스공사" class="top-logo" />
     <main>
         <!-- <div class="button-wrap">
             <div id="btn"></div>
@@ -35,7 +35,7 @@
             <button type="button" class="togglebtn" onclick="register()">회원가입</button>
         </div> -->
         <form method="POST" id="login_proc" action="{{url_for('login_proc')}}" class="input-group">
-            <h3>로그인</h3>
+            <h2>로그인</h2>
             <input type="text" id="loginId" name="loginId" class="input-field" placeholder="아이디">
             <input type="password" id="loginPw" name="loginPw" class="input-field" placeholder="비밀번호">
             <button type="submit" class="submit"><b>로그인</b></button>
