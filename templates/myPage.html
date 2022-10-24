@@ -136,7 +136,7 @@
             const dom = processes.map(process =>
                 `<div class="process">
                     <div class="info" >
-                        <div class="circle ${process.progress <= temp && 'active'}">${process.progress}</div>
+                        <div class="circle ${process.progress < temp && 'active'} ${process.progress === temp && 'now'}">${process.progress}</div>
                         <div class="title">${process.title}</div>
                     </div >
                 <div class='line idx_${process.progress} ${process.progress < temp && 'active'}'></div>
