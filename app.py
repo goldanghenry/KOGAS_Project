@@ -307,13 +307,18 @@ def contract1():
         sql = "SELECT * FROM constructionList WHERE contractNum=?"
         cur.execute(sql, (contract_data,))
         k_data = cur.fetchone()
-
         # 업체 1금액
         data1 = str(format(k_data[6],',d'))+'원'
         # 업체 2금액
-        data2 = str(format(k_data[19],',d'))+'원'
+        if k_data[19] == 0:
+            data2 = '-'    
+        else:
+            data2 = str(format(k_data[19],',d'))+'원'
         # 업체 3금액
-        data3 = str(format(k_data[21],',d'))+'원'
+        if k_data[21] == 0:
+            data3 = '-'    
+        else:
+            data3 = str(format(k_data[21],',d'))+'원'
         return render_template('contract1.html', login=session.get('logFlag'), k_data=k_data, c_data=c_data, data1= data1, data2=data2, data3=data3)
     else:
         flash("계약단계의 업체 기본정보 입력전입니다.")
@@ -591,14 +596,14 @@ def createConstruction_proc():
         
         # 관리자 추가
         c14=session.get('userName')
-
+        
         # DB 연결
         con = sqlite3.connect(path.join(ROOT, 'KOGAS.db'))
         cur = con.cursor()
         sql = "SELECT contractNum FROM constructionList"
         cur.execute(sql)
         result = cur.fetchall() 
-
+        
         # 관리 번호 생성
         today = dt.today()      # 오늘 날짜
         num = len(result)+1
@@ -684,7 +689,7 @@ def contractInput_proc():
             # 관리자 이 메일로 승인 요청 메일 전송
             msg = Message(f'{k_data[1]} 공사건 승인 요청', sender='#@gmail.com', recipients=[k_data[11]])
             msg.body = f"""
-            {k_data[1]} 공사건의 계약 단계에 대한 업체 정보가 수정되었습니다.
+            {k_data[1]} 계약 단계에 대한 업체 정보가 수정되었습니다.
             서류를 검토 후 승인 처리해주세요.
             링크 : https://kogasonestop.pythonanywhere.com/serviceStatus
             """
