@@ -10,6 +10,7 @@
     <title>KOGAS, One-stop service</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">|
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
     <link rel="shortcut icon" href="/static/favicon.ico">
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -38,18 +39,20 @@
         <a class="navbar-brand ps-3" href="{{ url_for('index') }}">
             간이공사 원스톱 서비스 </a>
         <!-- Navbar Search-->
-        
+
         <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
             <div style="text-align: center;">
                 <!-- 유저 이름 및 관리자페이지 이동 버튼  -->
                 <!-- 로그인 -->
                 {% if login == True %}
-                <a href="{{ url_for('serviceStatus') }}"><button class="cBtn find-btn1" style="background-color:cadetblue ;">{{supervisor}}</button></a>
-                {% endif %} 
+                <a href="{{ url_for('serviceStatus') }}"><button class="cBtn find-btn1"
+                        style="background-color:cadetblue ;">{{supervisor}}</button></a>
+                {% endif %}
                 {% if login == True %}
-                <form action="{{url_for('logout')}}" method="post" style="display :inline-block;"> 
-                    <input type="hidden" id="userInput" name="userInput"> 
-                    <button type="submit" class="cBtn find-btn1" style="display :inline-block;" name="free_button" value="free_button" onClick="confirmBooking('{{supervisor}}')"> 로그아웃 </button> 
+                <form action="{{url_for('logout')}}" method="post" style="display :inline-block;">
+                    <input type="hidden" id="userInput" name="userInput">
+                    <button type="submit" class="cBtn find-btn1" style="display :inline-block;" name="free_button"
+                        value="free_button" onClick="confirmBooking('{{supervisor}}')"> 로그아웃 </button>
                 </form>
                 {% else %}
                 <a href="{{ url_for('login') }}"><button class="cBtn find-btn1">로그인</button></a>
@@ -175,6 +178,13 @@
                     {% endblock %}
                 </div>
             </main>
+            <div class="modal_bg">
+                <div class="passwd_modal">
+                    <p>업체 로그인 비밀번호를 입력해 주세요</p>
+                    <input type="password" placeholder="비밀번호 입력" />
+                    <button type="button">로그인</button>
+                </div>
+            </div>
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">
@@ -193,16 +203,17 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script>
         function confirmBooking(elem) {
-            if(confirm(elem+', 로그아웃 하시겠습니까?') == true) {
+            if (confirm(elem + ', 로그아웃 하시겠습니까?') == true) {
                 document.getElementById("userInput").value = "True";
             }
-            else { 
-                 document.getElementById("userInput").value = "False";
-                 return 0;
-            }          
+            else {
+                document.getElementById("userInput").value = "False";
+                return 0;
+            }
         }
     </script>
     {% block js %}
     {% endblock %}
 </body>
+
 </html>
