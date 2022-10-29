@@ -15,6 +15,9 @@
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NVSRNY03C8"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     {% block head %}
     {% endblock %}
 </head>
@@ -165,10 +168,12 @@
                                     {% for construction in constructionList %}
                                     <!-- 해당 공사 상세페이지로 이동 -->
                                     <tr onclick="location.href='/pr/{{construction[0]}}';" style="cursor:pointer;">
+                                    <!-- <tr><a data-target="#myModal" data-toggle="modal"> -->
                                         <td>{{construction[12]}}</td>
                                         <td>{{construction[1]}}</td>
                                         <td>{{construction[2]}}</td>
                                         <!-- <td>{{construction[3]}}</td> -->
+                                    </a>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -179,14 +184,16 @@
                 </div>
             </main>
 <!-- 
-            <div class="modal_bg">
+            <div class="modal fade" id="myModal">
                 <div class="passwd_modal">
                     <p>업체 로그인 비밀번호를 입력해 주세요</p>
-                    <input type="password" placeholder="비밀번호 입력" />
-                    <button type="button">로그인</button>
+                    <form method = "POST" id="pre_proc" action="{{url_for('pre_proc')}}" class="input-group">
+                        <input type="password" id="d1" name="d1" class="input-field" placeholder="관리번호" required>
+                        <button class="cBtn" type="submit" class="submit">입력완료</button>
+                    </form>
                 </div>
-            </div>
-             -->
+            </div> -->
+            
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">

@@ -621,7 +621,7 @@ def createConstruction_proc():
     """
     cur.execute(sql, (c0,c1,code_dic[c2],c3,c4,c5,c6,c7,c8,0,c10,c11,c12,c13,c14,'none','none',c17,c18,c19,c20,c21,))
     con.commit()
-    flash("공사 생성 완료")
+    flash("생성 완료")
     return redirect(url_for("index"))
 
 # 6. 업체 로그인 처리(계약 번호 확인)

@@ -1,11 +1,46 @@
-{% extends "index.html" %}
-{% block main %}
-<div>업체 로그인 비밀번호를 입력해주세요</div>
-<form method = "POST" id="pre_proc" action="{{url_for('pre_proc')}}" class="input-group">
-    <input type="password" id="d1" name="d1" class="input-field" placeholder="계약번호" required>
-    <button class="cBtn" type="submit" class="submit">입력완료</button>
-</form>
-<br>
-<a href="{{ url_for('login') }}"><button class="cBtn" type="button"> 관리자 로그인 </button></a>
+<!DOCTYPE html>
+<html lang="ko">
 
-{% endblock %}
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="login page" />
+    <meta name="author" content="Henry_ub" />
+    <title>KOGAS, One-stop service for simplified construction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NVSRNY03C8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-NVSRNY03C8');
+    </script>
+</head>
+
+<body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <script>
+        alert("{{messages[0]}}")
+    </script>
+    {% endif %}
+    {% endwith %}
+
+    <img src="/static/img/logo.png" alt="도시가스공사" class="top-logo" />
+    <main>
+        <!-- <div class="button-wrap">
+            <div id="btn"></div>
+            <button type="button" class="togglebtn" onclick="login()">로그인</button>
+            <button type="button" class="togglebtn" onclick="register()">회원가입</button>
+        </div> -->
+        <form method = "POST" id="pre_proc" action="{{url_for('pre_proc')}}" class="input-group">
+            <h2> 업체 로그인</h2>
+            <input type="password" id="d1" name="d1" class="input-field" placeholder="계약번호" required>
+            <button lass="submit" type="submit" class="submit"><b>로그인</b></button>
+        </form>
+    </main>
+</body>
+
+</html>
